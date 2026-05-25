@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Exclude SSH key material; see G2 -->
+    </cloud-backup>
+    <device-transfer>
+        <!-- Exclude SSH key material; see G2 -->
+    </device-transfer>
+</data-extraction-rules>
