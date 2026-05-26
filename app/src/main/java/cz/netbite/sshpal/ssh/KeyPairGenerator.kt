@@ -6,6 +6,7 @@ import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters
 import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
 import org.bouncycastle.crypto.util.OpenSSHPrivateKeyUtil
 import org.bouncycastle.crypto.util.OpenSSHPublicKeyUtil
+import java.security.MessageDigest
 import java.security.SecureRandom
 import java.util.Base64
 
@@ -56,4 +57,19 @@ object KeyPairGenerator {
 
     private fun sanitizeComment(comment: String): String =
         comment.replace(Regex("[\\r\\n\\t ]+"), "-").ifBlank { "sshpal" }
+
+    /**
+     * SHA256 fingerprint of an OpenSSH public key line, matching the output
+     * of `ssh-keygen -lf authorized_keys` — base64 without padding, prefixed
+     * with "SHA256:". Returns null if the line doesn't look parseable.
+     */
+    fun fingerprintSha256(publicSshLine: String): String? {
+        val parts = publicSshLine.trim().split(Regex("\\s+"))
+        if (parts.size < 2) return null
+        return runCatching {
+            val wireBytes = Base64.getDecoder().decode(parts[1])
+            val digest = MessageDigest.getInstance("SHA-256").digest(wireBytes)
+            "SHA256:" + Base64.getEncoder().encodeToString(digest).trimEnd('=')
+        }.getOrNull()
+    }
 }

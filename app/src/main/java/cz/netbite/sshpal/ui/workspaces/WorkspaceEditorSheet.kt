@@ -4,9 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
-import android.provider.DocumentsContract
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +36,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import cz.netbite.sshpal.data.WorkspaceEntity
 import cz.netbite.sshpal.ssh.KeyPairGenerator
+import cz.netbite.sshpal.ssh.KeyPairGenerator.fingerprintSha256
 import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,7 +61,7 @@ fun WorkspaceEditorSheet(
     var pendingPublicKey by remember { mutableStateOf<String?>(null) }
     var importError by remember { mutableStateOf<String?>(null) }
 
-    val pickFile = rememberLauncherForActivityResult(OpenDocumentInDownloads()) { uri ->
+    val pickFile = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         importError = null
         runCatching {
@@ -130,8 +128,8 @@ fun WorkspaceEditorSheet(
                 }) { Text("Pick file") }
             }
             Text(
-                "Pick opens in Downloads. Look for a file named id_ed25519, id_rsa, or anything ending in .pem / .key. " +
-                    "Or just paste the key contents into the field below.",
+                "Pick opens the system file browser — tap the menu icon to switch storage providers (Downloads, Drive, Files…). " +
+                    "Look for id_ed25519, id_rsa, *.pem, *.key. Or paste the key contents into the field below.",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -207,6 +205,7 @@ private fun PublicKeyPanel(
     onCopy: () -> Unit,
     onShare: () -> Unit,
 ) {
+    val fingerprint = KeyPairGenerator.fingerprintSha256(publicSshLine)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -227,29 +226,17 @@ private fun PublicKeyPanel(
             minLines = 2,
             maxLines = 4,
         )
+        if (fingerprint != null) {
+            Text(
+                "Fingerprint: $fingerprint\nCompare with: ssh-keygen -lf ~/.ssh/authorized_keys",
+                style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             TextButton(onClick = onCopy) { Text("Copy") }
             TextButton(onClick = onShare) { Text("Share") }
         }
-    }
-}
-
-/**
- * Like `ActivityResultContracts.OpenDocument` but seeds the picker at
- * the Downloads folder so users don't have to dig through the storage
- * root every time they want to import a key file they just downloaded.
- *
- * `EXTRA_INITIAL_URI` is honored by the AOSP Documents UI on API 26+;
- * on OEM-customized pickers it's advisory and may be ignored.
- */
-private class OpenDocumentInDownloads : ActivityResultContracts.OpenDocument() {
-    override fun createIntent(context: Context, input: Array<String>): Intent {
-        val intent = super.createIntent(context, input)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val downloads = Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADownload")
-            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, downloads)
-        }
-        return intent
     }
 }
 
