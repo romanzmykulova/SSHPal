@@ -89,6 +89,43 @@ class SshSession internal constructor(
         }
     }
 
+    suspend fun stat(path: String): RemoteEntry? = mutex.withLock {
+        ensureOpen()
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val attrs = sftp.stat(path)
+                RemoteEntry(
+                    name = path.substringAfterLast('/').ifEmpty { path },
+                    path = path,
+                    isDirectory = attrs.type == FileMode.Type.DIRECTORY,
+                    isSymlink = attrs.type == FileMode.Type.SYMLINK,
+                    sizeBytes = attrs.size,
+                    mtimeEpochSec = attrs.mtime,
+                )
+            }.getOrNull()
+        }
+    }
+
+    suspend fun writeBytes(path: String, bytes: ByteArray): Long = mutex.withLock {
+        ensureOpen()
+        withContext(Dispatchers.IO) {
+            val handle = sftp.open(
+                path,
+                java.util.EnumSet.of(
+                    net.schmizz.sshj.sftp.OpenMode.WRITE,
+                    net.schmizz.sshj.sftp.OpenMode.CREAT,
+                    net.schmizz.sshj.sftp.OpenMode.TRUNC,
+                ),
+            )
+            try {
+                handle.write(0, bytes, 0, bytes.size)
+            } finally {
+                runCatching { handle.close() }
+            }
+            sftp.stat(path).mtime
+        }
+    }
+
     suspend fun close() = mutex.withLock {
         if (closed) return@withLock
         closed = true

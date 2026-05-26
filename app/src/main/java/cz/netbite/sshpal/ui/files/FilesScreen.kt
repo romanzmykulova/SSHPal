@@ -90,7 +90,14 @@ fun FilesScreen(viewModel: FilesViewModel) {
     }
 
     if (viewer !is ViewerState.Closed) {
-        FileViewerSheet(viewer = viewer, onDismiss = { viewModel.closeViewer() })
+        FileViewerSheet(
+            viewer = viewer,
+            onDismiss = { viewModel.closeViewer() },
+            onDraftChange = viewModel::updateDraft,
+            onSave = { viewModel.saveFile(force = false) },
+            onForceSave = { viewModel.saveFile(force = true) },
+            onReload = { viewModel.reloadFile() },
+        )
     }
 }
 
