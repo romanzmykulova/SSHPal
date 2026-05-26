@@ -1,6 +1,5 @@
 package cz.netbite.sshpal.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -20,6 +20,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -76,23 +77,31 @@ fun MainScaffold(
  */
 @Composable
 private fun CompactNavBar(selected: MainTab, onSelect: (MainTab) -> Unit) {
-    Column {
-        HorizontalDivider(thickness = 1.dp)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
-                .height(52.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            for (entry in MainTab.values()) {
-                CompactNavItem(
-                    icon = entry.icon,
-                    label = entry.label,
-                    selected = selected == entry,
-                    onClick = { onSelect(entry) },
-                )
+    // Surface paints behind the system gesture / 3-button nav area too, so
+    // the bar appears continuous. Column.navigationBarsPadding lifts the
+    // actual icon row above the system nav inset — without this, the
+    // system buttons would cover our chips on edge-to-edge displays.
+    Surface(
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 3.dp,
+    ) {
+        Column(modifier = Modifier.navigationBarsPadding()) {
+            HorizontalDivider(thickness = 1.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                for (entry in MainTab.values()) {
+                    CompactNavItem(
+                        icon = entry.icon,
+                        label = entry.label,
+                        selected = selected == entry,
+                        onClick = { onSelect(entry) },
+                    )
+                }
             }
         }
     }

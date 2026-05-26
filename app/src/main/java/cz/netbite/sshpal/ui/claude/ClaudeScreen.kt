@@ -1,6 +1,9 @@
 package cz.netbite.sshpal.ui.claude
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebChromeClient
@@ -8,20 +11,26 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,8 +39,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -45,6 +56,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -201,6 +214,7 @@ private fun LoadedView(url: String, onReset: () -> Unit) {
     var progress by remember { mutableStateOf(0) }
     var currentUrl by remember(url) { mutableStateOf(url) }
     var canGoBack by remember { mutableStateOf(false) }
+    var urlEditorOpen by remember { mutableStateOf(false) }
 
     val webView = remember(url) {
         val view = WebView(context)
@@ -263,11 +277,23 @@ private fun LoadedView(url: String, onReset: () -> Unit) {
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        currentUrl,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                    // Tap to open a paste/edit dialog — useful for entering
+                    // magic links (e.g. the Claude account login email link)
+                    // that the WebView can't receive any other way.
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { urlEditorOpen = true }
+                            .padding(vertical = 12.dp),
+                    ) {
+                        Text(
+                            currentUrl,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = FontFamily.Monospace,
+                        )
+                    }
                 },
                 navigationIcon = {
                     if (canGoBack) {
@@ -280,6 +306,9 @@ private fun LoadedView(url: String, onReset: () -> Unit) {
                     }
                 },
                 actions = {
+                    IconButton(onClick = { openInExternalBrowser(context, currentUrl) }) {
+                        Icon(Icons.Default.OpenInBrowser, contentDescription = "Open in external browser")
+                    }
                     IconButton(onClick = { webView.loadUrl(url) }) {
                         Icon(Icons.Default.Home, contentDescription = "Home")
                     }
@@ -307,5 +336,75 @@ private fun LoadedView(url: String, onReset: () -> Unit) {
                 )
             }
         }
+    }
+
+    if (urlEditorOpen) {
+        UrlEditDialog(
+            initial = currentUrl,
+            onDismiss = { urlEditorOpen = false },
+            onGo = { target ->
+                webView.loadUrl(target)
+                currentUrl = target
+                urlEditorOpen = false
+            },
+            onOpenExternal = { target ->
+                openInExternalBrowser(context, target)
+                urlEditorOpen = false
+            },
+        )
+    }
+}
+
+@Composable
+private fun UrlEditDialog(
+    initial: String,
+    onDismiss: () -> Unit,
+    onGo: (String) -> Unit,
+    onOpenExternal: (String) -> Unit,
+) {
+    var text by remember { mutableStateOf(initial) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Go to URL") },
+        text = {
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                placeholder = { Text("https://...") },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Uri,
+                    imeAction = ImeAction.Go,
+                ),
+                keyboardActions = KeyboardActions(
+                    onGo = { onGo(normalizeUrl(text)) },
+                ),
+                textStyle = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
+            )
+        },
+        confirmButton = {
+            Button(onClick = { onGo(normalizeUrl(text)) }) { Text("Open here") }
+        },
+        dismissButton = {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TextButton(onClick = { onOpenExternal(normalizeUrl(text)) }) { Text("Open in browser") }
+                TextButton(onClick = onDismiss) { Text("Cancel") }
+            }
+        },
+    )
+}
+
+private fun normalizeUrl(raw: String): String {
+    val trimmed = raw.trim()
+    return if (trimmed.contains("://")) trimmed else "https://$trimmed"
+}
+
+private fun openInExternalBrowser(context: Context, url: String) {
+    runCatching {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
     }
 }
