@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.MergeType
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,12 +42,15 @@ import cz.netbite.sshpal.ui.files.FilesScreen
 import cz.netbite.sshpal.ui.files.FilesViewModel
 import cz.netbite.sshpal.ui.git.GitScreen
 import cz.netbite.sshpal.ui.git.GitViewModel
+import cz.netbite.sshpal.ui.search.SearchScreen
+import cz.netbite.sshpal.ui.search.SearchViewModel
 import cz.netbite.sshpal.ui.workspaces.WorkspacesScreen
 import cz.netbite.sshpal.ui.workspaces.WorkspacesViewModel
 
 enum class MainTab(val label: String, val icon: ImageVector) {
     Workspaces("Workspaces", Icons.Default.Computer),
     Files("Files", Icons.Default.Folder),
+    Search("Search", Icons.Default.Search),
     Git("Git", Icons.Default.MergeType),
     Claude("Claude", Icons.Default.Chat),
 }
@@ -55,6 +59,7 @@ enum class MainTab(val label: String, val icon: ImageVector) {
 fun MainScaffold(
     workspacesViewModel: WorkspacesViewModel,
     filesViewModel: FilesViewModel,
+    searchViewModel: SearchViewModel,
     gitViewModel: GitViewModel,
     claudeViewModel: ClaudeViewModel,
 ) {
@@ -74,6 +79,13 @@ fun MainScaffold(
             when (tab) {
                 MainTab.Workspaces -> WorkspacesScreen(viewModel = workspacesViewModel)
                 MainTab.Files -> FilesScreen(viewModel = filesViewModel)
+                MainTab.Search -> SearchScreen(
+                    viewModel = searchViewModel,
+                    onOpenResult = { path, line ->
+                        filesViewModel.openFileFromSearch(path, line)
+                        tab = MainTab.Files
+                    },
+                )
                 MainTab.Git -> GitScreen(viewModel = gitViewModel)
                 MainTab.Claude -> ClaudeScreen(viewModel = claudeViewModel)
             }
@@ -131,7 +143,7 @@ private fun CompactNavItem(
     Column(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 4.dp),
+            .padding(horizontal = 6.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {

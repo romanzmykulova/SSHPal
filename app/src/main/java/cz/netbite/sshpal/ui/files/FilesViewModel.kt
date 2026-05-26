@@ -38,6 +38,8 @@ sealed interface ViewerState {
         val draft: String,
         val originalMtime: Long,
         val saveStatus: SaveStatus,
+        /** If set, the editor scrolls to this 1-indexed source line on first compose for this path. */
+        val openLine: Int? = null,
     ) : ViewerState {
         val isDirty: Boolean get() = draft != original
     }
@@ -131,6 +133,38 @@ class FilesViewModel(
                     }
                 },
                 onFailure = { e -> ViewerState.Failed(entry.path, e.message ?: e::class.java.simpleName) },
+            )
+        }
+    }
+
+    /**
+     * Open a file by path with the editor pre-scrolled to [line]. Used by
+     * the Search tab when the user taps a grep hit. Mirrors [openFile] but
+     * doesn't require a RemoteEntry — fetches stat + bytes from scratch.
+     */
+    fun openFileFromSearch(path: String, line: Int) {
+        val session = registry.active() ?: return
+        viewerJob?.cancel()
+        viewerJob = viewModelScope.launch {
+            _viewer.value = ViewerState.Loading(path)
+            val stat = runCatching { session.stat(path) }.getOrNull()
+            val outcome = runCatching { session.readBytes(path, MAX_PREVIEW_BYTES) }
+            _viewer.value = outcome.fold(
+                onSuccess = { result ->
+                    when (result) {
+                        is SshSession.ReadResult.TooLarge -> ViewerState.TooLarge(path, result.actualSize)
+                        is SshSession.ReadResult.Loaded -> {
+                            val classified = classify(
+                                path = path,
+                                bytes = result.bytes,
+                                declaredSize = stat?.sizeBytes ?: 0L,
+                                mtimeEpochSec = stat?.mtimeEpochSec ?: 0L,
+                            )
+                            if (classified is ViewerState.Text) classified.copy(openLine = line) else classified
+                        }
+                    }
+                },
+                onFailure = { e -> ViewerState.Failed(path, e.message ?: e::class.java.simpleName) },
             )
         }
     }

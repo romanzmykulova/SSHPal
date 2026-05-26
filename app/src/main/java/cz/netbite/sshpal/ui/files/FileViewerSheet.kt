@@ -11,6 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
@@ -162,25 +172,78 @@ private fun ConflictBanner(
 @Composable
 private fun EditorBody(text: ViewerState.Text, onDraftChange: (String) -> Unit) {
     val vScroll = rememberScrollState()
+    val density = LocalDensity.current
+    val fontSizeSp = MaterialTheme.typography.bodySmall.fontSize
+    val lineHeightPx = with(density) {
+        val basePx = if (fontSizeSp.isSp) fontSizeSp.toPx() else 14.sp.toPx()
+        basePx * 1.4f
+    }
+
+    // TextFieldValue overload lets us drive selection (cursor position) from
+    // the openLine hint passed by Search. Re-initialised whenever the path
+    // changes so each new file gets a fresh value.
+    var tfv by remember(text.path) {
+        val initialCursor = text.openLine?.let { lineToCharOffset(text.draft, it) } ?: 0
+        mutableStateOf(TextFieldValue(text.draft, TextRange(initialCursor)))
+    }
+
+    // Sync external draft changes (e.g. Reload action) back into our local
+    // TextFieldValue without clobbering selection unnecessarily.
+    LaunchedEffect(text.draft) {
+        if (tfv.text != text.draft) {
+            val safeSelection = TextRange(
+                tfv.selection.start.coerceIn(0, text.draft.length),
+                tfv.selection.end.coerceIn(0, text.draft.length),
+            )
+            tfv = tfv.copy(text = text.draft, selection = safeSelection)
+        }
+    }
+
+    // Approximate scroll to the requested source line. Fires once per file
+    // load (LaunchedEffect keyed on path) — subsequent edits don't re-scroll.
+    LaunchedEffect(text.path) {
+        if (text.openLine != null) {
+            delay(80) // let the BasicTextField measure itself first
+            val target = ((text.openLine - 1) * lineHeightPx).toInt().coerceAtLeast(0)
+            vScroll.scrollTo(target)
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(vScroll),
     ) {
         BasicTextField(
-            value = text.draft,
-            onValueChange = onDraftChange,
+            value = tfv,
+            onValueChange = { newTfv ->
+                tfv = newTfv
+                if (newTfv.text != text.draft) onDraftChange(newTfv.text)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp),
             textStyle = TextStyle(
                 fontFamily = FontFamily.Monospace,
-                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                fontSize = fontSizeSp,
                 color = MaterialTheme.colorScheme.onSurface,
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         )
     }
+}
+
+/** Convert a 1-indexed source line number to the char offset of its first byte. */
+private fun lineToCharOffset(text: String, line: Int): Int {
+    if (line <= 1) return 0
+    var current = 1
+    for (i in text.indices) {
+        if (text[i] == '\n') {
+            current++
+            if (current >= line) return (i + 1).coerceAtMost(text.length)
+        }
+    }
+    return text.length
 }
 
 @Composable

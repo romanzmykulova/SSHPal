@@ -18,6 +18,13 @@ data class RemoteEntry(
     val mtimeEpochSec: Long,
 )
 
+/** One grep match: file path + 1-indexed source line + the matched line text. */
+data class GrepHit(
+    val path: String,
+    val line: Int,
+    val content: String,
+)
+
 class SshSession internal constructor(
     private val client: SSHClient,
     private val sftp: SFTPClient,
@@ -167,6 +174,47 @@ class SshSession internal constructor(
             runCatching { sftp.close() }
             runCatching { if (client.isConnected) client.disconnect() }
         }
+    }
+
+    /**
+     * Recursively grep [dir] for [pattern], skipping common noise dirs
+     * (.git, node_modules, build, .gradle). Returns one [GrepHit] per
+     * matched line. Capped at [maxHits] entries to keep the UI snappy on
+     * very broad patterns.
+     *
+     * If [literal] is true, matches the pattern as a fixed string (-F);
+     * otherwise it's interpreted as an extended regex (-E).
+     */
+    suspend fun grep(
+        pattern: String,
+        dir: String,
+        literal: Boolean = true,
+        maxHits: Int = 500,
+    ): List<GrepHit> = withContext(Dispatchers.IO) {
+        if (closed) error("Session is closed")
+        val flag = if (literal) "-F" else "-E"
+        val cmd = "grep -rIn --color=never " +
+            "--exclude-dir=.git --exclude-dir=node_modules " +
+            "--exclude-dir=build --exclude-dir=.gradle " +
+            "$flag -- ${shellQuote(pattern)} ${shellQuote(dir)}"
+        val result = execFull(cmd)
+        // grep exits non-zero when there are zero matches — not an error.
+        result.stdout.lineSequence()
+            .mapNotNull { parseGrepLine(it) }
+            .take(maxHits)
+            .toList()
+    }
+
+    private fun parseGrepLine(line: String): GrepHit? {
+        if (line.isBlank()) return null
+        val firstColon = line.indexOf(':')
+        if (firstColon <= 0) return null
+        val secondColon = line.indexOf(':', firstColon + 1)
+        if (secondColon <= firstColon) return null
+        val path = line.substring(0, firstColon)
+        val lineNo = line.substring(firstColon + 1, secondColon).toIntOrNull() ?: return null
+        val content = line.substring(secondColon + 1)
+        return GrepHit(path = path, line = lineNo, content = content)
     }
 
     /**

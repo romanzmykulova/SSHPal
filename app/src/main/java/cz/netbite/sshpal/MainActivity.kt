@@ -9,6 +9,7 @@ import cz.netbite.sshpal.ui.MainScaffold
 import cz.netbite.sshpal.ui.claude.ClaudeViewModel
 import cz.netbite.sshpal.ui.files.FilesViewModel
 import cz.netbite.sshpal.ui.git.GitViewModel
+import cz.netbite.sshpal.ui.search.SearchViewModel
 import cz.netbite.sshpal.ui.theme.SshPalTheme
 import cz.netbite.sshpal.ui.workspaces.WorkspacesViewModel
 
@@ -22,6 +23,11 @@ class MainActivity : ComponentActivity() {
     private val filesViewModel: FilesViewModel by viewModels {
         val app = application as SshPalApp
         FilesViewModel.Factory(app.repository, app.sessions)
+    }
+
+    private val searchViewModel: SearchViewModel by viewModels {
+        val app = application as SshPalApp
+        SearchViewModel.Factory(app.repository, app.sessions)
     }
 
     private val gitViewModel: GitViewModel by viewModels {
@@ -42,6 +48,7 @@ class MainActivity : ComponentActivity() {
                 MainScaffold(
                     workspacesViewModel = workspacesViewModel,
                     filesViewModel = filesViewModel,
+                    searchViewModel = searchViewModel,
                     gitViewModel = gitViewModel,
                     claudeViewModel = claudeViewModel,
                 )
