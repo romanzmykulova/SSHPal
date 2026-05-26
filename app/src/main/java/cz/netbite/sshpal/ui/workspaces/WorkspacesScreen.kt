@@ -1,0 +1,218 @@
+package cz.netbite.sshpal.ui.workspaces
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import cz.netbite.sshpal.data.WorkspaceEntity
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WorkspacesScreen(viewModel: WorkspacesViewModel) {
+    val rows by viewModel.rows.collectAsState()
+    val snackbar = remember { SnackbarHostState() }
+
+    var editing by remember { mutableStateOf<WorkspaceEntity?>(null) }
+    var editorOpen by remember { mutableStateOf(false) }
+    var keyRequestFor by remember { mutableStateOf<WorkspaceEntity?>(null) }
+    var trustRequest by remember { mutableStateOf<TrustPrompt?>(null) }
+
+    LaunchedEffect(viewModel) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is WorkspaceEvent.NeedsKey -> {
+                    val ws = rows.firstOrNull { it.workspace.id == event.workspaceId }?.workspace
+                    if (ws != null) {
+                        keyRequestFor = ws
+                        editing = ws
+                        editorOpen = true
+                    }
+                }
+                is WorkspaceEvent.TrustHost -> {
+                    trustRequest = TrustPrompt(event.workspaceId, event.fingerprint) { trusted ->
+                        event.decision.complete(trusted)
+                        trustRequest = null
+                    }
+                }
+                is WorkspaceEvent.HostKeyMismatch -> {
+                    snackbar.showSnackbar("Host key changed — refusing to connect")
+                }
+                is WorkspaceEvent.Toast -> snackbar.showSnackbar(event.message)
+            }
+        }
+    }
+
+    Scaffold(
+        topBar = { TopAppBar(title = { Text("Workspaces") }) },
+        snackbarHost = { SnackbarHost(snackbar) },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text("Add") },
+                icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                onClick = {
+                    editing = null
+                    keyRequestFor = null
+                    editorOpen = true
+                },
+            )
+        },
+    ) { padding ->
+        WorkspaceList(
+            rows = rows,
+            padding = padding,
+            onConnect = { viewModel.connect(it.id) },
+            onEdit = {
+                editing = it
+                keyRequestFor = null
+                editorOpen = true
+            },
+        )
+    }
+
+    if (editorOpen) {
+        WorkspaceEditorSheet(
+            initial = editing,
+            askForKey = keyRequestFor != null,
+            onDismiss = {
+                editorOpen = false
+                keyRequestFor = null
+            },
+            onSave = { ws, pem, passphrase ->
+                viewModel.upsert(ws, pem, passphrase)
+                editorOpen = false
+                val pending = keyRequestFor
+                keyRequestFor = null
+                if (pending != null) viewModel.connect(pending.id)
+            },
+            onDelete = { ws ->
+                viewModel.delete(ws)
+                editorOpen = false
+            },
+        )
+    }
+
+    trustRequest?.let { prompt ->
+        TrustHostDialog(
+            fingerprint = prompt.fingerprint,
+            onTrust = { prompt.decide(true) },
+            onReject = { prompt.decide(false) },
+        )
+    }
+}
+
+private data class TrustPrompt(
+    val workspaceId: Long,
+    val fingerprint: String,
+    val decide: (Boolean) -> Unit,
+)
+
+@Composable
+private fun WorkspaceList(
+    rows: List<WorkspaceRow>,
+    padding: PaddingValues,
+    onConnect: (WorkspaceEntity) -> Unit,
+    onEdit: (WorkspaceEntity) -> Unit,
+) {
+    if (rows.isEmpty()) {
+        Box(
+            modifier = Modifier.fillMaxSize().padding(padding),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text("No workspaces yet. Tap + to add one.")
+        }
+        return
+    }
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(padding),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        items(rows, key = { it.workspace.id }) { row ->
+            WorkspaceCard(row = row, onConnect = onConnect, onEdit = onEdit)
+        }
+    }
+}
+
+@Composable
+private fun WorkspaceCard(
+    row: WorkspaceRow,
+    onConnect: (WorkspaceEntity) -> Unit,
+    onEdit: (WorkspaceEntity) -> Unit,
+) {
+    val ws = row.workspace
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = { onConnect(ws) },
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(ws.name, style = MaterialTheme.typography.titleMedium)
+            Text("${ws.username}@${ws.host}:${ws.port}", style = MaterialTheme.typography.bodyMedium)
+            Text(ws.defaultCwd, style = MaterialTheme.typography.bodySmall)
+            Box(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+                StatusChip(status = row.status, hasKey = row.hasKey)
+                if (row.status is ConnectStatus.Connecting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        strokeWidth = 2.dp,
+                    )
+                } else {
+                    AssistChip(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        onClick = { onEdit(ws) },
+                        label = { Text("Edit") },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatusChip(status: ConnectStatus, hasKey: Boolean) {
+    val (label, color) = when (status) {
+        ConnectStatus.Idle -> (if (hasKey) "Ready" else "Needs key") to MaterialTheme.colorScheme.secondary
+        ConnectStatus.Connecting -> "Connecting…" to MaterialTheme.colorScheme.secondary
+        is ConnectStatus.Success -> "OK: ${status.whoami}" to MaterialTheme.colorScheme.primary
+        is ConnectStatus.Failure -> "Failed: ${status.message}" to MaterialTheme.colorScheme.error
+    }
+    AssistChip(
+        onClick = {},
+        enabled = false,
+        label = { Text(label) },
+        colors = AssistChipDefaults.assistChipColors(
+            disabledLabelColor = color,
+        ),
+    )
+}
