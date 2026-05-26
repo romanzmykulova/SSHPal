@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material3.Icon
@@ -14,10 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import cz.netbite.sshpal.ui.claude.ClaudeScreen
 import cz.netbite.sshpal.ui.files.FilesScreen
 import cz.netbite.sshpal.ui.files.FilesViewModel
 import cz.netbite.sshpal.ui.workspaces.WorkspacesScreen
@@ -26,6 +27,7 @@ import cz.netbite.sshpal.ui.workspaces.WorkspacesViewModel
 enum class MainTab(val label: String) {
     Workspaces("Workspaces"),
     Files("Files"),
+    Claude("Claude"),
 }
 
 @Composable
@@ -50,6 +52,12 @@ fun MainScaffold(
                     icon = { Icon(Icons.Default.Folder, contentDescription = null) },
                     label = { Text(MainTab.Files.label) },
                 )
+                NavigationBarItem(
+                    selected = tab == MainTab.Claude,
+                    onClick = { tab = MainTab.Claude },
+                    icon = { Icon(Icons.Default.Chat, contentDescription = null) },
+                    label = { Text(MainTab.Claude.label) },
+                )
             }
         },
     ) { padding ->
@@ -57,6 +65,7 @@ fun MainScaffold(
             when (tab) {
                 MainTab.Workspaces -> WorkspacesScreen(viewModel = workspacesViewModel)
                 MainTab.Files -> FilesScreen(viewModel = filesViewModel)
+                MainTab.Claude -> ClaudeScreen()
             }
         }
     }
