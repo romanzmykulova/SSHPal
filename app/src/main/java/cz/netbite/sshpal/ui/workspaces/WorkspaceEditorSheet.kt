@@ -4,6 +4,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.DocumentsContract
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -60,7 +63,7 @@ fun WorkspaceEditorSheet(
     var pendingPublicKey by remember { mutableStateOf<String?>(null) }
     var importError by remember { mutableStateOf<String?>(null) }
 
-    val pickFile = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+    val pickFile = rememberLauncherForActivityResult(OpenDocumentInDownloads()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         importError = null
         runCatching {
@@ -126,6 +129,12 @@ fun WorkspaceEditorSheet(
                     pickFile.launch(arrayOf("*/*"))
                 }) { Text("Pick file") }
             }
+            Text(
+                "Pick opens in Downloads. Look for a file named id_ed25519, id_rsa, or anything ending in .pem / .key. " +
+                    "Or just paste the key contents into the field below.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
             importError?.let {
                 Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
             }
@@ -222,6 +231,25 @@ private fun PublicKeyPanel(
             TextButton(onClick = onCopy) { Text("Copy") }
             TextButton(onClick = onShare) { Text("Share") }
         }
+    }
+}
+
+/**
+ * Like `ActivityResultContracts.OpenDocument` but seeds the picker at
+ * the Downloads folder so users don't have to dig through the storage
+ * root every time they want to import a key file they just downloaded.
+ *
+ * `EXTRA_INITIAL_URI` is honored by the AOSP Documents UI on API 26+;
+ * on OEM-customized pickers it's advisory and may be ignored.
+ */
+private class OpenDocumentInDownloads : ActivityResultContracts.OpenDocument() {
+    override fun createIntent(context: Context, input: Array<String>): Intent {
+        val intent = super.createIntent(context, input)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val downloads = Uri.parse("content://com.android.externalstorage.documents/document/primary%3ADownload")
+            intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, downloads)
+        }
+        return intent
     }
 }
 
