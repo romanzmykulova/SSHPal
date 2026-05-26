@@ -148,12 +148,13 @@ fun WorkspaceEditorSheet(
             )
 
             val publicToShow = pendingPublicKey ?: existingPublicKey
-            if (publicToShow != null) {
+            val isNewPublic = pendingPublicKey != null
+            publicToShow?.let { line ->
                 PublicKeyPanel(
-                    publicSshLine = publicToShow,
-                    isNew = pendingPublicKey != null,
-                    onCopy = { copyToClipboard(context, "SSHPal public key", publicToShow) },
-                    onShare = { shareText(context, publicToShow) },
+                    publicSshLine = line,
+                    isNew = isNewPublic,
+                    onCopy = { copyToClipboard(context, "SSHPal public key", line) },
+                    onShare = { shareText(context, line) },
                 )
             }
 

@@ -68,6 +68,7 @@ dependencies {
 
     implementation(libs.androidx.security.crypto)
     implementation(libs.sshj)
+    implementation(libs.bouncycastle.bcprov)
     implementation(libs.kotlinx.coroutines.android)
 
     debugImplementation(libs.androidx.ui.tooling)

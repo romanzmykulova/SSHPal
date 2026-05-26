@@ -9,6 +9,7 @@ composeBom = "2024.10.01"
 room = "2.6.1"
 securityCrypto = "1.1.0-alpha06"
 sshj = "0.38.0"
+bouncycastle = "1.78.1"
 coroutines = "1.8.1"
 
 [libraries]
@@ -28,6 +29,7 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
 sshj = { group = "com.hierynomus", name = "sshj", version.ref = "sshj" }
+bouncycastle-bcprov = { group = "org.bouncycastle", name = "bcprov-jdk18on", version.ref = "bouncycastle" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
 [plugins]
