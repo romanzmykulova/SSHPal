@@ -14,7 +14,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -44,7 +43,6 @@ fun MainScaffold(
     claudeViewModel: ClaudeViewModel,
 ) {
     var tab by rememberSaveable { mutableStateOf(MainTab.Workspaces) }
-    val claudeUrl by claudeViewModel.claudeUrl.collectAsState()
 
     Scaffold(
         bottomBar = {
@@ -81,7 +79,7 @@ fun MainScaffold(
                 MainTab.Workspaces -> WorkspacesScreen(viewModel = workspacesViewModel)
                 MainTab.Files -> FilesScreen(viewModel = filesViewModel)
                 MainTab.Git -> GitScreen(viewModel = gitViewModel)
-                MainTab.Claude -> ClaudeScreen(homeUrl = claudeUrl)
+                MainTab.Claude -> ClaudeScreen(viewModel = claudeViewModel)
             }
         }
     }

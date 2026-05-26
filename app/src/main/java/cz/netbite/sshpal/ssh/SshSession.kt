@@ -169,6 +169,23 @@ class SshSession internal constructor(
         }
     }
 
+    /**
+     * Open a new SSH channel with an allocated PTY and start an interactive
+     * shell on it. Intentionally NOT mutex-locked — interactive processes
+     * are long-running and must not block SFTP / exec operations.
+     *
+     * If [cwd] is provided, a `cd <cwd>` is sent before returning.
+     */
+    suspend fun startInteractive(cwd: String? = null): InteractiveProcess = withContext(Dispatchers.IO) {
+        if (closed) error("Session is closed")
+        val newSession = client.startSession()
+        newSession.allocateDefaultPTY()
+        val shell = newSession.startShell()
+        val proc = InteractiveProcess(newSession, shell)
+        if (!cwd.isNullOrBlank()) proc.writeLine("cd ${shellQuote(cwd)}")
+        proc
+    }
+
     private fun ensureOpen() {
         if (closed) error("Session is closed")
     }

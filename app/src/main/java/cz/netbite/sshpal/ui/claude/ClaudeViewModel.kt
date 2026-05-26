@@ -4,28 +4,203 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import cz.netbite.sshpal.data.WorkspaceRepository
+import cz.netbite.sshpal.ssh.InteractiveProcess
 import cz.netbite.sshpal.ssh.SessionRegistry
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
+
+const val DEFAULT_CLAUDE_URL = "https://app.iwantteam.ai/"
+
+sealed interface ClaudePaneState {
+    /** No active workspace — user needs to connect one first. */
+    data object NoSession : ClaudePaneState
+
+    /** Session is up but no URL resolved yet — auto-launches remote-control when user lands here. */
+    data object Idle : ClaudePaneState
+
+    /** Claude is running, /remote-control sent, watching stdout for the URL. */
+    data class Connecting(val log: String) : ClaudePaneState
+
+    /** URL resolved (either from saved workspace.claudeUrl or just-captured remote-control). */
+    data class Loaded(val url: String, val savedToWorkspace: Boolean) : ClaudePaneState
+
+    /** Remote-control flow failed or timed out — show the full Claude stdout so the user can see what went wrong. */
+    data class Failed(val message: String, val log: String) : ClaudePaneState
+}
 
 class ClaudeViewModel(
     private val repository: WorkspaceRepository,
     private val registry: SessionRegistry,
 ) : ViewModel() {
 
-    /**
-     * URL the Claude WebView should load. Resolves to:
-     *   - the active workspace's `claudeUrl` field, if non-blank
-     *   - otherwise `DEFAULT_CLAUDE_URL` (the project's CRM site)
-     */
-    val claudeUrl: StateFlow<String> = registry.activeWorkspaceId
-        .map { id ->
-            val ws = id?.let { repository.byId(it) }
-            ws?.claudeUrl?.takeIf { it.isNotBlank() } ?: DEFAULT_CLAUDE_URL
+    private val _state = MutableStateFlow<ClaudePaneState>(ClaudePaneState.NoSession)
+    val state: StateFlow<ClaudePaneState> = _state.asStateFlow()
+
+    private var currentWorkspaceId: Long? = null
+    private var currentProcess: InteractiveProcess? = null
+    private var remoteControlJob: Job? = null
+
+    init {
+        // React to (active workspace, sessions) changes. When the user
+        // connects a workspace or switches between them, decide whether
+        // to show Loaded (saved URL), Idle (let user trigger), or NoSession.
+        combine(registry.activeWorkspaceId, registry.sessions) { id, sessions ->
+            id?.let { sessions[it] }?.let { id }
         }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), DEFAULT_CLAUDE_URL)
+            .onEach { id ->
+                if (id == null) {
+                    closeProcess()
+                    currentWorkspaceId = null
+                    _state.value = ClaudePaneState.NoSession
+                    return@onEach
+                }
+                if (id == currentWorkspaceId) return@onEach
+                currentWorkspaceId = id
+                closeProcess()
+                val ws = repository.byId(id)
+                val saved = ws?.claudeUrl?.takeIf { it.isNotBlank() }
+                _state.value = if (saved != null) {
+                    ClaudePaneState.Loaded(saved, savedToWorkspace = true)
+                } else {
+                    ClaudePaneState.Idle
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    /**
+     * Kick off the remote-control handshake on the active session:
+     *   1. Open a PTY shell channel
+     *   2. `cd` to the workspace's active cwd
+     *   3. Launch `claude`, wait a moment for it to come up
+     *   4. Send `/remote-control`
+     *   5. Scan stdout for the first https?:// URL
+     *   6. On match: save to workspace.claudeUrl and flip to Loaded
+     *   7. On timeout / failure: flip to Failed with full stdout captured
+     */
+    fun startRemoteControl() {
+        val id = currentWorkspaceId ?: return
+        val session = registry.get(id) ?: return
+        remoteControlJob?.cancel()
+        remoteControlJob = viewModelScope.launch {
+            closeProcess()
+            val buf = StringBuilder()
+            _state.value = ClaudePaneState.Connecting(buf.toString())
+
+            try {
+                val cwd = registry.cwdFor(id)
+                    ?: repository.byId(id)?.defaultCwd?.takeIf { it.isNotBlank() }
+                val proc = session.startInteractive(cwd)
+                currentProcess = proc
+
+                var resolvedUrl: String? = null
+                val collector = launch {
+                    proc.output.collect { chunk ->
+                        buf.append(chunk)
+                        _state.value = ClaudePaneState.Connecting(buf.toString())
+                        if (resolvedUrl == null) {
+                            val candidate = findUrl(stripAnsi(buf.toString()))
+                            if (candidate != null) {
+                                resolvedUrl = candidate
+                            }
+                        }
+                    }
+                }
+
+                // Give the user's shell a beat, then launch claude.
+                delay(500)
+                proc.writeLine("claude")
+                // Claude Code takes a moment to initialize before the slash
+                // command will be honored.
+                delay(4000)
+                proc.writeLine("/remote-control")
+
+                // Wait up to 60s for a URL to appear in the captured stream.
+                val urlOrNull = withTimeoutOrNull(60_000) {
+                    while (resolvedUrl == null) {
+                        delay(200)
+                    }
+                    resolvedUrl
+                }
+                collector.cancel()
+
+                if (urlOrNull != null) {
+                    repository.byId(id)?.let { ws ->
+                        if (ws.claudeUrl != urlOrNull) {
+                            repository.upsert(ws.copy(claudeUrl = urlOrNull))
+                        }
+                    }
+                    _state.value = ClaudePaneState.Loaded(urlOrNull, savedToWorkspace = true)
+                    closeProcess()
+                } else {
+                    _state.value = ClaudePaneState.Failed(
+                        message = "No URL captured within 60s. Is `claude` installed and reachable on PATH on the server?",
+                        log = buf.toString(),
+                    )
+                    closeProcess()
+                }
+            } catch (e: Throwable) {
+                _state.value = ClaudePaneState.Failed(
+                    message = "Failed: ${e.message ?: e::class.java.simpleName}",
+                    log = buf.toString(),
+                )
+                closeProcess()
+            }
+        }
+    }
+
+    /**
+     * Clear any saved claudeUrl on the active workspace so the next time the
+     * Claude tab is opened, remote-control fires fresh. Also kills any
+     * currently running interactive process.
+     */
+    fun reset() {
+        val id = currentWorkspaceId ?: return
+        viewModelScope.launch {
+            closeProcess()
+            repository.byId(id)?.let { ws ->
+                if (ws.claudeUrl != null) {
+                    repository.upsert(ws.copy(claudeUrl = null))
+                }
+            }
+            _state.value = ClaudePaneState.Idle
+        }
+    }
+
+    override fun onCleared() {
+        closeProcess()
+        super.onCleared()
+    }
+
+    private fun closeProcess() {
+        currentProcess?.close()
+        currentProcess = null
+    }
+
+    companion object {
+        // Strips standard ANSI CSI escapes (color codes, cursor moves) plus
+        // common OSC sequences. Permissive — we only care that URLs aren't
+        // chopped up by stray escape bytes.
+        private val ANSI_REGEX = Regex("\\[[0-9;?]*[a-zA-Z]|\\][^]*")
+        private val URL_REGEX = Regex("https?://[^\\s]+")
+
+        fun stripAnsi(s: String): String = ANSI_REGEX.replace(s, "")
+
+        fun findUrl(s: String): String? {
+            val match = URL_REGEX.find(s) ?: return null
+            // Trim trailing punctuation that the regex would greedily
+            // include (URL at end of a sentence in Claude's output).
+            return match.value.trimEnd('.', ',', ')', ']', '}', '\'', '"', ';', ':')
+        }
+    }
 
     class Factory(
         private val repository: WorkspaceRepository,
