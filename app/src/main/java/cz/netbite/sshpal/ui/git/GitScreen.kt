@@ -73,6 +73,10 @@ fun GitScreen(viewModel: GitViewModel) {
                 GitState.NoSession -> EmptySession()
                 GitState.Loading -> Loading()
                 is GitState.NotARepo -> NotRepo(s)
+                is GitState.DubiousOwnership -> DubiousOwnershipView(
+                    state = s,
+                    onTrust = viewModel::trustCurrentDirectory,
+                )
                 is GitState.Failure -> Failure(s.message)
                 is GitState.Ready -> ReadyView(
                     state = s,
@@ -120,6 +124,34 @@ private fun NotRepo(state: GitState.NotARepo) {
             Text(state.cwd, style = MaterialTheme.typography.bodyMedium, fontFamily = FontFamily.Monospace)
             Text(state.message, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
         }
+    }
+}
+
+@Composable
+private fun DubiousOwnershipView(state: GitState.DubiousOwnership, onTrust: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text("Git refuses to touch this repo.", style = MaterialTheme.typography.titleMedium)
+        Text(
+            "Files in ${state.cwd} are owned by a different user than the SSH login. " +
+                "Git's `safe.directory` guard blocks any operation until you explicitly trust the path.",
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Text(
+            state.message,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.error,
+            fontFamily = FontFamily.Monospace,
+        )
+        Text(
+            "Tapping Trust will run on the server:\n  git config --global --add safe.directory ${state.cwd}",
+            style = MaterialTheme.typography.bodySmall,
+            fontFamily = FontFamily.Monospace,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Button(onClick = onTrust) { Text("Trust this directory") }
     }
 }
 
