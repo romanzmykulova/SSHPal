@@ -17,7 +17,23 @@ android {
         versionName = "0.1.0"
     }
 
+    signingConfigs {
+        // Stable debug keystore committed at app/debug.p12 so APKs across
+        // CI runs share the same signature — sideload updates without
+        // having to uninstall the previous app first.
+        getByName("debug") {
+            storeFile = file("debug.p12")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+            storeType = "PKCS12"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
