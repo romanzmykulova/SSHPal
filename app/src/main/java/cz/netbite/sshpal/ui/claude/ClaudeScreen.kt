@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -104,6 +105,7 @@ fun ClaudeScreen(viewModel: ClaudeViewModel) {
 @Composable
 private fun ConnectingView(log: String, onRetry: () -> Unit, kicking: Boolean) {
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         topBar = {
             TopAppBar(
                 title = { Text(if (kicking) "Starting Claude remote-control…" else "Claude") },
@@ -143,6 +145,7 @@ private fun ConnectingView(log: String, onRetry: () -> Unit, kicking: Boolean) {
 @Composable
 private fun FailedView(message: String, log: String, onRetry: () -> Unit) {
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         topBar = {
             TopAppBar(
                 title = { Text("Claude — failed") },
@@ -274,6 +277,7 @@ private fun LoadedView(url: String, onReset: () -> Unit) {
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0),
         topBar = {
             TopAppBar(
                 title = {

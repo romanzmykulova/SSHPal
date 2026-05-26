@@ -156,7 +156,12 @@ class ClaudeViewModel(
                         }
                     }
                     _state.value = ClaudePaneState.Loaded(urlOrNull, savedToWorkspace = true)
-                    closeProcess()
+                    // DON'T closeProcess() here — claude needs to keep
+                    // running on the server so the remote-control URL has
+                    // a live session to attach to. Killing the process
+                    // archives the session and the URL becomes useless.
+                    // The process is closed on: reset(), workspace change
+                    // in the init combine, or ViewModel onCleared.
                 } else {
                     _state.value = ClaudePaneState.Failed(
                         message = "No URL captured. Is `claude` installed and reachable on PATH on the server, and does /remote-control print a URL in this version?",

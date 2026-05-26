@@ -1,7 +1,6 @@
 package cz.netbite.sshpal.ui.files
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -163,7 +162,6 @@ private fun ConflictBanner(
 @Composable
 private fun EditorBody(text: ViewerState.Text, onDraftChange: (String) -> Unit) {
     val vScroll = rememberScrollState()
-    val hScroll = rememberScrollState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -174,7 +172,6 @@ private fun EditorBody(text: ViewerState.Text, onDraftChange: (String) -> Unit) 
             onValueChange = onDraftChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .horizontalScroll(hScroll)
                 .padding(bottom = 24.dp),
             textStyle = TextStyle(
                 fontFamily = FontFamily.Monospace,

@@ -5,12 +5,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Computer
@@ -57,6 +61,13 @@ fun MainScaffold(
     var tab by rememberSaveable { mutableStateOf(MainTab.Workspaces) }
 
     Scaffold(
+        // Outer Scaffold owns only the bottom inset (consumed by the bottom
+        // nav bar) and horizontal insets. The top inset is left to each
+        // per-tab inner Scaffold's TopAppBar to handle, so we don't get
+        // double padding between the status bar and the first row of UI.
+        contentWindowInsets = WindowInsets.systemBars.only(
+            WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal,
+        ),
         bottomBar = { CompactNavBar(selected = tab, onSelect = { tab = it }) },
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
