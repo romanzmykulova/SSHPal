@@ -56,6 +56,7 @@ fun WorkspaceEditorSheet(
     var port by remember { mutableStateOf((initial?.port ?: 22).toString()) }
     var username by remember { mutableStateOf(initial?.username ?: "") }
     var cwd by remember { mutableStateOf(initial?.defaultCwd ?: "/") }
+    var claudeUrl by remember { mutableStateOf(initial?.claudeUrl ?: "") }
     var key by remember { mutableStateOf("") }
     var passphrase by remember { mutableStateOf("") }
     var pendingPublicKey by remember { mutableStateOf<String?>(null) }
@@ -111,6 +112,14 @@ fun WorkspaceEditorSheet(
             )
             OutlinedTextField(username, { username = it }, label = { Text("Username") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
             OutlinedTextField(cwd, { cwd = it }, label = { Text("Default cwd") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+            OutlinedTextField(
+                value = claudeUrl,
+                onValueChange = { claudeUrl = it },
+                label = { Text("Claude URL (optional)") },
+                placeholder = { Text("https://app.iwantteam.ai/") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+            )
 
             Text("Private key", style = MaterialTheme.typography.titleSmall)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -179,6 +188,7 @@ fun WorkspaceEditorSheet(
                             username = username.trim(),
                             defaultCwd = cwd.ifBlank { "/" },
                             knownHostKeyFingerprint = initial?.knownHostKeyFingerprint,
+                            claudeUrl = claudeUrl.trim().takeIf { it.isNotBlank() },
                         )
                         onSave(
                             entity,

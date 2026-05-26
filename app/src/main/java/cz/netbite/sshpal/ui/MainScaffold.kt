@@ -14,12 +14,14 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import cz.netbite.sshpal.ui.claude.ClaudeScreen
+import cz.netbite.sshpal.ui.claude.ClaudeViewModel
 import cz.netbite.sshpal.ui.files.FilesScreen
 import cz.netbite.sshpal.ui.files.FilesViewModel
 import cz.netbite.sshpal.ui.git.GitScreen
@@ -39,8 +41,10 @@ fun MainScaffold(
     workspacesViewModel: WorkspacesViewModel,
     filesViewModel: FilesViewModel,
     gitViewModel: GitViewModel,
+    claudeViewModel: ClaudeViewModel,
 ) {
     var tab by rememberSaveable { mutableStateOf(MainTab.Workspaces) }
+    val claudeUrl by claudeViewModel.claudeUrl.collectAsState()
 
     Scaffold(
         bottomBar = {
@@ -77,7 +81,7 @@ fun MainScaffold(
                 MainTab.Workspaces -> WorkspacesScreen(viewModel = workspacesViewModel)
                 MainTab.Files -> FilesScreen(viewModel = filesViewModel)
                 MainTab.Git -> GitScreen(viewModel = gitViewModel)
-                MainTab.Claude -> ClaudeScreen()
+                MainTab.Claude -> ClaudeScreen(homeUrl = claudeUrl)
             }
         }
     }

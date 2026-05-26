@@ -12,4 +12,5 @@ data class WorkspaceEntity(
     val username: String,
     val defaultCwd: String,
     val knownHostKeyFingerprint: String? = null,
+    val claudeUrl: String? = null,
 )

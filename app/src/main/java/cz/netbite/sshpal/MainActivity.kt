@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import cz.netbite.sshpal.ui.MainScaffold
+import cz.netbite.sshpal.ui.claude.ClaudeViewModel
 import cz.netbite.sshpal.ui.files.FilesViewModel
 import cz.netbite.sshpal.ui.git.GitViewModel
 import cz.netbite.sshpal.ui.theme.SshPalTheme
@@ -28,6 +29,11 @@ class MainActivity : ComponentActivity() {
         GitViewModel.Factory(app.repository, app.sessions)
     }
 
+    private val claudeViewModel: ClaudeViewModel by viewModels {
+        val app = application as SshPalApp
+        ClaudeViewModel.Factory(app.repository, app.sessions)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -37,6 +43,7 @@ class MainActivity : ComponentActivity() {
                     workspacesViewModel = workspacesViewModel,
                     filesViewModel = filesViewModel,
                     gitViewModel = gitViewModel,
+                    claudeViewModel = claudeViewModel,
                 )
             }
         }

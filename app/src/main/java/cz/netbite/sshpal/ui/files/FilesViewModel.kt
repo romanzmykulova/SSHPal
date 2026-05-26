@@ -224,6 +224,7 @@ class FilesViewModel(
 
     private fun refresh(session: SshSession) {
         listingJob?.cancel()
+        currentWorkspaceId?.let { id -> registry.setActiveCwd(id, currentPath) }
         val workspaceLabel = registry.activeWorkspaceId.value?.let { id ->
             _state.value.workspaceLabelOrNull() ?: "workspace #$id"
         } ?: "workspace"

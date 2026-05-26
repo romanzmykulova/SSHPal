@@ -94,6 +94,7 @@ fun WorkspacesScreen(viewModel: WorkspacesViewModel) {
             padding = padding,
             onConnect = { viewModel.connect(it.id) },
             onDisconnect = { viewModel.disconnect(it.id) },
+            onDuplicate = { viewModel.duplicate(it) },
             onEdit = {
                 editing = it
                 keyRequestFor = null
@@ -147,6 +148,7 @@ private fun WorkspaceList(
     padding: PaddingValues,
     onConnect: (WorkspaceEntity) -> Unit,
     onDisconnect: (WorkspaceEntity) -> Unit,
+    onDuplicate: (WorkspaceEntity) -> Unit,
     onEdit: (WorkspaceEntity) -> Unit,
 ) {
     if (rows.isEmpty()) {
@@ -164,7 +166,13 @@ private fun WorkspaceList(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(rows, key = { it.workspace.id }) { row ->
-            WorkspaceCard(row = row, onConnect = onConnect, onDisconnect = onDisconnect, onEdit = onEdit)
+            WorkspaceCard(
+                row = row,
+                onConnect = onConnect,
+                onDisconnect = onDisconnect,
+                onDuplicate = onDuplicate,
+                onEdit = onEdit,
+            )
         }
     }
 }
@@ -174,6 +182,7 @@ private fun WorkspaceCard(
     row: WorkspaceRow,
     onConnect: (WorkspaceEntity) -> Unit,
     onDisconnect: (WorkspaceEntity) -> Unit,
+    onDuplicate: (WorkspaceEntity) -> Unit,
     onEdit: (WorkspaceEntity) -> Unit,
 ) {
     val ws = row.workspace
@@ -202,6 +211,10 @@ private fun WorkspaceCard(
                                 label = { Text("Disconnect") },
                             )
                         }
+                        AssistChip(
+                            onClick = { onDuplicate(ws) },
+                            label = { Text("Duplicate") },
+                        )
                         AssistChip(
                             onClick = { onEdit(ws) },
                             label = { Text("Edit") },

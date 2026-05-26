@@ -93,6 +93,30 @@ class WorkspacesViewModel(
         }
     }
 
+    /**
+     * Clone an existing workspace into a new row. The new workspace gets a
+     * fresh row id (so it has its own session in the registry) and the same
+     * private key from the vault, but is named "<original> (copy)" so it's
+     * distinguishable in the list. Useful for "same server, different cwd".
+     */
+    fun duplicate(workspace: WorkspaceEntity) {
+        viewModelScope.launch {
+            val copy = workspace.copy(
+                id = 0L,
+                name = "${workspace.name} (copy)",
+                knownHostKeyFingerprint = workspace.knownHostKeyFingerprint,
+            )
+            val newId = repository.upsert(copy)
+            repository.keys.loadPrivateKey(workspace.id)?.let { pem ->
+                val passphrase = repository.keys.loadPassphrase(workspace.id)
+                repository.keys.savePrivateKey(newId, pem, passphrase)
+            }
+            repository.keys.loadPublicKey(workspace.id)?.let { pub ->
+                repository.keys.savePublicKey(newId, pub)
+            }
+        }
+    }
+
     fun disconnect(workspaceId: Long) {
         viewModelScope.launch {
             registry.closeAndForget(workspaceId)

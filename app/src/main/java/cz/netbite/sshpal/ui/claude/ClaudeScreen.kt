@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,15 +36,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.viewinterop.AndroidView
 
-const val DEFAULT_CLAUDE_URL = "https://crm-agent.netbite.cz/"
+const val DEFAULT_CLAUDE_URL = "https://app.iwantteam.ai/"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
-fun ClaudeScreen() {
+fun ClaudeScreen(homeUrl: String = DEFAULT_CLAUDE_URL) {
     val context = LocalContext.current
     var progress by remember { mutableStateOf(0) }
-    var currentUrl by remember { mutableStateOf(DEFAULT_CLAUDE_URL) }
+    var currentUrl by remember { mutableStateOf(homeUrl) }
     var canGoBack by remember { mutableStateOf(false) }
 
     val webView = remember {
@@ -86,8 +87,20 @@ fun ClaudeScreen() {
                 canGoBack = v?.canGoBack() == true
             }
         }
-        view.loadUrl(DEFAULT_CLAUDE_URL)
+        view.loadUrl(homeUrl)
         view
+    }
+
+    // Reload when the active workspace's claudeUrl changes (user picked a
+    // different workspace whose claudeUrl differs from the one currently
+    // shown). Skip the initial composition: the WebView already loaded
+    // homeUrl above.
+    var lastLoadedHome by remember { mutableStateOf(homeUrl) }
+    LaunchedEffect(homeUrl) {
+        if (homeUrl != lastLoadedHome) {
+            webView.loadUrl(homeUrl)
+            lastLoadedHome = homeUrl
+        }
     }
 
     DisposableEffect(webView) {
@@ -125,7 +138,7 @@ fun ClaudeScreen() {
                 },
                 actions = {
                     IconButton(onClick = {
-                        webView.loadUrl(DEFAULT_CLAUDE_URL)
+                        webView.loadUrl(homeUrl)
                     }) {
                         Icon(Icons.Default.Home, contentDescription = "Home")
                     }

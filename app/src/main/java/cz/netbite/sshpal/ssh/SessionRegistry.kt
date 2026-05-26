@@ -11,6 +11,16 @@ class SessionRegistry {
     private val _activeWorkspaceId = MutableStateFlow<Long?>(null)
     val activeWorkspaceId: StateFlow<Long?> = _activeWorkspaceId.asStateFlow()
 
+    /** Per-workspace working directory, updated whenever the Files tab navigates. */
+    private val _activeCwd = MutableStateFlow<Map<Long, String>>(emptyMap())
+    val activeCwd: StateFlow<Map<Long, String>> = _activeCwd.asStateFlow()
+
+    fun setActiveCwd(workspaceId: Long, cwd: String) {
+        _activeCwd.value = _activeCwd.value.toMutableMap().apply { put(workspaceId, cwd) }
+    }
+
+    fun cwdFor(workspaceId: Long): String? = _activeCwd.value[workspaceId]
+
     suspend fun register(workspaceId: Long, session: SshSession) {
         val previous = _sessions.value[workspaceId]
         _sessions.value = _sessions.value.toMutableMap().apply { put(workspaceId, session) }
@@ -27,6 +37,7 @@ class SessionRegistry {
     suspend fun closeAndForget(workspaceId: Long) {
         val session = _sessions.value[workspaceId] ?: return
         _sessions.value = _sessions.value.toMutableMap().apply { remove(workspaceId) }
+        _activeCwd.value = _activeCwd.value.toMutableMap().apply { remove(workspaceId) }
         if (_activeWorkspaceId.value == workspaceId) _activeWorkspaceId.value = null
         runCatching { session.close() }
     }
