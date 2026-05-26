@@ -132,11 +132,18 @@ class ClaudeViewModel(
                 val sawTrust = withTimeoutOrNull(6_000) { trustChannel.receive() }
                 if (sawTrust != null) {
                     trustSent = true
-                    proc.writeLine("")
+                    proc.write("\r")
                     delay(2_500) // let claude finish initializing post-trust
                 }
 
-                proc.writeLine("/remote-control")
+                // Claude Code's TUI has bracketed paste mode enabled. A bulk
+                // `writeLine("/remote-control")` is treated as a paste — the
+                // command palette pops up but the command never executes.
+                // Mimic typing instead: each char as its own byte with a
+                // small delay, then \r as a separate write to fire Enter.
+                proc.type("/remote-control")
+                delay(400)
+                proc.write("\r")
 
                 // Wait up to 30s for a URL to appear.
                 val urlOrNull = withTimeoutOrNull(30_000) { urlChannel.receive() }

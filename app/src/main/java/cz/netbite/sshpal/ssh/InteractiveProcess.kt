@@ -52,6 +52,26 @@ class InteractiveProcess internal constructor(
         shell.outputStream.flush()
     }
 
+    /** Write a raw string to stdin with no added terminator. */
+    suspend fun write(text: String) = withContext(Dispatchers.IO) {
+        if (closed) return@withContext
+        shell.outputStream.write(text.toByteArray(Charsets.UTF_8))
+        shell.outputStream.flush()
+    }
+
+    /**
+     * Type a string char-by-char with a small delay between bytes — needed
+     * for TUI apps (like Claude Code) that have bracketed-paste mode
+     * enabled and would otherwise treat a bulk `writeLine` as a paste and
+     * skip command execution.
+     */
+    suspend fun type(text: String, charDelayMs: Long = 25) {
+        for (c in text) {
+            write(c.toString())
+            kotlinx.coroutines.delay(charDelayMs)
+        }
+    }
+
     fun close() {
         if (closed) return
         closed = true
