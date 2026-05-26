@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -92,6 +93,7 @@ fun WorkspacesScreen(viewModel: WorkspacesViewModel) {
             rows = rows,
             padding = padding,
             onConnect = { viewModel.connect(it.id) },
+            onDisconnect = { viewModel.disconnect(it.id) },
             onEdit = {
                 editing = it
                 keyRequestFor = null
@@ -142,6 +144,7 @@ private fun WorkspaceList(
     rows: List<WorkspaceRow>,
     padding: PaddingValues,
     onConnect: (WorkspaceEntity) -> Unit,
+    onDisconnect: (WorkspaceEntity) -> Unit,
     onEdit: (WorkspaceEntity) -> Unit,
 ) {
     if (rows.isEmpty()) {
@@ -159,7 +162,7 @@ private fun WorkspaceList(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(rows, key = { it.workspace.id }) { row ->
-            WorkspaceCard(row = row, onConnect = onConnect, onEdit = onEdit)
+            WorkspaceCard(row = row, onConnect = onConnect, onDisconnect = onDisconnect, onEdit = onEdit)
         }
     }
 }
@@ -168,13 +171,15 @@ private fun WorkspaceList(
 private fun WorkspaceCard(
     row: WorkspaceRow,
     onConnect: (WorkspaceEntity) -> Unit,
+    onDisconnect: (WorkspaceEntity) -> Unit,
     onEdit: (WorkspaceEntity) -> Unit,
 ) {
     val ws = row.workspace
+    val isConnected = row.status is ConnectStatus.Connected
     Card(
         modifier = Modifier.fillMaxWidth(),
-        onClick = { onConnect(ws) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        onClick = { if (!isConnected) onConnect(ws) },
+        elevation = CardDefaults.cardElevation(defaultElevation = if (row.isActive) 6.dp else 2.dp),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(ws.name, style = MaterialTheme.typography.titleMedium)
@@ -182,17 +187,24 @@ private fun WorkspaceCard(
             Text(ws.defaultCwd, style = MaterialTheme.typography.bodySmall)
             Box(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
                 StatusChip(status = row.status, hasKey = row.hasKey)
-                if (row.status is ConnectStatus.Connecting) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.CenterEnd),
-                        strokeWidth = 2.dp,
-                    )
-                } else {
-                    AssistChip(
-                        modifier = Modifier.align(Alignment.CenterEnd),
-                        onClick = { onEdit(ws) },
-                        label = { Text("Edit") },
-                    )
+                Row(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    if (row.status is ConnectStatus.Connecting) {
+                        CircularProgressIndicator(strokeWidth = 2.dp)
+                    } else {
+                        if (isConnected) {
+                            AssistChip(
+                                onClick = { onDisconnect(ws) },
+                                label = { Text("Disconnect") },
+                            )
+                        }
+                        AssistChip(
+                            onClick = { onEdit(ws) },
+                            label = { Text("Edit") },
+                        )
+                    }
                 }
             }
         }

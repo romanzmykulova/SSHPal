@@ -61,6 +61,9 @@ fun ClaudeScreen() {
             builtInZoomControls = true
             displayZoomControls = false
             mediaPlaybackRequiresUserGesture = false
+            cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
+            allowFileAccess = false
+            allowContentAccess = false
         }
         val cookies = CookieManager.getInstance()
         cookies.setAcceptCookie(true)
