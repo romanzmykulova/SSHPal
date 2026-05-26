@@ -66,14 +66,25 @@ class WorkspacesViewModel(
     private val _events = Channel<WorkspaceEvent>(Channel.BUFFERED)
     val events = _events.receiveAsFlow()
 
-    fun upsert(workspace: WorkspaceEntity, privateKeyPem: String?, passphrase: String?) {
+    fun upsert(
+        workspace: WorkspaceEntity,
+        privateKeyPem: String?,
+        passphrase: String?,
+        publicSshLine: String?,
+    ) {
         viewModelScope.launch {
             val id = repository.upsert(workspace)
+            val effectiveId = if (workspace.id == 0L) id else workspace.id
             if (!privateKeyPem.isNullOrBlank()) {
-                repository.keys.savePrivateKey(if (workspace.id == 0L) id else workspace.id, privateKeyPem, passphrase)
+                repository.keys.savePrivateKey(effectiveId, privateKeyPem, passphrase)
+            }
+            if (!publicSshLine.isNullOrBlank()) {
+                repository.keys.savePublicKey(effectiveId, publicSshLine)
             }
         }
     }
+
+    fun publicKeyFor(workspaceId: Long): String? = repository.keys.loadPublicKey(workspaceId)
 
     fun delete(workspace: WorkspaceEntity) {
         viewModelScope.launch {

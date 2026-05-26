@@ -20,17 +20,4 @@ class WorkspaceRepository(
     suspend fun rememberHostKey(workspaceId: Long, fingerprint: String) {
         dao.setHostKey(workspaceId, fingerprint)
     }
-
-    suspend fun seedIfEmpty() {
-        if (dao.count() > 0) return
-        dao.insertIfAbsent(
-            WorkspaceEntity(
-                name = "Hetzner — DevPal",
-                host = "crm-agent.netbite.cz",
-                port = 22,
-                username = "crm-agent",
-                defaultCwd = "/projects/devpal",
-            )
-        )
-    }
 }

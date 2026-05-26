@@ -6,14 +6,8 @@ import cz.netbite.sshpal.data.KeyVault
 import cz.netbite.sshpal.data.WorkspaceRepository
 import cz.netbite.sshpal.ssh.SessionRegistry
 import cz.netbite.sshpal.ssh.SshConnector
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 class SshPalApp : Application() {
-
-    private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     lateinit var repository: WorkspaceRepository
         private set
@@ -30,6 +24,5 @@ class SshPalApp : Application() {
         repository = WorkspaceRepository(db.workspaceDao(), KeyVault(this))
         sshConnector = SshConnector()
         sessions = SessionRegistry()
-        appScope.launch { repository.seedIfEmpty() }
     }
 }

@@ -30,9 +30,15 @@ class KeyVault(context: Context) {
             .apply()
     }
 
+    fun savePublicKey(workspaceId: Long, publicSshLine: String) {
+        prefs.edit().putString(pubOf(workspaceId), publicSshLine).apply()
+    }
+
     fun loadPrivateKey(workspaceId: Long): String? = prefs.getString(keyOf(workspaceId), null)
 
     fun loadPassphrase(workspaceId: Long): String? = prefs.getString(passphraseOf(workspaceId), null)
+
+    fun loadPublicKey(workspaceId: Long): String? = prefs.getString(pubOf(workspaceId), null)
 
     fun hasKey(workspaceId: Long): Boolean = prefs.contains(keyOf(workspaceId))
 
@@ -40,9 +46,11 @@ class KeyVault(context: Context) {
         prefs.edit()
             .remove(keyOf(workspaceId))
             .remove(passphraseOf(workspaceId))
+            .remove(pubOf(workspaceId))
             .apply()
     }
 
     private fun keyOf(id: Long) = "key:$id"
     private fun passphraseOf(id: Long) = "pass:$id"
+    private fun pubOf(id: Long) = "pub:$id"
 }

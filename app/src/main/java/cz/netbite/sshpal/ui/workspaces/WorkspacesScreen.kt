@@ -103,15 +103,17 @@ fun WorkspacesScreen(viewModel: WorkspacesViewModel) {
     }
 
     if (editorOpen) {
+        val existingPublic = editing?.id?.let { viewModel.publicKeyFor(it) }
         WorkspaceEditorSheet(
             initial = editing,
             askForKey = keyRequestFor != null,
+            existingPublicKey = existingPublic,
             onDismiss = {
                 editorOpen = false
                 keyRequestFor = null
             },
-            onSave = { ws, pem, passphrase ->
-                viewModel.upsert(ws, pem, passphrase)
+            onSave = { ws, pem, passphrase, publicSshLine ->
+                viewModel.upsert(ws, pem, passphrase, publicSshLine)
                 editorOpen = false
                 val pending = keyRequestFor
                 keyRequestFor = null
