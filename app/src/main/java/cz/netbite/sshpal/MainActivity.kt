@@ -5,15 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import cz.netbite.sshpal.ui.MainScaffold
+import cz.netbite.sshpal.ui.files.FilesViewModel
 import cz.netbite.sshpal.ui.theme.SshPalTheme
-import cz.netbite.sshpal.ui.workspaces.WorkspacesScreen
 import cz.netbite.sshpal.ui.workspaces.WorkspacesViewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: WorkspacesViewModel by viewModels {
+    private val workspacesViewModel: WorkspacesViewModel by viewModels {
         val app = application as SshPalApp
-        WorkspacesViewModel.Factory(app.repository, app.sshConnector)
+        WorkspacesViewModel.Factory(app.repository, app.sshConnector, app.sessions)
+    }
+
+    private val filesViewModel: FilesViewModel by viewModels {
+        val app = application as SshPalApp
+        FilesViewModel.Factory(app.repository, app.sessions)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +27,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SshPalTheme {
-                WorkspacesScreen(viewModel = viewModel)
+                MainScaffold(
+                    workspacesViewModel = workspacesViewModel,
+                    filesViewModel = filesViewModel,
+                )
             }
         }
     }

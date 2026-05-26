@@ -1,0 +1,109 @@
+package cz.netbite.sshpal.ssh
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
+import net.schmizz.sshj.SSHClient
+import net.schmizz.sshj.sftp.FileMode
+import net.schmizz.sshj.sftp.SFTPClient
+import java.io.ByteArrayOutputStream
+
+data class RemoteEntry(
+    val name: String,
+    val path: String,
+    val isDirectory: Boolean,
+    val isSymlink: Boolean,
+    val sizeBytes: Long,
+    val mtimeEpochSec: Long,
+)
+
+class SshSession internal constructor(
+    private val client: SSHClient,
+    private val sftp: SFTPClient,
+) {
+    private val mutex = Mutex()
+    @Volatile private var closed = false
+
+    val isClosed: Boolean get() = closed
+
+    suspend fun whoami(): String = exec("whoami")
+
+    suspend fun exec(command: String): String = mutex.withLock {
+        ensureOpen()
+        withContext(Dispatchers.IO) {
+            val session = client.startSession()
+            try {
+                val cmd = session.exec(command)
+                val output = cmd.inputStream.bufferedReader().readText()
+                cmd.join()
+                output.trimEnd()
+            } finally {
+                runCatching { session.close() }
+            }
+        }
+    }
+
+    suspend fun listDir(path: String): List<RemoteEntry> = mutex.withLock {
+        ensureOpen()
+        withContext(Dispatchers.IO) {
+            sftp.ls(path).map { res ->
+                val attrs = res.attributes
+                RemoteEntry(
+                    name = res.name,
+                    path = res.path,
+                    isDirectory = attrs.type == FileMode.Type.DIRECTORY,
+                    isSymlink = attrs.type == FileMode.Type.SYMLINK,
+                    sizeBytes = attrs.size,
+                    mtimeEpochSec = attrs.mtime,
+                )
+            }.sortedWith(compareByDescending<RemoteEntry> { it.isDirectory }.thenBy { it.name.lowercase() })
+        }
+    }
+
+    suspend fun canonicalize(path: String): String = mutex.withLock {
+        ensureOpen()
+        withContext(Dispatchers.IO) { sftp.canonicalize(path) }
+    }
+
+    suspend fun readBytes(path: String, maxBytes: Long): ReadResult = mutex.withLock {
+        ensureOpen()
+        withContext(Dispatchers.IO) {
+            val handle = sftp.open(path)
+            try {
+                val size = handle.length()
+                if (size > maxBytes) return@withContext ReadResult.TooLarge(size)
+                val buf = ByteArray(64 * 1024)
+                val out = ByteArrayOutputStream(size.coerceAtMost(maxBytes).toInt())
+                var offset = 0L
+                while (offset < size) {
+                    val read = handle.read(offset, buf, 0, buf.size)
+                    if (read <= 0) break
+                    out.write(buf, 0, read)
+                    offset += read
+                }
+                ReadResult.Loaded(out.toByteArray())
+            } finally {
+                runCatching { handle.close() }
+            }
+        }
+    }
+
+    suspend fun close() = mutex.withLock {
+        if (closed) return@withLock
+        closed = true
+        withContext(Dispatchers.IO) {
+            runCatching { sftp.close() }
+            runCatching { if (client.isConnected) client.disconnect() }
+        }
+    }
+
+    private fun ensureOpen() {
+        if (closed) error("Session is closed")
+    }
+
+    sealed interface ReadResult {
+        data class Loaded(val bytes: ByteArray) : ReadResult
+        data class TooLarge(val actualSize: Long) : ReadResult
+    }
+}

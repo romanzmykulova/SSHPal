@@ -12,7 +12,7 @@ import java.io.IOException
 import java.security.PublicKey
 
 sealed interface ConnectOutcome {
-    data class Success(val whoami: String, val acceptedFingerprint: String?) : ConnectOutcome
+    data class Success(val session: SshSession, val acceptedFingerprint: String?) : ConnectOutcome
     data class HostKeyMismatch(val newFingerprint: String, val storedFingerprint: String) : ConnectOutcome
     data object HostKeyRejected : ConnectOutcome
     data class Failure(val message: String) : ConnectOutcome
@@ -20,7 +20,7 @@ sealed interface ConnectOutcome {
 
 class SshConnector {
 
-    suspend fun connectAndWhoami(
+    suspend fun connect(
         workspace: WorkspaceEntity,
         privateKeyPem: String,
         passphrase: String?,
@@ -40,30 +40,24 @@ class SshConnector {
                 client.loadKeys(privateKeyPem, null, PasswordUtils.createOneOff(passphrase.toCharArray()))
             }
             client.authPublickey(workspace.username, keyProvider)
-            val session = client.startSession()
-            try {
-                val cmd = session.exec("whoami")
-                val output = cmd.inputStream.bufferedReader().readText().trim()
-                cmd.join()
-                val exit = cmd.exitStatus ?: -1
-                if (exit != 0) {
-                    return@withContext ConnectOutcome.Failure("whoami exited with $exit")
-                }
-                verifier.mismatch?.let { mismatch ->
-                    return@withContext ConnectOutcome.HostKeyMismatch(mismatch.newFp, mismatch.storedFp)
-                }
-                ConnectOutcome.Success(output, verifier.accepted)
-            } finally {
-                runCatching { session.close() }
+
+            verifier.mismatch?.let { mismatch ->
+                runCatching { client.disconnect() }
+                return@withContext ConnectOutcome.HostKeyMismatch(mismatch.newFp, mismatch.storedFp)
             }
+
+            val sftp = client.newSFTPClient()
+            val session = SshSession(client, sftp)
+            ConnectOutcome.Success(session, verifier.accepted)
         } catch (_: HostKeyRejectedException) {
+            runCatching { client.disconnect() }
             ConnectOutcome.HostKeyRejected
         } catch (e: IOException) {
+            runCatching { client.disconnect() }
             ConnectOutcome.Failure(e.message ?: "Connection failed")
         } catch (e: Exception) {
+            runCatching { client.disconnect() }
             ConnectOutcome.Failure(e.message ?: e::class.java.simpleName)
-        } finally {
-            runCatching { if (client.isConnected) client.disconnect() }
         }
     }
 

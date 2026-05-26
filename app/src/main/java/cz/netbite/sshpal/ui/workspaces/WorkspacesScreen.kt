@@ -204,7 +204,7 @@ private fun StatusChip(status: ConnectStatus, hasKey: Boolean) {
     val (label, color) = when (status) {
         ConnectStatus.Idle -> (if (hasKey) "Ready" else "Needs key") to MaterialTheme.colorScheme.secondary
         ConnectStatus.Connecting -> "Connecting…" to MaterialTheme.colorScheme.secondary
-        is ConnectStatus.Success -> "OK: ${status.whoami}" to MaterialTheme.colorScheme.primary
+        is ConnectStatus.Connected -> "Connected: ${status.whoami}" to MaterialTheme.colorScheme.primary
         is ConnectStatus.Failure -> "Failed: ${status.message}" to MaterialTheme.colorScheme.error
     }
     AssistChip(
