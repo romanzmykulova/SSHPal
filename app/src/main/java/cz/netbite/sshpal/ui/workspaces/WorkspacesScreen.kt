@@ -3,11 +3,14 @@ package cz.netbite.sshpal.ui.workspaces
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -177,6 +180,7 @@ private fun WorkspaceList(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun WorkspaceCard(
     row: WorkspaceRow,
@@ -192,35 +196,46 @@ private fun WorkspaceCard(
         onClick = { if (!isConnected) onConnect(ws) },
         elevation = CardDefaults.cardElevation(defaultElevation = if (row.isActive) 6.dp else 2.dp),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
             Text(ws.name, style = MaterialTheme.typography.titleMedium)
             Text("${ws.username}@${ws.host}:${ws.port}", style = MaterialTheme.typography.bodyMedium)
             Text(ws.defaultCwd, style = MaterialTheme.typography.bodySmall)
-            Box(modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+            // Status chip + progress on its own row so it can't be eaten by
+            // the action chip pile underneath on narrow screens.
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 StatusChip(status = row.status, hasKey = row.hasKey)
-                Row(
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    if (row.status is ConnectStatus.Connecting) {
-                        CircularProgressIndicator(strokeWidth = 2.dp)
-                    } else {
-                        if (isConnected) {
-                            AssistChip(
-                                onClick = { onDisconnect(ws) },
-                                label = { Text("Disconnect") },
-                            )
-                        }
-                        AssistChip(
-                            onClick = { onDuplicate(ws) },
-                            label = { Text("Duplicate") },
-                        )
-                        AssistChip(
-                            onClick = { onEdit(ws) },
-                            label = { Text("Edit") },
-                        )
-                    }
+                if (row.status is ConnectStatus.Connecting) {
+                    CircularProgressIndicator(strokeWidth = 2.dp, modifier = Modifier.size(16.dp))
                 }
+            }
+            // Action chips on their own row with FlowRow so they wrap to a
+            // second line if they don't fit horizontally on small displays.
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                if (isConnected) {
+                    AssistChip(
+                        onClick = { onDisconnect(ws) },
+                        label = { Text("Disconnect") },
+                    )
+                }
+                AssistChip(
+                    onClick = { onDuplicate(ws) },
+                    label = { Text("Duplicate") },
+                )
+                AssistChip(
+                    onClick = { onEdit(ws) },
+                    label = { Text("Edit") },
+                )
             }
         }
     }

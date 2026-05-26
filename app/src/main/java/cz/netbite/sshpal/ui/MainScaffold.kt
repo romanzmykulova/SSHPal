@@ -1,16 +1,24 @@
 package cz.netbite.sshpal.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.MergeType
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +26,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import cz.netbite.sshpal.ui.claude.ClaudeScreen
 import cz.netbite.sshpal.ui.claude.ClaudeViewModel
 import cz.netbite.sshpal.ui.files.FilesScreen
@@ -28,11 +39,11 @@ import cz.netbite.sshpal.ui.git.GitViewModel
 import cz.netbite.sshpal.ui.workspaces.WorkspacesScreen
 import cz.netbite.sshpal.ui.workspaces.WorkspacesViewModel
 
-enum class MainTab(val label: String) {
-    Workspaces("Workspaces"),
-    Files("Files"),
-    Git("Git"),
-    Claude("Claude"),
+enum class MainTab(val label: String, val icon: ImageVector) {
+    Workspaces("Workspaces", Icons.Default.Computer),
+    Files("Files", Icons.Default.Folder),
+    Git("Git", Icons.Default.MergeType),
+    Claude("Claude", Icons.Default.Chat),
 }
 
 @Composable
@@ -45,34 +56,7 @@ fun MainScaffold(
     var tab by rememberSaveable { mutableStateOf(MainTab.Workspaces) }
 
     Scaffold(
-        bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    selected = tab == MainTab.Workspaces,
-                    onClick = { tab = MainTab.Workspaces },
-                    icon = { Icon(Icons.Default.Computer, contentDescription = null) },
-                    label = { Text(MainTab.Workspaces.label) },
-                )
-                NavigationBarItem(
-                    selected = tab == MainTab.Files,
-                    onClick = { tab = MainTab.Files },
-                    icon = { Icon(Icons.Default.Folder, contentDescription = null) },
-                    label = { Text(MainTab.Files.label) },
-                )
-                NavigationBarItem(
-                    selected = tab == MainTab.Git,
-                    onClick = { tab = MainTab.Git },
-                    icon = { Icon(Icons.Default.MergeType, contentDescription = null) },
-                    label = { Text(MainTab.Git.label) },
-                )
-                NavigationBarItem(
-                    selected = tab == MainTab.Claude,
-                    onClick = { tab = MainTab.Claude },
-                    icon = { Icon(Icons.Default.Chat, contentDescription = null) },
-                    label = { Text(MainTab.Claude.label) },
-                )
-            }
-        },
+        bottomBar = { CompactNavBar(selected = tab, onSelect = { tab = it }) },
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             when (tab) {
@@ -82,5 +66,56 @@ fun MainScaffold(
                 MainTab.Claude -> ClaudeScreen(viewModel = claudeViewModel)
             }
         }
+    }
+}
+
+/**
+ * A taller-than-strictly-minimum but still compact bottom bar — Material's
+ * NavigationBar is fixed at ~80dp tall to leave room for FAB cradles; this
+ * one is ~52dp, gives the main content ~28dp more vertical real estate.
+ */
+@Composable
+private fun CompactNavBar(selected: MainTab, onSelect: (MainTab) -> Unit) {
+    Column {
+        HorizontalDivider(thickness = 1.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface)
+                .height(52.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            for (entry in MainTab.values()) {
+                CompactNavItem(
+                    icon = entry.icon,
+                    label = entry.label,
+                    selected = selected == entry,
+                    onClick = { onSelect(entry) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CompactNavItem(
+    icon: ImageVector,
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    val tint =
+        if (selected) MaterialTheme.colorScheme.primary
+        else MaterialTheme.colorScheme.onSurfaceVariant
+    Column(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        Icon(icon, contentDescription = label, tint = tint, modifier = Modifier.size(22.dp))
+        Text(label, color = tint, style = MaterialTheme.typography.labelSmall)
     }
 }
