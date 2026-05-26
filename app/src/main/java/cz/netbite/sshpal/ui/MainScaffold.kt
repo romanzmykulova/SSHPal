@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.MergeType
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -21,12 +22,15 @@ import androidx.compose.ui.Modifier
 import cz.netbite.sshpal.ui.claude.ClaudeScreen
 import cz.netbite.sshpal.ui.files.FilesScreen
 import cz.netbite.sshpal.ui.files.FilesViewModel
+import cz.netbite.sshpal.ui.git.GitScreen
+import cz.netbite.sshpal.ui.git.GitViewModel
 import cz.netbite.sshpal.ui.workspaces.WorkspacesScreen
 import cz.netbite.sshpal.ui.workspaces.WorkspacesViewModel
 
 enum class MainTab(val label: String) {
     Workspaces("Workspaces"),
     Files("Files"),
+    Git("Git"),
     Claude("Claude"),
 }
 
@@ -34,6 +38,7 @@ enum class MainTab(val label: String) {
 fun MainScaffold(
     workspacesViewModel: WorkspacesViewModel,
     filesViewModel: FilesViewModel,
+    gitViewModel: GitViewModel,
 ) {
     var tab by rememberSaveable { mutableStateOf(MainTab.Workspaces) }
 
@@ -53,6 +58,12 @@ fun MainScaffold(
                     label = { Text(MainTab.Files.label) },
                 )
                 NavigationBarItem(
+                    selected = tab == MainTab.Git,
+                    onClick = { tab = MainTab.Git },
+                    icon = { Icon(Icons.Default.MergeType, contentDescription = null) },
+                    label = { Text(MainTab.Git.label) },
+                )
+                NavigationBarItem(
                     selected = tab == MainTab.Claude,
                     onClick = { tab = MainTab.Claude },
                     icon = { Icon(Icons.Default.Chat, contentDescription = null) },
@@ -65,6 +76,7 @@ fun MainScaffold(
             when (tab) {
                 MainTab.Workspaces -> WorkspacesScreen(viewModel = workspacesViewModel)
                 MainTab.Files -> FilesScreen(viewModel = filesViewModel)
+                MainTab.Git -> GitScreen(viewModel = gitViewModel)
                 MainTab.Claude -> ClaudeScreen()
             }
         }

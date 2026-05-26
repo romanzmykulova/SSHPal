@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import cz.netbite.sshpal.ui.MainScaffold
 import cz.netbite.sshpal.ui.files.FilesViewModel
+import cz.netbite.sshpal.ui.git.GitViewModel
 import cz.netbite.sshpal.ui.theme.SshPalTheme
 import cz.netbite.sshpal.ui.workspaces.WorkspacesViewModel
 
@@ -22,6 +23,11 @@ class MainActivity : ComponentActivity() {
         FilesViewModel.Factory(app.repository, app.sessions)
     }
 
+    private val gitViewModel: GitViewModel by viewModels {
+        val app = application as SshPalApp
+        GitViewModel.Factory(app.repository, app.sessions)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,6 +36,7 @@ class MainActivity : ComponentActivity() {
                 MainScaffold(
                     workspacesViewModel = workspacesViewModel,
                     filesViewModel = filesViewModel,
+                    gitViewModel = gitViewModel,
                 )
             }
         }

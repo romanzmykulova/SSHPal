@@ -44,6 +44,40 @@ class SshSession internal constructor(
         }
     }
 
+    suspend fun execFull(command: String, cwd: String? = null): ExecResult = mutex.withLock {
+        ensureOpen()
+        withContext(Dispatchers.IO) {
+            val wrapped = if (cwd.isNullOrBlank()) command else "cd ${shellQuote(cwd)} && $command"
+            val session = client.startSession()
+            try {
+                val cmd = session.exec(wrapped)
+                val stdout = cmd.inputStream.bufferedReader().readText()
+                val stderr = cmd.errorStream.bufferedReader().readText()
+                cmd.join()
+                ExecResult(
+                    exitStatus = cmd.exitStatus ?: -1,
+                    stdout = stdout,
+                    stderr = stderr,
+                )
+            } finally {
+                runCatching { session.close() }
+            }
+        }
+    }
+
+    data class ExecResult(val exitStatus: Int, val stdout: String, val stderr: String) {
+        val isSuccess: Boolean get() = exitStatus == 0
+        val combined: String get() = buildString {
+            if (stdout.isNotEmpty()) append(stdout)
+            if (stderr.isNotEmpty()) {
+                if (isNotEmpty() && !endsWith('\n')) append('\n')
+                append(stderr)
+            }
+        }.trimEnd()
+    }
+
+    private fun shellQuote(s: String): String = "'" + s.replace("'", "'\\''") + "'"
+
     suspend fun listDir(path: String): List<RemoteEntry> = mutex.withLock {
         ensureOpen()
         withContext(Dispatchers.IO) {
