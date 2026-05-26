@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Alignment
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
@@ -30,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,45 +47,44 @@ fun ClaudeScreen() {
     var canGoBack by remember { mutableStateOf(false) }
 
     val webView = remember {
-        WebView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-            )
-            settings.apply {
-                javaScriptEnabled = true
-                domStorageEnabled = true
-                databaseEnabled = true
-                loadWithOverviewMode = true
-                useWideViewPort = true
-                builtInZoomControls = true
-                displayZoomControls = false
-                mediaPlaybackRequiresUserGesture = false
-            }
-            CookieManager.getInstance().apply {
-                setAcceptCookie(true)
-                setAcceptThirdPartyCookies(this@apply, true)
-            }
-            webChromeClient = object : WebChromeClient() {
-                override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                    progress = newProgress
-                }
-            }
-            webViewClient = object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                    val url = request?.url?.toString() ?: return false
-                    view?.loadUrl(url)
-                    currentUrl = url
-                    return true
-                }
-
-                override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
-                    if (url != null) currentUrl = url
-                    canGoBack = view?.canGoBack() == true
-                }
-            }
-            loadUrl(DEFAULT_CLAUDE_URL)
+        val view = WebView(context)
+        view.layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+        )
+        view.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            databaseEnabled = true
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            builtInZoomControls = true
+            displayZoomControls = false
+            mediaPlaybackRequiresUserGesture = false
         }
+        val cookies = CookieManager.getInstance()
+        cookies.setAcceptCookie(true)
+        cookies.setAcceptThirdPartyCookies(view, true)
+        view.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(v: WebView?, newProgress: Int) {
+                progress = newProgress
+            }
+        }
+        view.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(v: WebView?, request: WebResourceRequest?): Boolean {
+                val url = request?.url?.toString() ?: return false
+                v?.loadUrl(url)
+                currentUrl = url
+                return true
+            }
+
+            override fun doUpdateVisitedHistory(v: WebView?, url: String?, isReload: Boolean) {
+                if (url != null) currentUrl = url
+                canGoBack = v?.canGoBack() == true
+            }
+        }
+        view.loadUrl(DEFAULT_CLAUDE_URL)
+        view
     }
 
     DisposableEffect(webView) {
