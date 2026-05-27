@@ -4,8 +4,10 @@ import cz.netbite.sshpal.data.WorkspaceEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import net.schmizz.sshj.DefaultConfig
 import net.schmizz.sshj.SSHClient
 import net.schmizz.sshj.common.SecurityUtils
+import net.schmizz.sshj.connection.keepalive.KeepAliveProvider
 import net.schmizz.sshj.transport.verification.HostKeyVerifier
 import net.schmizz.sshj.userauth.password.PasswordUtils
 import java.io.IOException
@@ -27,7 +29,14 @@ class SshConnector {
         onUnknownHost: suspend (fingerprint: String) -> Boolean,
     ): ConnectOutcome = withContext(Dispatchers.IO) {
         val verifier = TofuVerifier(workspace.knownHostKeyFingerprint, onUnknownHost)
-        val client = SSHClient().apply {
+        // Mobile NATs / carrier middleboxes drop idle TCP after ~3–5 min,
+        // and the next data attempt then hangs. The SSH keepalive sends
+        // `keepalive@openssh.com` global requests every 30s on the
+        // transport layer, keeping the path warm without app-level work.
+        val config = DefaultConfig().apply {
+            keepAliveProvider = KeepAliveProvider.KEEP_ALIVE
+        }
+        val client = SSHClient(config).apply {
             connectTimeout = 10_000
             timeout = 15_000
             addHostKeyVerifier(verifier)
@@ -40,6 +49,10 @@ class SshConnector {
                 client.loadKeys(privateKeyPem, null, PasswordUtils.createOneOff(passphrase.toCharArray()))
             }
             client.authPublickey(workspace.username, keyProvider)
+            // Enable the keepalive AFTER auth — sshj's keepalive thread
+            // requires the transport to be active. 30s is the OpenSSH
+            // ClientAliveInterval default; survives most NAT timeouts.
+            client.connection.keepAlive.keepAliveInterval = 30
 
             verifier.mismatch?.let { mismatch ->
                 runCatching { client.disconnect() }
