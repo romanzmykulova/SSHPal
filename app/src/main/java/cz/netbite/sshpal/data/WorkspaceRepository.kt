@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 class WorkspaceRepository(
     private val dao: WorkspaceDao,
+    private val claudeDao: ClaudeSessionDao,
     val keys: KeyVault,
 ) {
     fun observeAll(): Flow<List<WorkspaceEntity>> = dao.observeAll()
@@ -20,4 +21,19 @@ class WorkspaceRepository(
     suspend fun rememberHostKey(workspaceId: Long, fingerprint: String) {
         dao.setHostKey(workspaceId, fingerprint)
     }
+
+    suspend fun claudeSessions(workspaceId: Long): List<ClaudeSessionEntity> =
+        claudeDao.byWorkspace(workspaceId)
+
+    suspend fun insertClaudeSession(session: ClaudeSessionEntity): Long =
+        claudeDao.insert(session)
+
+    suspend fun setClaudeSessionUrl(id: Long, url: String) =
+        claudeDao.setUrl(id, url)
+
+    suspend fun setClaudeSessionLabel(id: Long, label: String?) =
+        claudeDao.setLabel(id, label)
+
+    suspend fun deleteClaudeSession(id: Long) =
+        claudeDao.deleteById(id)
 }

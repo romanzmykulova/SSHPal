@@ -26,7 +26,7 @@ class SshPalApp : Application() {
         super.onCreate()
         registerSecurityProviders()
         val db = AppDatabase.get(this)
-        repository = WorkspaceRepository(db.workspaceDao(), KeyVault(this))
+        repository = WorkspaceRepository(db.workspaceDao(), db.claudeSessionDao(), KeyVault(this))
         sshConnector = SshConnector()
         sessions = SessionRegistry()
     }

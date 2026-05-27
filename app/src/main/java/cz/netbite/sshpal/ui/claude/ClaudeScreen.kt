@@ -11,7 +11,10 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,19 +24,23 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -41,12 +48,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,124 +68,413 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClaudeScreen(viewModel: ClaudeViewModel) {
     val state by viewModel.state.collectAsState()
-
-    // Auto-launch remote-control when the user lands on Claude tab with an
-    // active session and no resolved URL yet. The launch is idempotent —
-    // startRemoteControl cancels any previous job before kicking off a new one.
-    LaunchedEffect(state) {
-        if (state is ClaudePaneState.Idle) {
-            viewModel.startRemoteControl()
-        }
-    }
 
     when (val s = state) {
         ClaudePaneState.NoSession -> EmptyMessage(
             title = "No active session",
             body = "Connect a workspace on the Workspaces tab, then come back here.",
         )
-        ClaudePaneState.Idle -> ConnectingView(
-            log = "",
-            onRetry = viewModel::startRemoteControl,
-            onCancel = viewModel::cancelHandshake,
-            kicking = false,
-        )
-        is ClaudePaneState.Connecting -> ConnectingView(
-            log = s.log,
-            onRetry = viewModel::startRemoteControl,
-            onCancel = viewModel::cancelHandshake,
-            kicking = true,
-        )
-        is ClaudePaneState.Loaded -> LoadedView(url = s.url, onReset = viewModel::reset)
-        is ClaudePaneState.Failed -> FailedView(
-            message = s.message,
-            log = s.log,
-            onRetry = viewModel::startRemoteControl,
-        )
+        is ClaudePaneState.Loaded -> LoadedPane(state = s, viewModel = viewModel)
     }
 }
 
+// ---------- Loaded pane ----------
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ConnectingView(
-    log: String,
-    onRetry: () -> Unit,
-    onCancel: () -> Unit,
-    kicking: Boolean,
-) {
+private fun LoadedPane(state: ClaudePaneState.Loaded, viewModel: ClaudeViewModel) {
+    val selectedTab = state.tabs.firstOrNull { it.id == state.selectedId }
+
+    // Per-tab WebView cache. Lives across tab switches so chat state survives.
+    // Keyed by tabId; entry is (currentUrl, WebView). When the URL for a tab
+    // changes (after Restart), the old WebView is destroyed and a fresh one
+    // is created on next render.
+    val context = LocalContext.current
+    val webViews = remember { mutableMapOf<Long, Pair<String, WebView>>() }
+
+    // GC: destroy WebViews for tabs no longer in state, OR for tabs that have
+    // dropped out of Ready (so their URL is dead). Runs on every state change.
+    DisposableEffect(state.tabs) {
+        val keep: Map<Long, String> = state.tabs
+            .mapNotNull { (it as? TabState.Ready)?.let { r -> r.id to r.url } }
+            .toMap()
+        val stale = webViews.entries.filter { (id, pair) ->
+            keep[id] != pair.first
+        }.map { it.key }
+        stale.forEach { id ->
+            webViews.remove(id)?.second?.let { wv ->
+                (wv.parent as? ViewGroup)?.removeView(wv)
+                wv.stopLoading()
+                wv.destroy()
+            }
+        }
+        onDispose {
+            webViews.values.forEach { (_, wv) ->
+                (wv.parent as? ViewGroup)?.removeView(wv)
+                wv.stopLoading()
+                wv.destroy()
+            }
+            webViews.clear()
+        }
+    }
+
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
-            TopAppBar(
-                title = { Text(if (kicking) "Starting Claude remote-control…" else "Claude") },
-                actions = {
-                    if (kicking) {
-                        OutlinedButton(onClick = onCancel) { Text("Cancel") }
-                    } else {
-                        OutlinedButton(onClick = onRetry) { Text("Start") }
-                    }
-                },
+            TabTopBar(
+                selectedTab = selectedTab,
+                onCancel = { selectedTab?.let { viewModel.cancelHandshake(it.id) } },
+                onRetry = { selectedTab?.let { viewModel.restartTab(it.id) } },
+                onRestart = { selectedTab?.let { viewModel.restartTab(it.id) } },
+                onHome = { selectedTab?.let { it as? TabState.Ready }?.let { ready ->
+                    webViews[ready.id]?.second?.loadUrl(ready.url)
+                } },
+                onReload = { selectedTab?.let { it as? TabState.Ready }?.let { ready ->
+                    webViews[ready.id]?.second?.reload()
+                } },
+                onOpenExternal = { selectedTab?.let { it as? TabState.Ready }?.let { ready ->
+                    openInExternalBrowser(context, ready.url)
+                } },
+                onGoToUrl = { target -> selectedTab?.let { it as? TabState.Ready }?.let { ready ->
+                    webViews[ready.id]?.second?.loadUrl(target)
+                } },
             )
         },
     ) { padding ->
-        Column(
-            modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            if (kicking) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                Text(
-                    "Running `claude` over SSH, then sending /remote-control. " +
-                        "First match of https://… in the output is opened as the chat URL.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
+            if (state.tabs.isNotEmpty()) {
+                ClaudeTabStrip(
+                    tabs = state.tabs,
+                    selectedId = state.selectedId,
+                    onSelect = viewModel::selectTab,
+                    onClose = viewModel::closeTab,
+                    onRename = viewModel::renameTab,
+                    onNew = viewModel::newSession,
                 )
-            } else {
-                Text(
-                    "No remote-control URL yet. Tap Start above to launch `claude` " +
-                        "on the server and capture the chat URL.",
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+                HorizontalDivider()
             }
-            LogPane(log = log)
+            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                when (selectedTab) {
+                    null -> EmptyTabsPane(onNew = viewModel::newSession)
+                    is TabState.Ready -> TabContentReady(
+                        tab = selectedTab,
+                        webViews = webViews,
+                        context = context,
+                    )
+                    is TabState.Connecting -> TabContentConnecting(tab = selectedTab)
+                    is TabState.Failed -> TabContentFailed(tab = selectedTab)
+                }
+            }
         }
     }
 }
 
+// ---------- Top bar ----------
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun FailedView(message: String, log: String, onRetry: () -> Unit) {
-    Scaffold(
-        contentWindowInsets = WindowInsets(0),
-        topBar = {
-            TopAppBar(
-                title = { Text("Claude — failed") },
-                actions = {
+private fun TabTopBar(
+    selectedTab: TabState?,
+    onCancel: () -> Unit,
+    onRetry: () -> Unit,
+    onRestart: () -> Unit,
+    onHome: () -> Unit,
+    onReload: () -> Unit,
+    onOpenExternal: () -> Unit,
+    onGoToUrl: (String) -> Unit,
+) {
+    var urlEditorOpen by remember { mutableStateOf(false) }
+    val currentUrl = (selectedTab as? TabState.Ready)?.url
+
+    TopAppBar(
+        title = {
+            when (selectedTab) {
+                is TabState.Ready -> Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { urlEditorOpen = true }
+                        .padding(vertical = 12.dp),
+                ) {
+                    Text(
+                        selectedTab.url,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = FontFamily.Monospace,
+                    )
+                }
+                is TabState.Connecting -> Text("Starting Claude remote-control…")
+                is TabState.Failed -> Text("Claude — failed")
+                null -> Text("Claude")
+            }
+        },
+        actions = {
+            when (selectedTab) {
+                is TabState.Ready -> {
+                    IconButton(onClick = onOpenExternal) {
+                        Icon(Icons.Default.OpenInBrowser, contentDescription = "Open in external browser")
+                    }
+                    IconButton(onClick = onHome) {
+                        Icon(Icons.Default.Home, contentDescription = "Home")
+                    }
+                    IconButton(onClick = onReload) {
+                        Icon(Icons.Default.Refresh, contentDescription = "Reload")
+                    }
+                    TextButton(onClick = onRestart) { Text("Restart") }
+                }
+                is TabState.Connecting -> {
+                    OutlinedButton(onClick = onCancel) { Text("Cancel") }
+                }
+                is TabState.Failed -> {
                     OutlinedButton(onClick = onRetry) { Text("Retry") }
+                }
+                null -> {}
+            }
+        },
+    )
+
+    if (urlEditorOpen && currentUrl != null) {
+        UrlEditDialog(
+            initial = currentUrl,
+            onDismiss = { urlEditorOpen = false },
+            onGo = { target ->
+                onGoToUrl(target)
+                urlEditorOpen = false
+            },
+            onOpenExternal = { _ ->
+                onOpenExternal()
+                urlEditorOpen = false
+            },
+        )
+    }
+}
+
+// ---------- Tab strip ----------
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+private fun ClaudeTabStrip(
+    tabs: List<TabState>,
+    selectedId: Long?,
+    onSelect: (Long) -> Unit,
+    onClose: (Long) -> Unit,
+    onRename: (Long, String) -> Unit,
+    onNew: () -> Unit,
+) {
+    val selectedIndex = tabs.indexOfFirst { it.id == selectedId }.coerceAtLeast(0)
+    var renameTarget by remember { mutableStateOf<TabState?>(null) }
+    var menuOpenFor by remember { mutableStateOf<Long?>(null) }
+
+    ScrollableTabRow(
+        selectedTabIndex = selectedIndex,
+        edgePadding = 0.dp,
+    ) {
+        tabs.forEach { tab ->
+            Tab(
+                selected = tab.id == selectedId,
+                onClick = { onSelect(tab.id) },
+                text = {
+                    Box {
+                        Row(
+                            modifier = Modifier.combinedClickable(
+                                onClick = { onSelect(tab.id) },
+                                onLongClick = { menuOpenFor = tab.id },
+                            ).padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            TabStatusDot(tab)
+                            Text(
+                                tab.label,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = menuOpenFor == tab.id,
+                            onDismissRequest = { menuOpenFor = null },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Rename") },
+                                onClick = {
+                                    renameTarget = tab
+                                    menuOpenFor = null
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Close") },
+                                onClick = {
+                                    onClose(tab.id)
+                                    menuOpenFor = null
+                                },
+                            )
+                        }
+                    }
                 },
             )
-        },
-    ) { padding ->
+        }
+        // Trailing "+" pseudo-tab.
+        Tab(
+            selected = false,
+            onClick = onNew,
+            text = {
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = "New session",
+                    modifier = Modifier.size(20.dp),
+                )
+            },
+        )
+    }
+
+    if (renameTarget != null) {
+        val target = renameTarget!!
+        RenameDialog(
+            initial = target.label,
+            onDismiss = { renameTarget = null },
+            onConfirm = { newLabel ->
+                onRename(target.id, newLabel)
+                renameTarget = null
+            },
+        )
+    }
+}
+
+@Composable
+private fun TabStatusDot(tab: TabState) {
+    val color = when (tab) {
+        is TabState.Ready -> MaterialTheme.colorScheme.primary
+        is TabState.Connecting -> MaterialTheme.colorScheme.tertiary
+        is TabState.Failed -> MaterialTheme.colorScheme.error
+    }
+    Box(
+        modifier = Modifier
+            .size(8.dp)
+            .background(color, CircleShape),
+    )
+}
+
+// ---------- Tab content panes ----------
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+private fun TabContentReady(
+    tab: TabState.Ready,
+    webViews: MutableMap<Long, Pair<String, WebView>>,
+    context: Context,
+) {
+    var progress by remember(tab.id) { mutableStateOf(0) }
+    var canGoBack by remember(tab.id) { mutableStateOf(false) }
+
+    val webView = remember(tab.id, tab.url) {
+        val cached = webViews[tab.id]
+        if (cached != null && cached.first == tab.url) {
+            cached.second
+        } else {
+            cached?.second?.let { old ->
+                (old.parent as? ViewGroup)?.removeView(old)
+                old.stopLoading()
+                old.destroy()
+            }
+            val fresh = createWebView(context, tab.url) { newProgress ->
+                progress = newProgress
+            }
+            fresh.webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(v: WebView?, request: WebResourceRequest?): Boolean {
+                    val target = request?.url?.toString() ?: return false
+                    v?.loadUrl(target)
+                    return true
+                }
+                override fun doUpdateVisitedHistory(v: WebView?, u: String?, isReload: Boolean) {
+                    canGoBack = v?.canGoBack() == true
+                }
+            }
+            fresh.loadUrl(tab.url)
+            webViews[tab.id] = tab.url to fresh
+            fresh
+        }
+    }
+
+    BackHandler(enabled = canGoBack) {
+        webView.goBack()
+        canGoBack = webView.canGoBack()
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        androidx.compose.ui.viewinterop.AndroidView(
+            factory = {
+                // The cached WebView may still be attached to a previous host
+                // ViewGroup from before a tab switch. Detach before reattaching.
+                (webView.parent as? ViewGroup)?.removeView(webView)
+                webView
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
+        if (progress in 1..99) {
+            LinearProgressIndicator(
+                progress = { progress / 100f },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter),
+            )
+        }
+    }
+}
+
+@Composable
+private fun TabContentConnecting(tab: TabState.Connecting) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+        Text(
+            "Running `claude` in ${tab.cwd}, then sending /remote-control. " +
+                "First match of https://… in the output is opened as the chat URL.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        LogPane(log = tab.log)
+    }
+}
+
+@Composable
+private fun TabContentFailed(tab: TabState.Failed) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text(
+            tab.message,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.titleSmall,
+        )
+        Text(
+            "Full Claude output:",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        LogPane(log = tab.log)
+    }
+}
+
+@Composable
+private fun EmptyTabsPane(onNew: () -> Unit) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            Text("No Claude sessions yet", style = MaterialTheme.typography.titleMedium)
             Text(
-                message,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.titleSmall,
+                "Tap to start one.",
+                style = MaterialTheme.typography.bodyMedium,
             )
-            Text(
-                "Full Claude output:",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            LogPane(log = log)
+            Button(onClick = onNew) { Text("New session") }
         }
     }
 }
@@ -217,153 +514,7 @@ private fun EmptyMessage(title: String, body: String) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("SetJavaScriptEnabled")
-@Composable
-private fun LoadedView(url: String, onReset: () -> Unit) {
-    val context = LocalContext.current
-    var progress by remember { mutableStateOf(0) }
-    var currentUrl by remember(url) { mutableStateOf(url) }
-    var canGoBack by remember { mutableStateOf(false) }
-    var urlEditorOpen by remember { mutableStateOf(false) }
-
-    val webView = remember(url) {
-        val view = WebView(context)
-        view.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-        )
-        view.settings.apply {
-            javaScriptEnabled = true
-            domStorageEnabled = true
-            databaseEnabled = true
-            loadWithOverviewMode = true
-            useWideViewPort = true
-            builtInZoomControls = true
-            displayZoomControls = false
-            mediaPlaybackRequiresUserGesture = false
-            cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
-            allowFileAccess = false
-            allowContentAccess = false
-        }
-        val cookies = CookieManager.getInstance()
-        cookies.setAcceptCookie(true)
-        cookies.setAcceptThirdPartyCookies(view, true)
-        view.webChromeClient = object : WebChromeClient() {
-            override fun onProgressChanged(v: WebView?, newProgress: Int) {
-                progress = newProgress
-            }
-        }
-        view.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(v: WebView?, request: WebResourceRequest?): Boolean {
-                val target = request?.url?.toString() ?: return false
-                v?.loadUrl(target)
-                currentUrl = target
-                return true
-            }
-
-            override fun doUpdateVisitedHistory(v: WebView?, u: String?, isReload: Boolean) {
-                if (u != null) currentUrl = u
-                canGoBack = v?.canGoBack() == true
-            }
-        }
-        view.loadUrl(url)
-        view
-    }
-
-    DisposableEffect(webView) {
-        onDispose {
-            (webView.parent as? ViewGroup)?.removeView(webView)
-            webView.stopLoading()
-            webView.destroy()
-        }
-    }
-
-    BackHandler(enabled = canGoBack) {
-        webView.goBack()
-        canGoBack = webView.canGoBack()
-    }
-
-    Scaffold(
-        contentWindowInsets = WindowInsets(0),
-        topBar = {
-            TopAppBar(
-                title = {
-                    // Tap to open a paste/edit dialog — useful for entering
-                    // magic links (e.g. the Claude account login email link)
-                    // that the WebView can't receive any other way.
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { urlEditorOpen = true }
-                            .padding(vertical = 12.dp),
-                    ) {
-                        Text(
-                            currentUrl,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.bodySmall,
-                            fontFamily = FontFamily.Monospace,
-                        )
-                    }
-                },
-                navigationIcon = {
-                    if (canGoBack) {
-                        IconButton(onClick = {
-                            webView.goBack()
-                            canGoBack = webView.canGoBack()
-                        }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { openInExternalBrowser(context, currentUrl) }) {
-                        Icon(Icons.Default.OpenInBrowser, contentDescription = "Open in external browser")
-                    }
-                    IconButton(onClick = { webView.loadUrl(url) }) {
-                        Icon(Icons.Default.Home, contentDescription = "Home")
-                    }
-                    IconButton(onClick = { webView.reload() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Reload")
-                    }
-                    TextButton(onClick = onReset) { Text("Restart") }
-                },
-            )
-        },
-    ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
-            AndroidView(
-                factory = { webView },
-                modifier = Modifier.fillMaxSize(),
-            )
-            if (progress in 1..99) {
-                LinearProgressIndicator(
-                    progress = { progress / 100f },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.TopCenter),
-                )
-            }
-        }
-    }
-
-    if (urlEditorOpen) {
-        UrlEditDialog(
-            initial = currentUrl,
-            onDismiss = { urlEditorOpen = false },
-            onGo = { target ->
-                webView.loadUrl(target)
-                currentUrl = target
-                urlEditorOpen = false
-            },
-            onOpenExternal = { target ->
-                openInExternalBrowser(context, target)
-                urlEditorOpen = false
-            },
-        )
-    }
-}
+// ---------- Dialogs ----------
 
 @Composable
 private fun UrlEditDialog(
@@ -382,7 +533,6 @@ private fun UrlEditDialog(
                 onValueChange = { text = it },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                placeholder = { Text("https://...") },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Uri,
                     imeAction = ImeAction.Go,
@@ -403,6 +553,72 @@ private fun UrlEditDialog(
             }
         },
     )
+}
+
+@Composable
+private fun RenameDialog(
+    initial: String,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit,
+) {
+    var text by remember { mutableStateOf(initial) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Rename session") },
+        text = {
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { onConfirm(text) }),
+            )
+        },
+        confirmButton = {
+            Button(onClick = { onConfirm(text) }) { Text("Save") }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text("Cancel") }
+        },
+    )
+}
+
+// ---------- Helpers ----------
+
+@SuppressLint("SetJavaScriptEnabled")
+private fun createWebView(
+    context: Context,
+    initialUrl: String,
+    onProgress: (Int) -> Unit,
+): WebView {
+    val view = WebView(context)
+    view.layoutParams = ViewGroup.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT,
+    )
+    view.settings.apply {
+        javaScriptEnabled = true
+        domStorageEnabled = true
+        databaseEnabled = true
+        loadWithOverviewMode = true
+        useWideViewPort = true
+        builtInZoomControls = true
+        displayZoomControls = false
+        mediaPlaybackRequiresUserGesture = false
+        cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
+        allowFileAccess = false
+        allowContentAccess = false
+    }
+    val cookies = CookieManager.getInstance()
+    cookies.setAcceptCookie(true)
+    cookies.setAcceptThirdPartyCookies(view, true)
+    view.webChromeClient = object : WebChromeClient() {
+        override fun onProgressChanged(v: WebView?, newProgress: Int) {
+            onProgress(newProgress)
+        }
+    }
+    return view
 }
 
 private fun normalizeUrl(raw: String): String {
