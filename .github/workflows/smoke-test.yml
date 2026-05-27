@@ -79,64 +79,54 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            # Capture the script trace to a file. Avoid process substitution
-            # ( exec > >(tee …) ) because the action's wrapper shell may not
-            # be bash; plain >>file works in any POSIX shell.
-            exec 2>>/tmp/smoke-script.log
-            set -x
+            # Write every interesting state into /tmp/smoke-verdict.log
+            # explicitly. No exec/set -x — past attempts to capture shell
+            # trace via redirects all came back empty, suggesting the
+            # action's wrapper interferes. Plain `echo … >> file` works.
+            LOG=/tmp/smoke-verdict.log
+            : > "$LOG"
+            echo "=== smoke run start $(date -u) ===" >> "$LOG"
+
             set +e
             adb wait-for-device
+            echo "STAGE: device ready, rc=$?" >> "$LOG"
+
             adb shell input keyevent 82 || true
 
-            echo "=== Installing APK ==="
             adb install -r app/build/outputs/apk/debug/app-debug.apk
+            echo "STAGE: install rc=$?" >> "$LOG"
 
-            echo "=== Clearing logcat buffer ==="
             adb logcat -c
+            echo "STAGE: logcat cleared, rc=$?" >> "$LOG"
 
-            echo "=== Launching MainActivity ==="
             adb shell am start -W -n cz.netbite.sshpal/.MainActivity
             START_RC=$?
-            echo "am start rc=$START_RC"
+            echo "STAGE: am start rc=$START_RC" >> "$LOG"
 
-            echo "=== Letting it settle for 10s ==="
             sleep 10
+            echo "STAGE: 10s sleep done" >> "$LOG"
 
-            echo "=== Dumping full logcat (cz.netbite.sshpal + AndroidRuntime + System) ==="
             adb logcat -d > /tmp/logcat-full.txt
-            grep -E "AndroidRuntime|FATAL|cz\\.netbite\\.sshpal|ActivityManager.*sshpal|libc.*sshpal" /tmp/logcat-full.txt > /tmp/logcat-filtered.txt || true
-            echo "--- filtered logcat ---"
-            cat /tmp/logcat-filtered.txt
-            echo "--- end filtered ---"
+            echo "STAGE: logcat dumped, lines=$(wc -l < /tmp/logcat-full.txt)" >> "$LOG"
 
-            echo "=== Pulling crash.log if our own crash logger wrote one ==="
-            adb shell run-as cz.netbite.sshpal cat files/crash.log 2>/dev/null || echo "(no crash.log present)"
+            adb shell run-as cz.netbite.sshpal cat files/crash.log >> "$LOG" 2>/dev/null
+            echo "STAGE: crash.log read attempted" >> "$LOG"
 
-            echo "=== Checking for crash markers ==="
             CRASHED=0
-            if grep -qE "FATAL EXCEPTION|signal 11" /tmp/logcat-full.txt; then
-              echo "❌ Crash detected (FATAL EXCEPTION / signal 11)"
-              CRASHED=1
-            fi
-            if grep -qE "AndroidRuntime.*cz\\.netbite\\.sshpal" /tmp/logcat-full.txt; then
-              echo "❌ AndroidRuntime error for our package"
-              CRASHED=1
-            fi
-            if grep -q "Displayed cz.netbite.sshpal" /tmp/logcat-full.txt; then
-              echo "✅ MainActivity reached Displayed state"
-            else
-              echo "❌ MainActivity never reached Displayed — likely pre-UI crash"
-              CRASHED=1
-            fi
+            FATAL_HITS=$(grep -cE "FATAL EXCEPTION|signal 11" /tmp/logcat-full.txt)
+            AR_HITS=$(grep -cE "AndroidRuntime.*cz\\.netbite\\.sshpal" /tmp/logcat-full.txt)
+            DISPLAYED_HITS=$(grep -c "Displayed cz.netbite.sshpal" /tmp/logcat-full.txt)
+            echo "GREP: FATAL=$FATAL_HITS AR=$AR_HITS DISPLAYED=$DISPLAYED_HITS" >> "$LOG"
 
-            echo "--- ps / pidof diagnostic ---"
-            adb shell ps -A 2>/dev/null | grep -i sshpal || echo "(no sshpal in ps)"
-            adb shell pidof cz.netbite.sshpal 2>/dev/null || echo "(pidof empty — not authoritative on emulator)"
+            if [ "$FATAL_HITS" -gt 0 ]; then CRASHED=1; echo "FAIL: FATAL EXCEPTION present" >> "$LOG"; fi
+            if [ "$AR_HITS" -gt 0 ]; then CRASHED=1; echo "FAIL: AndroidRuntime for our package" >> "$LOG"; fi
+            if [ "$DISPLAYED_HITS" -eq 0 ]; then CRASHED=1; echo "FAIL: never reached Displayed" >> "$LOG"; fi
 
-            echo ""
-            echo "=== Final result: CRASHED=$CRASHED ==="
+            adb shell ps -A 2>/dev/null | grep -i sshpal >> "$LOG" || echo "(no sshpal in ps)" >> "$LOG"
+
+            echo "VERDICT: CRASHED=$CRASHED $([ $CRASHED -eq 0 ] && echo PASS || echo FAIL)" >> "$LOG"
+
             if [ "$CRASHED" -ne 0 ]; then
-              echo "Smoke test FAILED"
               exit 1
             fi
             echo "Smoke test PASSED"
@@ -158,7 +148,7 @@ jobs:
         run: |
           mkdir -p ci-logs
           cp /tmp/logcat-full.txt ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}.log 2>/dev/null || true
-          cp /tmp/smoke-script.log ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}-script.log 2>/dev/null || true
+          cp /tmp/smoke-verdict.log ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}-verdict.log 2>/dev/null || true
           if ls ci-logs/smoke-${{ github.run_id }}-* >/dev/null 2>&1; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
