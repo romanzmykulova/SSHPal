@@ -11,10 +11,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +31,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
@@ -255,7 +254,7 @@ private fun TabTopBar(
 
 // ---------- Tab strip ----------
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ClaudeTabStrip(
     tabs: List<TabState>,
@@ -269,6 +268,10 @@ private fun ClaudeTabStrip(
     var renameTarget by remember { mutableStateOf<TabState?>(null) }
     var menuOpenFor by remember { mutableStateOf<Long?>(null) }
 
+    // No combinedClickable inside Tab — the recent Compose rewrite of that
+    // modifier crashes when nested under an Indication-providing parent
+    // (which Tab is). Each tab carries an explicit overflow IconButton
+    // instead: tap label = select, tap ⋮ = open Rename / Close menu.
     ScrollableTabRow(
         selectedTabIndex = selectedIndex,
         edgePadding = 0.dp,
@@ -278,40 +281,46 @@ private fun ClaudeTabStrip(
                 selected = tab.id == selectedId,
                 onClick = { onSelect(tab.id) },
                 text = {
-                    Box {
-                        Row(
-                            modifier = Modifier.combinedClickable(
-                                onClick = { onSelect(tab.id) },
-                                onLongClick = { menuOpenFor = tab.id },
-                            ).padding(vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        ) {
-                            TabStatusDot(tab)
-                            Text(
-                                tab.label,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = menuOpenFor == tab.id,
-                            onDismissRequest = { menuOpenFor = null },
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text("Rename") },
-                                onClick = {
-                                    renameTarget = tab
-                                    menuOpenFor = null
-                                },
-                            )
-                            DropdownMenuItem(
-                                text = { Text("Close") },
-                                onClick = {
-                                    onClose(tab.id)
-                                    menuOpenFor = null
-                                },
-                            )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        TabStatusDot(tab)
+                        Text(
+                            tab.label,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                        Box {
+                            IconButton(
+                                onClick = { menuOpenFor = tab.id },
+                                modifier = Modifier.size(28.dp),
+                            ) {
+                                Icon(
+                                    Icons.Default.MoreVert,
+                                    contentDescription = "Tab menu",
+                                    modifier = Modifier.size(18.dp),
+                                )
+                            }
+                            DropdownMenu(
+                                expanded = menuOpenFor == tab.id,
+                                onDismissRequest = { menuOpenFor = null },
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text("Rename") },
+                                    onClick = {
+                                        renameTarget = tab
+                                        menuOpenFor = null
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("Close") },
+                                    onClick = {
+                                        onClose(tab.id)
+                                        menuOpenFor = null
+                                    },
+                                )
+                            }
                         }
                     }
                 },

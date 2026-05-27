@@ -79,26 +79,8 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        /**
-         * Get the DB, with a self-heal escape hatch. Room only triggers
-         * migration + schema validation on first query, so we force that
-         * with a synchronous probe right here. If validation fails (= we
-         * shipped a buggy migration in a previous version), we wipe the
-         * sqlite file and rebuild fresh — the user loses the workspaces
-         * row (re-paste PEM on next launch) but the app actually boots.
-         * Without this, an IllegalStateException from the validator kills
-         * the process at first DB observation.
-         *
-         * The wipe-retry is gated by `retryOnFailure = true` on the first
-         * attempt only, so a second failure surfaces normally instead of
-         * looping.
-         */
         fun get(context: Context): AppDatabase = instance ?: synchronized(this) {
-            instance ?: buildWithProbe(context, retryOnFailure = true).also { instance = it }
-        }
-
-        private fun buildWithProbe(context: Context, retryOnFailure: Boolean): AppDatabase {
-            val db = Room.databaseBuilder(
+            instance ?: Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
                 "sshpal.db",
@@ -107,21 +89,7 @@ abstract class AppDatabase : RoomDatabase() {
                 .fallbackToDestructiveMigration()
                 .fallbackToDestructiveMigrationOnDowngrade()
                 .build()
-
-            return try {
-                kotlinx.coroutines.runBlocking { db.workspaceDao().count() }
-                db
-            } catch (e: Throwable) {
-                android.util.Log.e(
-                    "AppDatabase",
-                    "DB probe failed; wiping and rebuilding",
-                    e,
-                )
-                runCatching { db.close() }
-                if (!retryOnFailure) throw e
-                runCatching { context.deleteDatabase("sshpal.db") }
-                buildWithProbe(context, retryOnFailure = false)
-            }
+                .also { instance = it }
         }
     }
 }
