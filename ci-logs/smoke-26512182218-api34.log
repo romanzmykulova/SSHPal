@@ -1,0 +1,460 @@
+--------- beginning of main
+05-27 12:55:13.768   506   765 I SdkSandboxManager: No SDKs used. Skipping SDK data reconcilation for CallingInfo{mUid=10141, mPackageName='cz.netbite.sshpal, mAppProcessToken='null'}
+05-27 12:55:13.769   506   603 I InputReader: Reconfiguring input devices, changes=KEYBOARD_LAYOUTS
+--------- beginning of system
+05-27 12:55:13.769   506   534 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+05-27 12:55:13.772   506   506 D TransparencyService: Not an update. Skipping...
+05-27 12:55:13.772   799  2182 I PermissionControllerServiceImpl: Updating user sensitive for uid 10141
+05-27 12:55:13.776   797   871 D StylusManager: Stylus InputDevice changed: 14 virtio_input_multi_touch_11
+05-27 12:55:13.776   797   871 D StylusManager: Stylus InputDevice changed: 13 virtio_input_multi_touch_10
+05-27 12:55:13.776   506   506 V BackupManagerConstants: getFullBackupIntervalMilliseconds(...) returns 86400000
+05-27 12:55:13.777   506   506 V BackupManagerConstants: getFullBackupRequiredNetworkType(...) returns 2
+05-27 12:55:13.777   506   506 V BackupManagerConstants: getFullBackupRequireCharging(...) returns true
+05-27 12:55:13.777   506   506 D CompatibilityChangeReporter: Compat change id reported: 271850009; UID 1000; state: ENABLED
+05-27 12:55:13.777   506   506 D CompatibilityChangeReporter: Compat change id reported: 253665015; UID 1000; state: ENABLED
+05-27 12:55:13.777   506   506 D CompatibilityChangeReporter: Compat change id reported: 194532703; UID 1000; state: ENABLED
+05-27 12:55:13.777   797   871 D StylusManager: Stylus InputDevice changed: 12 virtio_input_multi_touch_9
+05-27 12:55:13.778   797   871 D StylusManager: Stylus InputDevice changed: 9 virtio_input_multi_touch_6
+05-27 12:55:13.779   506   593 I RoleService: Granting default roles...
+05-27 12:55:13.780   506   733 E AppOps  : attributionTag VCN not declared in manifest of android
+05-27 12:55:13.792   506   534 W PackageManager: Failed registering loading progress callback. Package is fully loaded.
+05-27 12:55:13.793   506   534 W VoiceInteractionManager: no available voice recognition services found for user 0
+05-27 12:55:13.793   506   527 I DropBoxManagerService: add tag=system_server_strictmode isTagEnabled=true flags=0x2
+05-27 12:55:13.794   797   871 D StylusManager: Stylus InputDevice changed: 8 virtio_input_multi_touch_5
+05-27 12:55:13.803   506   534 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+05-27 12:55:13.804   797   871 D StylusManager: Stylus InputDevice changed: 5 virtio_input_multi_touch_2
+05-27 12:55:13.804   797   871 D StylusManager: Stylus InputDevice changed: 7 virtio_input_multi_touch_4
+05-27 12:55:13.804   797   871 D StylusManager: Stylus InputDevice changed: 4 virtio_input_multi_touch_1
+05-27 12:55:13.804   797   871 D StylusManager: Stylus InputDevice changed: 11 virtio_input_multi_touch_8
+05-27 12:55:13.804   797   871 D StylusManager: Stylus InputDevice changed: 6 virtio_input_multi_touch_3
+05-27 12:55:13.805   797   871 D StylusManager: Stylus InputDevice changed: 10 virtio_input_multi_touch_7
+05-27 12:55:13.806   506  2230 D CompatibilityChangeReporter: Compat change id reported: 161252188; UID 10141; state: DISABLED
+05-27 12:55:13.806   506  2230 W ActivityTaskManager: callingPackage for (uid=2000, pid=2295) has no WPC
+05-27 12:55:13.807   506  2230 D CompatibilityChangeReporter: Compat change id reported: 244637991; UID 2000; state: ENABLED
+05-27 12:55:13.808   506  2230 D CompatibilityChangeReporter: Compat change id reported: 265464455; UID 10141; state: DISABLED
+05-27 12:55:13.808   506  2230 D CompatibilityChangeReporter: Compat change id reported: 265452344; UID 10141; state: DISABLED
+05-27 12:55:13.809   506  2230 D CompatibilityChangeReporter: Compat change id reported: 266124927; UID 10141; state: DISABLED
+05-27 12:55:13.809   799  2182 I PermissionControllerServiceImpl: Updating user sensitive for uid 10141
+05-27 12:55:13.810  1007  1007 D CarrierSvcBindHelper: onPackageModified: cz.netbite.sshpal
+05-27 12:55:13.810  1007  1007 D CarrierSvcBindHelper: No carrier app for: 0
+05-27 12:55:13.811   980   980 V MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_CHANGED
+05-27 12:55:13.812   980   980 V MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_CHANGED
+05-27 12:55:13.812   506  2230 D CompatibilityChangeReporter: Compat change id reported: 265451093; UID 10141; state: DISABLED
+05-27 12:55:13.812   506  2230 D CompatibilityChangeReporter: Compat change id reported: 265456536; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 255940284; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 236283604; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 263959004; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 264304459; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 264301586; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 254631730; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 273509367; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 263259275; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 174042980; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 174042936; UID 10141; state: DISABLED
+05-27 12:55:13.813   506  2230 D CompatibilityChangeReporter: Compat change id reported: 181136395; UID 10141; state: DISABLED
+05-27 12:55:13.814   506   603 I InputReader: Reconfiguring input devices, changes=KEYBOARD_LAYOUTS
+05-27 12:55:13.814   506  2230 D CompatibilityChangeReporter: Compat change id reported: 194480991; UID 10141; state: ENABLED
+05-27 12:55:13.815   506  2230 D CompatibilityChangeReporter: Compat change id reported: 184838306; UID 10141; state: DISABLED
+05-27 12:55:13.816   506  2230 D CompatibilityChangeReporter: Compat change id reported: 185004937; UID 10141; state: DISABLED
+05-27 12:55:13.816   506  2230 D CompatibilityChangeReporter: Compat change id reported: 197654537; UID 10141; state: ENABLED
+05-27 12:55:13.816   506  2230 V SplashScreenExceptionList: SplashScreen checking exception for package cz.netbite.sshpal (target sdk:34) -> false
+05-27 12:55:13.816   506  2230 D CompatibilityChangeReporter: Compat change id reported: 205907456; UID 10141; state: ENABLED
+05-27 12:55:13.817   506  2230 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=cz.netbite.sshpal/.MainActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+05-27 12:55:13.818   506   528 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10141; state: DISABLED
+05-27 12:55:13.819   506   536 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10141; state: ENABLED
+05-27 12:55:13.820   797   834 V WindowManagerShell: Transition requested: android.os.BinderProxy@1dc2b3f TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=cz.netbite.sshpal/.MainActivity } baseActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} topActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} origActivity=null realActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} numActivities=1 lastActiveTime=35046 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@1a5cc0c} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{50bb955 cz.netbite.sshpal.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+05-27 12:55:13.823   506   534 W VoiceInteractionManager: no available voice recognition services found for user 0
+05-27 12:55:13.825   326   326 D Zygote  : Forked child process 2298
+05-27 12:55:13.835   506   536 I ActivityManager: Start proc 2298:cz.netbite.sshpal/u0a141 for next-top-activity {cz.netbite.sshpal/cz.netbite.sshpal.MainActivity}
+05-27 12:55:13.850   797   867 D SplashScreenView: Build android.window.SplashScreenView{c282151 V.E...... ......ID 0,0-0,0}
+05-27 12:55:13.850   797   867 D SplashScreenView: Icon: view: android.widget.ImageView{ce30db6 V.ED..... ......I. 0,0-0,0 #10204f0 android:id/splashscreen_icon_view} drawable: com.android.wm.shell.startingsurface.SplashscreenIconDrawableFactory$ImmobileIconDrawable@b9e7ab7 size: 160
+05-27 12:55:13.850   797   867 D SplashScreenView: Branding: view: android.view.View{c683224 G.ED..... ......I. 0,0-0,0 #10204ef android:id/splashscreen_branding_view} drawable: null size w: 0 h: 0
+05-27 12:55:13.851   506  1143 D CoreBackPreview: Window{99cc58f u0 Splash Screen cz.netbite.sshpal}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@e659bc6, mPriority=0, mIsAnimationCallback=false}
+05-27 12:55:13.860  1007  1291 D ImsResolver: maybeAddedImsService, packageName: cz.netbite.sshpal
+05-27 12:55:13.861   506   585 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10141; state: ENABLED
+05-27 12:55:13.862   797   871 D StylusManager: Stylus InputDevice changed: 14 virtio_input_multi_touch_11
+05-27 12:55:13.862   797   871 D StylusManager: Stylus InputDevice changed: 13 virtio_input_multi_touch_10
+05-27 12:55:13.863   388   388 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+05-27 12:55:13.870  2298  2298 I .netbite.sshpal: Late-enabling -Xcheck:jni
+05-27 12:55:13.872   797   871 D StylusManager: Stylus InputDevice changed: 12 virtio_input_multi_touch_9
+05-27 12:55:13.872   797   871 D StylusManager: Stylus InputDevice changed: 9 virtio_input_multi_touch_6
+05-27 12:55:13.873   797   871 D StylusManager: Stylus InputDevice changed: 8 virtio_input_multi_touch_5
+05-27 12:55:13.873   797   871 D StylusManager: Stylus InputDevice changed: 5 virtio_input_multi_touch_2
+05-27 12:55:13.873   797   871 D StylusManager: Stylus InputDevice changed: 7 virtio_input_multi_touch_4
+05-27 12:55:13.873   797   871 D StylusManager: Stylus InputDevice changed: 4 virtio_input_multi_touch_1
+05-27 12:55:13.873   797   871 D StylusManager: Stylus InputDevice changed: 11 virtio_input_multi_touch_8
+05-27 12:55:13.874   797   871 D StylusManager: Stylus InputDevice changed: 6 virtio_input_multi_touch_3
+05-27 12:55:13.874   797   871 D StylusManager: Stylus InputDevice changed: 10 virtio_input_multi_touch_7
+05-27 12:55:14.261   797   834 W Looper  : Slow delivery took 203ms wmshell.main h=android.os.Handler c=com.android.wm.shell.pip.phone.PipController$$ExternalSyntheticLambda1@f084c90 m=0
+05-27 12:55:14.266   797   834 W Looper  : Drained
+05-27 12:55:14.268   506   506 W Looper  : Slow delivery took 377ms main h=android.app.PropertyInvalidatedCache$AutoCorker$1 c=null m=0
+05-27 12:55:14.271  2298  2298 I .netbite.sshpal: Using CollectorTypeCC GC.
+05-27 12:55:14.272   797   797 D ControlsListingControllerImpl: ServiceConfig reloaded, count: 0
+05-27 12:55:14.272   797   797 D ControlsListingControllerImpl: ServiceConfig reloaded, count: 0
+05-27 12:55:14.273  2298  2298 W .netbite.sshpal: Unexpected CPU variant for x86: x86_64.
+05-27 12:55:14.273  2298  2298 W .netbite.sshpal: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+05-27 12:55:14.278   506   525 V WindowManager: Sent Transition #6 createdAt=05-27 12:55:13.814 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=cz.netbite.sshpal/.MainActivity } baseActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} topActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} origActivity=null realActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} numActivities=1 lastActiveTime=35046 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{fe43149 Task{b6b5389 #8 type=standard A=10141:cz.netbite.sshpal}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{2a36a4e cz.netbite.sshpal.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+05-27 12:55:14.278   506   525 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+05-27 12:55:14.279   506   525 V WindowManager:     info={id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{fe43149 Task{b6b5389 #8 type=standard A=10141:cz.netbite.sshpal}}} m=OPEN f=NONE leash=Surface(name=Task=8)/@0xc1add13 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{RemoteToken{4c376f Task{dfe719f #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xe01c209 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 12:55:14.279   403   416 I adbd    : jdwp connection from 2298
+05-27 12:55:14.292   797   834 V WindowManagerShell: onTransitionReady android.os.BinderProxy@1dc2b3f: {id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@47991cb} m=OPEN f=NONE leash=Surface(name=Task=8)/@0xf4da1bc sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@311da8} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xebd5545 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 12:55:14.292   797   834 V WindowManagerShell: Playing animation for (#6)android.os.BinderProxy@1dc2b3f@0
+05-27 12:55:14.292   797   834 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@6f6102d
+05-27 12:55:14.292   797   834 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@f80c962
+05-27 12:55:14.292   797   834 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@afdcaf3
+05-27 12:55:14.292   797   834 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@cd7a3b0
+05-27 12:55:14.292   797   834 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+05-27 12:55:14.292   797   834 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@5d08229
+05-27 12:55:14.292   797   834 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@62619ae
+05-27 12:55:14.292   797   834 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@4a0234f
+05-27 12:55:14.293   797   834 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@47991cb} m=OPEN f=NONE leash=Surface(name=Task=8)/@0xf4da1bc sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@311da8} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xebd5545 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 12:55:14.293   797   834 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@10b4adc, appThread = android.app.IApplicationThread$Stub$Proxy@4c617e5, debugName = QuickstepLaunchHome }}
+05-27 12:55:14.293   797   834 V WindowManagerShell:  Delegate animation for #6 to null
+05-27 12:55:14.293   797   834 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@3be22ba
+05-27 12:55:14.293   797   834 V WindowManagerShell: start default transition animation, info = {id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@47991cb} m=OPEN f=NONE leash=Surface(name=Task=8)/@0xf4da1bc sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@311da8} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xebd5545 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 12:55:14.293   797   834 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@8285066 animAttr=0x13 type=OPEN isEntrance=false
+05-27 12:55:14.293   797   834 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@7590cf2 animAttr=0x12 type=OPEN isEntrance=true
+05-27 12:55:14.294   797   834 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@3be22ba
+05-27 12:55:14.294  1047  1583 D EGL_emulation: app_time_stats: avg=300.42ms min=17.97ms max=1058.57ms count=4
+05-27 12:55:14.304   797   834 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#6)android.os.BinderProxy@1dc2b3f@0
+05-27 12:55:14.308   506   525 V WindowManager: Finish Transition #6: created at 05-27 12:55:13.814 collect-started=0.035ms request-sent=2.704ms started=20.5ms ready=461.011ms sent=463.163ms finished=493.448ms
+05-27 12:55:14.308   797   834 V WindowManagerShell: Track 0 became idle
+05-27 12:55:14.308   797   834 V WindowManagerShell: All active transition animations finished
+05-27 12:55:14.310   388   398 D PermissionCache: checking android.permission.READ_FRAME_BUFFER for uid=1000 => granted (111 us)
+05-27 12:55:14.321  2298  2298 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10141; state: ENABLED
+05-27 12:55:14.321  2298  2298 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 10141; state: ENABLED
+05-27 12:55:14.324   506  1143 D CompatibilityChangeReporter: Compat change id reported: 170503758; UID 10141; state: ENABLED
+05-27 12:55:14.327  2298  2298 W ziparchive: Unable to open '/data/app/~~lDIbmzhDeVKoKlTwscK-GQ==/cz.netbite.sshpal-V8j9KcJmF1mbGcnevTtkqA==/base.dm': No such file or directory
+05-27 12:55:14.431   797   872 D EGL_emulation: app_time_stats: avg=1335.10ms min=41.69ms max=3379.04ms count=3
+05-27 12:55:14.435  2298  2298 W ziparchive: Unable to open '/data/app/~~lDIbmzhDeVKoKlTwscK-GQ==/cz.netbite.sshpal-V8j9KcJmF1mbGcnevTtkqA==/base.dm': No such file or directory
+05-27 12:55:14.537   133   133 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+05-27 12:55:14.537   506  1143 I Gralloc4: mapper 4.x is not supported
+--------- beginning of kernel
+05-27 12:55:02.307     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+05-27 12:55:14.550   506   529 W system_server: Long monitor contention with owner binder:506_11 (2228) at android.window.TaskSnapshot com.android.server.wm.ActivityTaskManagerService.takeTaskSnapshot(int, boolean)(ActivityTaskManagerService.java:3820) waiters=1 in void com.android.server.wm.WindowAnimator.lambda$new$1(long) for 229ms
+05-27 12:55:14.635  2216  2216 I AidlLazyServiceRegistrar: Process has 1 (of 1 available) client(s) in use after notification android.hardware.drm.IDrmFactory/clearkey has clients: 1
+05-27 12:55:02.406     0     0 I servicemanager: Notifying android.hardware.drm.IDrmFactory/clearkey they do (previously: don't) have clients when service is guaranteed to be in use
+05-27 12:55:14.638  2216  2216 I AidlLazyServiceRegistrar: Process has 0 (of 1 available) client(s) in use after notification android.hardware.drm.IDrmFactory/clearkey has clients: 0
+05-27 12:55:14.638  2216  2216 I AidlLazyServiceRegistrar: Trying to shut down the service. No clients in use for any service in process.
+05-27 12:55:02.409     0     0 I servicemanager: Notifying android.hardware.drm.IDrmFactory/clearkey they don't (previously: do) have clients when we now have no record of a client
+05-27 12:55:02.412     0     0 I servicemanager: Unregistering android.hardware.drm.IDrmFactory/clearkey
+05-27 12:55:14.641  2216  2216 I AidlLazyServiceRegistrar: Unregistered all clients and exiting
+05-27 12:55:02.413     0     0 I BpBinder: onLastStrongRef automatically unlinking death recipients:
+05-27 12:55:02.415     0     0 I init    : Service 'vendor.drm-clearkey-service' (pid 2216) exited with status 0 oneshot service took 3.663000 seconds in background
+05-27 12:55:02.418     0     0 I init    : Sending signal 9 to service 'vendor.drm-clearkey-service' (pid 2216) process group...
+05-27 12:55:02.419     0     0 I libprocessgroup: Successfully killed process cgroup uid 1013 pid 2216 in 0ms
+05-27 12:55:14.693  2298  2298 D nativeloader: Configuring clns-6 for other apk /data/app/~~lDIbmzhDeVKoKlTwscK-GQ==/cz.netbite.sshpal-V8j9KcJmF1mbGcnevTtkqA==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~lDIbmzhDeVKoKlTwscK-GQ==/cz.netbite.sshpal-V8j9KcJmF1mbGcnevTtkqA==/lib/x86_64:/data/app/~~lDIbmzhDeVKoKlTwscK-GQ==/cz.netbite.sshpal-V8j9KcJmF1mbGcnevTtkqA==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/cz.netbite.sshpal
+05-27 12:55:14.699  2298  2298 V GraphicsEnvironment: Currently set values for:
+05-27 12:55:14.699  2298  2298 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+05-27 12:55:14.699  2298  2298 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+05-27 12:55:14.699  2298  2298 V GraphicsEnvironment: ANGLE GameManagerService for cz.netbite.sshpal: false
+05-27 12:55:14.699  2298  2298 V GraphicsEnvironment: cz.netbite.sshpal is not listed in per-application setting
+05-27 12:55:14.699  2298  2298 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+05-27 12:55:14.768   506   585 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10057; state: ENABLED
+05-27 12:55:15.075   980   980 D AvrcpBrowsablePlayerConnector: Received a message: msg.what=2
+05-27 12:55:15.075   980   980 V AvrcpBrowsablePlayerConnector: Timed out waiting for players
+05-27 12:55:15.075   980   980 I AvrcpBrowsablePlayerConnector: Successfully connected to 0 browsable players.
+05-27 12:55:15.075   980   980 I MediaPlayerList: init: Browsable Player list size is 0
+05-27 12:55:15.505   506   506 W Looper  : Drained
+05-27 12:55:15.680   506  1143 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10141. pid: 2298
+05-27 12:55:15.684  2298  2326 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+05-27 12:55:15.686  2298  2326 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+05-27 12:55:15.687  2298  2326 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+05-27 12:55:15.698   506  1143 D CompatibilityChangeReporter: Compat change id reported: 197654537; UID 10141; state: ENABLED
+05-27 12:55:15.723  2298  2298 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 10141; state: DISABLED
+05-27 12:55:15.724  2298  2298 W OpenGLRenderer: Unknown dataspace 0
+05-27 12:55:15.725   506  1143 D CompatibilityChangeReporter: Compat change id reported: 168419799; UID 10141; state: DISABLED
+05-27 12:55:15.725   506  1143 D CompatibilityChangeReporter: Compat change id reported: 273564678; UID 10141; state: DISABLED
+05-27 12:55:15.727  2298  2298 I Choreographer: Skipped 60 frames!  The application may be doing too much work on its main thread.
+05-27 12:55:15.834   506  1143 D AutofillManagerServiceImpl: Reset component for user 0:null
+05-27 12:55:15.835   506   526 D AutofillUI: destroySaveUiUiThread(): already destroyed
+05-27 12:55:15.856   506   592 D ActivityManager: freezing 1487 com.android.music
+05-27 12:55:15.876  2298  2298 D AndroidRuntime: Shutting down VM
+--------- beginning of crash
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: FATAL EXCEPTION: main
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: Process: cz.netbite.sshpal, PID: 2298
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: java.lang.ExceptionInInitializerError
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.ui.claude.ClaudeViewModel$Factory.create(ClaudeViewModel.kt:491)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.ViewModelProvider$Factory.create(ViewModelProvider.android.kt:153)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.ViewModelProvider$Factory.create(ViewModelProvider.android.kt:158)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.viewmodel.ViewModelProviderImpl_androidKt.createViewModel(ViewModelProviderImpl.android.kt:34)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.viewmodel.ViewModelProviderImpl.getViewModel$lifecycle_viewmodel_release(ViewModelProviderImpl.kt:65)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.viewmodel.ViewModelProviderImpl.getViewModel$lifecycle_viewmodel_release$default(ViewModelProviderImpl.kt:47)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.ViewModelProvider.get(ViewModelProvider.android.kt:91)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.ViewModelLazy.getValue(ViewModelLazy.kt:51)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.ViewModelLazy.getValue(ViewModelLazy.kt:35)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.MainActivity.getClaudeViewModel(MainActivity.kt:38)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.MainActivity.access$getClaudeViewModel(MainActivity.kt:16)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.MainActivity$onCreate$1$1.invoke(MainActivity.kt:53)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.MainActivity$onCreate$1$1.invoke(MainActivity.kt:47)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:401)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.material3.TextKt.ProvideTextStyle(Text.kt:349)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.material3.MaterialThemeKt$MaterialTheme$1.invoke(MaterialTheme.kt:69)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.material3.MaterialThemeKt$MaterialTheme$1.invoke(MaterialTheme.kt:68)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:380)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.material3.MaterialThemeKt.MaterialTheme(MaterialTheme.kt:60)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.ui.theme.ThemeKt.SshPalTheme(Theme.kt:40)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.MainActivity$onCreate$1.invoke(MainActivity.kt:47)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.MainActivity$onCreate$1.invoke(MainActivity.kt:46)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.ComposeView.Content(ComposeView.android.kt:441)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.AbstractComposeView$ensureCompositionCreated$1.invoke(ComposeView.android.kt:259)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.AbstractComposeView$ensureCompositionCreated$1.invoke(ComposeView.android.kt:258)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:380)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.CompositionLocalsKt.ProvideCommonCompositionLocals(CompositionLocals.kt:216)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.AndroidCompositionLocals_androidKt$ProvideAndroidCompositionLocals$3.invoke(AndroidCompositionLocals.android.kt:132)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.AndroidCompositionLocals_androidKt$ProvideAndroidCompositionLocals$3.invoke(AndroidCompositionLocals.android.kt:131)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:380)
+05-27 12:55:15.878  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.AndroidCompositionLocals_androidKt.ProvideAndroidCompositionLocals(AndroidCompositionLocals.android.kt:121)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1$1$3.invoke(Wrapper.android.kt:155)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1$1$3.invoke(Wrapper.android.kt:154)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:401)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1$1.invoke(Wrapper.android.kt:154)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1$1.invoke(Wrapper.android.kt:133)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.ActualJvm_jvmKt.invokeComposable(ActualJvm.jvm.kt:97)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.ComposerImpl.doCompose(Composer.kt:3595)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.ComposerImpl.composeContent$runtime_release(Composer.kt:3522)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.CompositionImpl.composeContent(Composition.kt:743)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.Recomposer.composeInitial$runtime_release(Recomposer.kt:1122)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.CompositionImpl.composeInitial(Composition.kt:649)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.runtime.CompositionImpl.setContent(Composition.kt:635)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1.invoke(Wrapper.android.kt:133)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1.invoke(Wrapper.android.kt:124)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.AndroidComposeView.setOnViewTreeOwnersAvailable(AndroidComposeView.android.kt:1626)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition.setContent(Wrapper.android.kt:124)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition.onStateChanged(Wrapper.android.kt:180)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.LifecycleRegistry$ObserverWithState.dispatchEvent(LifecycleRegistry.jvm.kt:320)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.lifecycle.LifecycleRegistry.addObserver(LifecycleRegistry.jvm.kt:198)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1.invoke(Wrapper.android.kt:131)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1.invoke(Wrapper.android.kt:124)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at androidx.compose.ui.platform.AndroidComposeView.onAttachedToWindow(AndroidComposeView.android.kt:1707)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.View.dispatchAttachedToWindow(View.java:21980)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3490)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3497)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3497)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3497)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3497)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.ViewRootImpl.performTraversals(ViewRootImpl.java:3014)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.ViewRootImpl.doTraversal(ViewRootImpl.java:2465)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.ViewRootImpl$TraversalRunnable.run(ViewRootImpl.java:9305)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1339)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1348)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.Choreographer.doCallbacks(Choreographer.java:952)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.Choreographer.doFrame(Choreographer.java:882)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1322)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.os.Handler.handleCallback(Handler.java:958)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.os.Looper.loopOnce(Looper.java:205)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.os.Looper.loop(Looper.java:294)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at android.app.ActivityThread.main(ActivityThread.java:8177)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at java.lang.reflect.Method.invoke(Native Method)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)
+05-27 12:55:15.882  2298  2298 E AndroidRuntime: Caused by: java.util.regex.PatternSyntaxException: Missing closing bracket in character class near index 25
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: \[[0-9;?]*[a-zA-Z]|\][^]*
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	at com.android.icu.util.regex.PatternNative.compileImpl(Native Method)
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	at com.android.icu.util.regex.PatternNative.<init>(PatternNative.java:53)
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	at com.android.icu.util.regex.PatternNative.create(PatternNative.java:49)
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	at java.util.regex.Pattern.compile(Pattern.java:3533)
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	at java.util.regex.Pattern.<init>(Pattern.java:1419)
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	at java.util.regex.Pattern.compile(Pattern.java:921)
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	at kotlin.text.Regex.<init>(Regex.kt:88)
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	at cz.netbite.sshpal.ui.claude.ClaudeViewModel.<clinit>(ClaudeViewModel.kt:459)
+05-27 12:55:15.883  2298  2298 E AndroidRuntime: 	... 89 more
+05-27 12:55:15.894  2298  2298 E SshPalApp: Uncaught exception written to /data/user/0/cz.netbite.sshpal/files/crash.log
+05-27 12:55:15.894  2298  2298 E SshPalApp: java.lang.ExceptionInInitializerError
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.ui.claude.ClaudeViewModel$Factory.create(ClaudeViewModel.kt:491)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.lifecycle.ViewModelProvider$Factory.create(ViewModelProvider.android.kt:153)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.lifecycle.ViewModelProvider$Factory.create(ViewModelProvider.android.kt:158)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.lifecycle.viewmodel.ViewModelProviderImpl_androidKt.createViewModel(ViewModelProviderImpl.android.kt:34)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.lifecycle.viewmodel.ViewModelProviderImpl.getViewModel$lifecycle_viewmodel_release(ViewModelProviderImpl.kt:65)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.lifecycle.viewmodel.ViewModelProviderImpl.getViewModel$lifecycle_viewmodel_release$default(ViewModelProviderImpl.kt:47)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.lifecycle.ViewModelProvider.get(ViewModelProvider.android.kt:91)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.lifecycle.ViewModelLazy.getValue(ViewModelLazy.kt:51)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.lifecycle.ViewModelLazy.getValue(ViewModelLazy.kt:35)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.MainActivity.getClaudeViewModel(MainActivity.kt:38)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.MainActivity.access$getClaudeViewModel(MainActivity.kt:16)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.MainActivity$onCreate$1$1.invoke(MainActivity.kt:53)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.MainActivity$onCreate$1$1.invoke(MainActivity.kt:47)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:401)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.material3.TextKt.ProvideTextStyle(Text.kt:349)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.material3.MaterialThemeKt$MaterialTheme$1.invoke(MaterialTheme.kt:69)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.material3.MaterialThemeKt$MaterialTheme$1.invoke(MaterialTheme.kt:68)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:380)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.material3.MaterialThemeKt.MaterialTheme(MaterialTheme.kt:60)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.ui.theme.ThemeKt.SshPalTheme(Theme.kt:40)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.MainActivity$onCreate$1.invoke(MainActivity.kt:47)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.MainActivity$onCreate$1.invoke(MainActivity.kt:46)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.ComposeView.Content(ComposeView.android.kt:441)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.AbstractComposeView$ensureCompositionCreated$1.invoke(ComposeView.android.kt:259)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.AbstractComposeView$ensureCompositionCreated$1.invoke(ComposeView.android.kt:258)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:380)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.CompositionLocalsKt.ProvideCommonCompositionLocals(CompositionLocals.kt:216)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.AndroidCompositionLocals_androidKt$ProvideAndroidCompositionLocals$3.invoke(AndroidCompositionLocals.android.kt:132)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.AndroidCompositionLocals_androidKt$ProvideAndroidCompositionLocals$3.invoke(AndroidCompositionLocals.android.kt:131)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:380)
+05-27 12:55:15.894  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.AndroidCompositionLocals_androidKt.ProvideAndroidCompositionLocals(AndroidCompositionLocals.android.kt:121)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1$1$3.invoke(Wrapper.android.kt:155)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1$1$3.invoke(Wrapper.android.kt:154)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.CompositionLocalKt.CompositionLocalProvider(CompositionLocal.kt:401)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1$1.invoke(Wrapper.android.kt:154)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1$1.invoke(Wrapper.android.kt:133)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:109)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.jvm.kt:35)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.ActualJvm_jvmKt.invokeComposable(ActualJvm.jvm.kt:97)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.ComposerImpl.doCompose(Composer.kt:3595)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.ComposerImpl.composeContent$runtime_release(Composer.kt:3522)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.CompositionImpl.composeContent(Composition.kt:743)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.Recomposer.composeInitial$runtime_release(Recomposer.kt:1122)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.CompositionImpl.composeInitial(Composition.kt:649)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.runtime.CompositionImpl.setContent(Composition.kt:635)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1.invoke(Wrapper.android.kt:133)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1.invoke(Wrapper.android.kt:124)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.AndroidComposeView.setOnViewTreeOwnersAvailable(AndroidComposeView.android.kt:1626)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition.setContent(Wrapper.android.kt:124)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition.onStateChanged(Wrapper.android.kt:180)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.lifecycle.LifecycleRegistry$ObserverWithState.dispatchEvent(LifecycleRegistry.jvm.kt:320)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.lifecycle.LifecycleRegistry.addObserver(LifecycleRegistry.jvm.kt:198)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1.invoke(Wrapper.android.kt:131)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.WrappedComposition$setContent$1.invoke(Wrapper.android.kt:124)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at androidx.compose.ui.platform.AndroidComposeView.onAttachedToWindow(AndroidComposeView.android.kt:1707)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.View.dispatchAttachedToWindow(View.java:21980)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3490)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3497)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3497)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3497)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.ViewGroup.dispatchAttachedToWindow(ViewGroup.java:3497)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.ViewRootImpl.performTraversals(ViewRootImpl.java:3014)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.ViewRootImpl.doTraversal(ViewRootImpl.java:2465)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.ViewRootImpl$TraversalRunnable.run(ViewRootImpl.java:9305)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1339)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1348)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.Choreographer.doCallbacks(Choreographer.java:952)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.Choreographer.doFrame(Choreographer.java:882)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1322)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.os.Handler.handleCallback(Handler.java:958)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.os.Looper.loopOnce(Looper.java:205)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.os.Looper.loop(Looper.java:294)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at android.app.ActivityThread.main(ActivityThread.java:8177)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at java.lang.reflect.Method.invoke(Native Method)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)
+05-27 12:55:15.898  2298  2298 E SshPalApp: Caused by: java.util.regex.PatternSyntaxException: Missing closing bracket in character class near index 25
+05-27 12:55:15.898  2298  2298 E SshPalApp: \[[0-9;?]*[a-zA-Z]|\][^]*
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at com.android.icu.util.regex.PatternNative.compileImpl(Native Method)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at com.android.icu.util.regex.PatternNative.<init>(PatternNative.java:53)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at com.android.icu.util.regex.PatternNative.create(PatternNative.java:49)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at java.util.regex.Pattern.compile(Pattern.java:3533)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at java.util.regex.Pattern.<init>(Pattern.java:1419)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at java.util.regex.Pattern.compile(Pattern.java:921)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at kotlin.text.Regex.<init>(Regex.kt:88)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	at cz.netbite.sshpal.ui.claude.ClaudeViewModel.<clinit>(ClaudeViewModel.kt:459)
+05-27 12:55:15.898  2298  2298 E SshPalApp: 	... 89 more
+05-27 12:55:15.906   506  1143 W ActivityTaskManager:   Force finishing activity cz.netbite.sshpal/.MainActivity
+05-27 12:55:15.906   506  2327 I DropBoxManagerService: add tag=data_app_crash isTagEnabled=true flags=0x2
+05-27 12:55:15.906   797   834 V WindowManagerShell: Transition requested: android.os.BinderProxy@11af1ec TransitionRequestInfo { type = CLOSE, triggerTask = null, remoteTransition = null, displayChange = null }
+05-27 12:55:15.909  2298  2298 I Process : Sending signal. PID: 2298 SIG: 9
+05-27 12:55:15.917   506   875 I ActivityManager: Process cz.netbite.sshpal (pid 2298) has died: fg  TOP 
+05-27 12:55:15.918   506   526 D DisplayManagerService: Drop pending events for gone uid 10141
+05-27 12:55:15.918   506   519 I WindowManager: WIN DEATH: Window{7abf762 u0 cz.netbite.sshpal/cz.netbite.sshpal.MainActivity}
+05-27 12:55:15.919   506   519 W InputManager-JNI: Input channel object '7abf762 cz.netbite.sshpal/cz.netbite.sshpal.MainActivity (client)' was disposed without first being removed with the input manager!
+05-27 12:55:15.919   506   537 I libprocessgroup: Successfully killed process cgroup uid 10141 pid 2298 in 0ms
+05-27 12:55:15.921   326   326 I Zygote  : Process 2298 exited due to signal 9 (Killed)
+05-27 12:55:15.923   506   528 W ActivityManager: setHasOverlayUi called on unknown pid: 2298
+05-27 12:55:15.929   388   388 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+05-27 12:55:15.945   797   834 V WindowManagerShell: onTransitionReady android.os.BinderProxy@11af1ec: {id=7 t=CLOSE f=0x10 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@e8c9c31} m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0x6b719b5 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@85b9f16} m=CLOSE f=NONE leash=Surface(name=Task=8)/@0xcc9484a sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{6d4f8e9 token=android.os.Binder@d5cbd70})/@0x8f683bb sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 12:55:15.945   797   834 V WindowManagerShell: Playing animation for (#7)android.os.BinderProxy@11af1ec@0
+05-27 12:55:15.945   797   834 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@6f6102d
+05-27 12:55:15.945   797   834 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@f80c962
+05-27 12:55:15.945   797   834 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@afdcaf3
+05-27 12:55:15.945   797   834 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@cd7a3b0
+05-27 12:55:15.945   797   834 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+05-27 12:55:15.945   797   834 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@5d08229
+05-27 12:55:15.945   797   834 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@62619ae
+05-27 12:55:15.945   797   834 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@4a0234f
+05-27 12:55:15.945   797   834 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=7 t=CLOSE f=0x10 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@e8c9c31} m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0x6b719b5 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@85b9f16} m=CLOSE f=NONE leash=Surface(name=Task=8)/@0xcc9484a sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{6d4f8e9 token=android.os.Binder@d5cbd70})/@0x8f683bb sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 12:55:15.945   797   834 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@10b4adc, appThread = android.app.IApplicationThread$Stub$Proxy@4c617e5, debugName = QuickstepLaunchHome }}
+05-27 12:55:15.945   797   834 D RemoteTransitionHandler: Found filterPair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@10b4adc, appThread = android.app.IApplicationThread$Stub$Proxy@4c617e5, debugName = QuickstepLaunchHome }}
+05-27 12:55:15.945   797   834 V WindowManagerShell:  Delegate animation for #7 to RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@10b4adc, appThread = android.app.IApplicationThread$Stub$Proxy@4c617e5, debugName = QuickstepLaunchHome }
+05-27 12:55:15.946   506   525 V WindowManager: Sent Transition #7 createdAt=05-27 12:55:15.906 via request=TransitionRequestInfo { type = CLOSE, triggerTask = null, remoteTransition = null, displayChange = null }
+05-27 12:55:15.946   506   525 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+05-27 12:55:15.949   506   525 V WindowManager:     info={id=7 t=CLOSE f=0x10 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{4c376f Task{dfe719f #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0xe01c209 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{RemoteToken{fe43149 Task{b6b5389 #8 type=standard A=10141:cz.netbite.sshpal}}} m=CLOSE f=NONE leash=Surface(name=Task=8)/@0xc1add13 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{6d4f8e9 token=android.os.Binder@d5cbd70})/@0x19a544b sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 12:55:15.951   797   834 V WindowManagerShell:  animated by com.android.wm.shell.transition.RemoteTransitionHandler@4a0234f
+05-27 12:55:15.970   797   872 D EGL_emulation: app_time_stats: avg=717.49ms min=1.76ms max=1433.23ms count=2
+05-27 12:55:15.970   797   834 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#7)android.os.BinderProxy@11af1ec@0
+05-27 12:55:15.971   506   525 V WindowManager: Finish Transition #7: created at 05-27 12:55:15.906 collect-started=0.021ms request-sent=0.044ms started=1.873ms ready=15.52ms sent=38.279ms finished=64.811ms
+05-27 12:55:15.972   506   875 W InputManager-JNI: Input channel object '99cc58f Splash Screen cz.netbite.sshpal (client)' was disposed without first being removed with the input manager!
+05-27 12:55:15.975   797   834 V WindowManagerShell: Track 0 became idle
+05-27 12:55:15.975   797   834 V WindowManagerShell: All active transition animations finished
+05-27 12:55:15.976   506  2228 I ImeTracker: com.android.launcher3:eb5d291a: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_SAME_WINDOW_FOCUSED_WITHOUT_EDITOR
+05-27 12:55:15.976   506  2228 I ImeTracker: com.android.launcher3:eb5d291a: onCancelled at PHASE_SERVER_SHOULD_HIDE
+05-27 12:55:15.980   506  2228 W WindowManager: Failed looking up window session=Session{2e3df 797:u0a10117} callers=com.android.server.wm.WindowManagerService.windowForClientLocked:6034 com.android.server.wm.WindowManagerService.relayoutWindow:2190 com.android.server.wm.Session.relayout:249 
+05-27 12:55:15.980   797   866 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@37c818d
+05-27 12:55:15.985   506  2228 W WindowManager: Failed looking up window session=Session{2e3df 797:u0a10117} callers=com.android.server.wm.WindowManagerService.windowForClientLocked:6034 com.android.server.wm.Session.setOnBackInvokedCallbackInfo:944 android.view.IWindowSession$Stub.onTransact:1145 
+05-27 12:55:15.985   506  2228 I WindowManager: setOnBackInvokedCallback(): No window state for package:com.android.systemui
+05-27 12:55:15.985   506   875 W WindowManager: Failed looking up window session=Session{2e3df 797:u0a10117} callers=com.android.server.wm.WindowManagerService.windowForClientLocked:6034 com.android.server.wm.WindowManagerService.removeWindow:1974 com.android.server.wm.Session.remove:231 
+05-27 12:55:15.989   506  2331 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+05-27 12:55:16.194   506   592 D ActivityManager: freezing 1483 com.android.sdksetup
+05-27 12:55:16.407   506   528 W ActivityTaskManager: Activity top resumed state loss timeout for ActivityRecord{b962553 u0 cz.netbite.sshpal/.MainActivity t-1 f}}
+05-27 12:55:16.495  1529  1529 D CompatibilityChangeReporter: Compat change id reported: 150939131; UID 10072; state: ENABLED
+05-27 12:55:16.495  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.providers.media.documents/root
+05-27 12:55:17.113   957  1155 D DhcpClient: Received packet: 02:15:b2:00:00:00 OFFER, ip /10.0.2.16, mask /255.255.255.0, DNS servers: /10.0.2.3 , gateways [/10.0.2.2], lease time 86400, domain null
+05-27 12:55:17.114   957  1155 D DhcpClient: Received packet: 02:15:b2:00:00:00 ACK: your new IP /10.0.2.16, netmask /255.255.255.0, gateways [/10.0.2.2] DNS servers: /10.0.2.3 , lease time 86400
+05-27 12:55:17.321   506  1920 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+05-27 12:55:17.818  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 12:55:17.895  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 12:55:18.064  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 12:55:18.083   506   592 D ActivityManager: freezing 1792 com.android.quicksearchbox
+05-27 12:55:18.189  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.providers.media.documents/root
+05-27 12:55:18.569  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 12:55:18.768  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 12:55:18.769  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 12:55:19.175   506   592 D ActivityManager: freezing 2043 com.android.carrierdefaultapp
+05-27 12:55:19.302   506   592 D ActivityManager: freezing 1265 com.android.cellbroadcastreceiver
+05-27 12:55:19.537   387   394 W GpuWork : Failed to attach bpf program to power/gpu_work_period tracepoint [2(No such file or directory)]
+05-27 12:55:19.712   784   784 I wpa_supplicant: wlan0: CTRL-EVENT-BEACON-LOSS 
+05-27 12:55:20.408   506   592 D ActivityManager: freezing 1540 com.android.printspooler
+05-27 12:55:21.489   797   797 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+05-27 12:55:21.614   506  2329 W OverlayManager: service 'idmap' died
+05-27 12:55:09.385     0     0 I init    : Sending signal 9 to service 'idmap2d' (pid 442) process group...
+05-27 12:55:09.392     0     0 I libprocessgroup: Successfully killed process cgroup uid 1000 pid 442 in 5ms
+05-27 12:55:09.393     0     0 I init    : Control message: Processed ctl.stop for 'idmap2d' from pid: 506 (system_server)
+05-27 12:55:09.395     0     0 I init    : Service 'idmap2d' (pid 442) received signal 9
+05-27 12:55:22.068   506   527 I DropBoxManagerService: add tag=system_app_strictmode isTagEnabled=true flags=0x2
+05-27 12:55:22.095  1529  1529 I ProvidersCache: Updating roots due to change on user 0at content://com.android.providers.media.documents/root
+05-27 12:55:23.085   797   797 D StatusBarIconController: ignoring old pipeline callbacks, because the new mobile icons are enabled
+05-27 12:55:23.838   506   592 D ActivityManager: freezing 1835 com.android.externalstorage
+05-27 12:55:23.840   506   782 D OomAdjuster: Not killing cached processes
+05-27 12:55:23.928  1012  1025 W ndroid.settings: Cleared Reference was only reachable from finalizer (only reported once)
+05-27 12:55:24.400  1393  1400 W putmethod.latin: Cleared Reference was only reachable from finalizer (only reported once)
+05-27 12:55:24.672   506   572 D WifiNl80211Manager: Scan result ready event
+05-27 12:55:24.672   506   572 D WifiNative: Scan result ready event
+05-27 12:55:24.999   506   765 I SdkSandboxManager: Reconciling sdk data package directories for 0
+05-27 12:55:25.672   155   931 I keystore2: system/security/keystore2/src/watchdog.rs:319 - Watchdog thread idle -> terminating. Have a great day.
+05-27 12:55:25.748   506   585 I ActivityManager: PendingStartActivityUids startActivity to updateOomAdj delay:9341ms, uid:10112
