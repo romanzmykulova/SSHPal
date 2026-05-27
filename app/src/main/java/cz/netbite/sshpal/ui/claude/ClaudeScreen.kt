@@ -112,6 +112,9 @@ private fun LoadedPane(state: ClaudePaneState.Loaded, viewModel: ClaudeViewModel
             }
         }
         onDispose {
+            // Final cookie flush before tearing down the WebViews so the
+            // Anthropic session survives "swipe app away" / process kill.
+            CookieManager.getInstance().flush()
             webViews.values.forEach { (_, wv) ->
                 (wv.parent as? ViewGroup)?.removeView(wv)
                 wv.stopLoading()
@@ -401,6 +404,12 @@ private fun TabContentReady(
                 override fun doUpdateVisitedHistory(v: WebView?, u: String?, isReload: Boolean) {
                     canGoBack = v?.canGoBack() == true
                 }
+                override fun onPageFinished(v: WebView?, url: String?) {
+                    // Flush cookies to disk on every page-finish so the
+                    // Anthropic login cookie survives an app kill (default
+                    // flush only happens on app backgrounding).
+                    CookieManager.getInstance().flush()
+                }
             }
             fresh.loadUrl(tab.url)
             webViews[tab.id] = tab.url to fresh
@@ -618,6 +627,17 @@ private fun createWebView(
         cacheMode = android.webkit.WebSettings.LOAD_DEFAULT
         allowFileAccess = false
         allowContentAccess = false
+        // Anthropic login uses Google OAuth via `window.open` popup;
+        // WebView blocks those by default, leaving the page blank.
+        // Enable popups and handle them via onCreateWindow below.
+        setSupportMultipleWindows(true)
+        javaScriptCanOpenWindowsAutomatically = true
+        // claude.ai detects "in-app browser" UA strings and refuses
+        // the login flow. Pretend to be modern mobile Chrome — same
+        // engine the WebView actually runs on Android 13+ anyway.
+        userAgentString = "Mozilla/5.0 (Linux; Android 13; SSHPal) " +
+            "AppleWebKit/537.36 (KHTML, like Gecko) " +
+            "Chrome/120.0.0.0 Mobile Safari/537.36"
     }
     val cookies = CookieManager.getInstance()
     cookies.setAcceptCookie(true)
@@ -625,6 +645,49 @@ private fun createWebView(
     view.webChromeClient = object : WebChromeClient() {
         override fun onProgressChanged(v: WebView?, newProgress: Int) {
             onProgress(newProgress)
+        }
+
+        // OAuth popups: route the popup target URL back into the same
+        // WebView. Without this override, window.open returns null and
+        // the login form silently bails.
+        override fun onCreateWindow(
+            view: WebView?,
+            isDialog: Boolean,
+            isUserGesture: Boolean,
+            resultMsg: android.os.Message?,
+        ): Boolean {
+            val transport = resultMsg?.obj as? WebView.WebViewTransport ?: return false
+            val popup = WebView(view!!.context).apply {
+                settings.javaScriptEnabled = true
+                settings.domStorageEnabled = true
+                webViewClient = object : WebViewClient() {
+                    override fun shouldOverrideUrlLoading(v: WebView?, request: WebResourceRequest?): Boolean {
+                        val target = request?.url?.toString() ?: return false
+                        // Load the popup's target URL in the parent WebView
+                        // — keeps us in one window with one cookie store.
+                        view.loadUrl(target)
+                        return true
+                    }
+                }
+            }
+            transport.webView = popup
+            resultMsg.sendToTarget()
+            return true
+        }
+
+        // JavaScript console output goes to logcat (tag SshPalWebView)
+        // so the smoke-test workflow and adb logcat can see what the
+        // page is actually doing — invaluable when "white screen"
+        // happens on a real device.
+        override fun onConsoleMessage(message: android.webkit.ConsoleMessage?): Boolean {
+            if (message != null) {
+                android.util.Log.d(
+                    "SshPalWebView",
+                    "[${message.messageLevel()}] ${message.message()} " +
+                        "(${message.sourceId()}:${message.lineNumber()})",
+                )
+            }
+            return true
         }
     }
     return view
