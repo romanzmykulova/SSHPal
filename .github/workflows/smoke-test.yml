@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   smoke:
@@ -128,3 +128,21 @@ jobs:
           name: logcat-api-${{ matrix.api-level }}
           path: /tmp/logcat-full.txt
           if-no-files-found: warn
+
+      # On failure, also commit the logcat to `ci-logs/` on main so it's
+      # reachable via the public git clone — GitHub's artifact + logs API
+      # endpoints require auth tokens we don't have on the dev host.
+      - name: Publish logcat to repo on failure
+        if: failure()
+        run: |
+          mkdir -p ci-logs
+          cp /tmp/logcat-full.txt ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}.log || true
+          if [ -f ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}.log ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git fetch origin main
+            git checkout main
+            git add ci-logs/
+            git commit -m "ci: smoke test logcat from run ${{ github.run_id }}" || echo "nothing to commit"
+            git push origin main
+          fi
