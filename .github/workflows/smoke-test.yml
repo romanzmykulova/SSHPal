@@ -140,21 +140,33 @@ jobs:
           path: /tmp/logcat-full.txt
           if-no-files-found: warn
 
-      # On failure, also commit the logcat to `ci-logs/` on main so it's
-      # reachable via the public git clone — GitHub's artifact + logs API
-      # endpoints require auth tokens we don't have on the dev host.
-      - name: Publish logcat to repo on failure
-        if: failure()
+      # Always commit logs back to main so we can pull and diagnose without
+      # GitHub auth (the artifact + step-log endpoints need a token we
+      # don't have on the dev host). Push via HEAD:main so we don't need
+      # to leave detached HEAD set by actions/checkout. A publish-debug
+      # snapshot of /tmp contents goes alongside the logcat so we can see
+      # whether the previous step's files even exist.
+      - name: Publish logs to repo (always)
+        if: always()
         run: |
           mkdir -p ci-logs
-          cp /tmp/logcat-full.txt ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}.log 2>/dev/null || true
-          cp /tmp/smoke-verdict.log ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}-verdict.log 2>/dev/null || true
-          if ls ci-logs/smoke-${{ github.run_id }}-* >/dev/null 2>&1; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git fetch origin main
-            git checkout main
-            git add ci-logs/
-            git commit -m "ci: smoke test logcat from run ${{ github.run_id }}" || echo "nothing to commit"
-            git push origin main
-          fi
+          PREFIX="ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}"
+          {
+            echo "=== publish step at $(date -u) ==="
+            echo "pwd: $(pwd)"
+            echo "files in /tmp:"
+            ls -la /tmp/ 2>&1 | grep -E "logcat|smoke|sshpal" || echo "(no matches)"
+            echo "logcat-full.txt: $([ -f /tmp/logcat-full.txt ] && echo "yes ($(wc -l < /tmp/logcat-full.txt) lines)" || echo "missing")"
+            echo "smoke-verdict.log: $([ -f /tmp/smoke-verdict.log ] && echo "yes ($(wc -l < /tmp/smoke-verdict.log) lines)" || echo "missing")"
+          } > "${PREFIX}-publish.log"
+
+          cp /tmp/logcat-full.txt "${PREFIX}.log" 2>/dev/null || echo "(no logcat to copy)" >> "${PREFIX}-publish.log"
+          cp /tmp/smoke-verdict.log "${PREFIX}-verdict.log" 2>/dev/null || echo "(no verdict to copy)" >> "${PREFIX}-publish.log"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git add ci-logs/
+          git diff --cached --stat
+          git commit -m "ci: smoke logs from run ${{ github.run_id }}" || echo "nothing to commit"
+          git push origin HEAD:main || echo "push failed"
