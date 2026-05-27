@@ -109,16 +109,24 @@ jobs:
 
             echo "=== Checking for crash markers ==="
             CRASHED=0
-            if grep -qE "FATAL EXCEPTION|AndroidRuntime.*cz\\.netbite\\.sshpal|signal 11" /tmp/logcat-full.txt; then
-              echo "❌ Crash detected in logcat"
+            if grep -qE "FATAL EXCEPTION|signal 11" /tmp/logcat-full.txt; then
+              echo "❌ Crash detected (FATAL EXCEPTION / signal 11)"
               CRASHED=1
             fi
-            if ! adb shell pidof cz.netbite.sshpal > /dev/null; then
-              echo "❌ App process is not running 10s after launch"
+            if grep -qE "AndroidRuntime.*cz\\.netbite\\.sshpal" /tmp/logcat-full.txt; then
+              echo "❌ AndroidRuntime error for our package"
               CRASHED=1
+            fi
+            if grep -q "Displayed cz.netbite.sshpal" /tmp/logcat-full.txt; then
+              echo "✅ MainActivity reached Displayed state"
             else
-              echo "✅ App process is alive"
+              echo "❌ MainActivity never reached Displayed — likely pre-UI crash"
+              CRASHED=1
             fi
+
+            echo "--- ps / pidof diagnostic ---"
+            adb shell ps -A 2>/dev/null | grep -i sshpal || echo "(no sshpal in ps)"
+            adb shell pidof cz.netbite.sshpal 2>/dev/null || echo "(pidof empty — not authoritative on emulator)"
             exit $CRASHED
 
       - name: Upload full logcat
