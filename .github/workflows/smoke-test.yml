@@ -79,7 +79,11 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
-            exec > >(tee /tmp/smoke-script.log) 2>&1
+            # Capture the script trace to a file. Avoid process substitution
+            # ( exec > >(tee …) ) because the action's wrapper shell may not
+            # be bash; plain >>file works in any POSIX shell.
+            exec 2>>/tmp/smoke-script.log
+            set -x
             set +e
             adb wait-for-device
             adb shell input keyevent 82 || true
