@@ -1,0 +1,279 @@
+--------- beginning of main
+05-27 13:50:25.715   800   864 D StylusManager: Stylus InputDevice changed: 6 virtio_input_multi_touch_3
+05-27 13:50:25.715   800   864 D StylusManager: Stylus InputDevice changed: 5 virtio_input_multi_touch_2
+05-27 13:50:25.723  1002  1002 D CarrierSvcBindHelper: onPackageModified: cz.netbite.sshpal
+05-27 13:50:25.723  1002  1002 D CarrierSvcBindHelper: No carrier app for: 0
+05-27 13:50:25.726   978   978 V MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_CHANGED
+05-27 13:50:25.726   978   978 V MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_CHANGED
+05-27 13:50:25.727   800   864 D StylusManager: Stylus InputDevice changed: 14 virtio_input_multi_touch_11
+05-27 13:50:25.731   505   602 I InputReader: Reconfiguring input devices, changes=KEYBOARD_LAYOUTS
+05-27 13:50:25.737   800   864 D StylusManager: Stylus InputDevice changed: 13 virtio_input_multi_touch_10
+05-27 13:50:25.738  1002  1277 D ImsResolver: maybeAddedImsService, packageName: cz.netbite.sshpal
+05-27 13:50:25.738   800   864 D StylusManager: Stylus InputDevice changed: 12 virtio_input_multi_touch_9
+05-27 13:50:25.739   800   864 D StylusManager: Stylus InputDevice changed: 10 virtio_input_multi_touch_7
+05-27 13:50:25.743   800   864 D StylusManager: Stylus InputDevice changed: 4 virtio_input_multi_touch_1
+05-27 13:50:25.743   800   864 D StylusManager: Stylus InputDevice changed: 11 virtio_input_multi_touch_8
+05-27 13:50:25.746   801   872 I PermissionControllerServiceImpl: Updating user sensitive for uid 10141
+05-27 13:50:25.760   800   864 D StylusManager: Stylus InputDevice changed: 7 virtio_input_multi_touch_4
+05-27 13:50:25.763   800   864 D StylusManager: Stylus InputDevice changed: 9 virtio_input_multi_touch_6
+--------- beginning of system
+05-27 13:50:25.768   505  1902 D CompatibilityChangeReporter: Compat change id reported: 161252188; UID 10141; state: DISABLED
+05-27 13:50:25.768   505  1902 W ActivityTaskManager: callingPackage for (uid=2000, pid=2323) has no WPC
+05-27 13:50:25.769   505  1902 D CompatibilityChangeReporter: Compat change id reported: 244637991; UID 2000; state: ENABLED
+05-27 13:50:25.769   505  1902 D CompatibilityChangeReporter: Compat change id reported: 265464455; UID 10141; state: DISABLED
+05-27 13:50:25.769   505  1902 D CompatibilityChangeReporter: Compat change id reported: 265452344; UID 10141; state: DISABLED
+05-27 13:50:25.769   505  1902 D CompatibilityChangeReporter: Compat change id reported: 266124927; UID 10141; state: DISABLED
+05-27 13:50:25.769   505  1902 D CompatibilityChangeReporter: Compat change id reported: 265451093; UID 10141; state: DISABLED
+05-27 13:50:25.769   505  1902 D CompatibilityChangeReporter: Compat change id reported: 265456536; UID 10141; state: DISABLED
+05-27 13:50:25.769   505  1902 D CompatibilityChangeReporter: Compat change id reported: 255940284; UID 10141; state: DISABLED
+05-27 13:50:25.769   505  1902 D CompatibilityChangeReporter: Compat change id reported: 236283604; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 263959004; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 264304459; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 264301586; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 254631730; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 273509367; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 263259275; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 174042980; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 174042936; UID 10141; state: DISABLED
+05-27 13:50:25.770   505  1902 D CompatibilityChangeReporter: Compat change id reported: 181136395; UID 10141; state: DISABLED
+05-27 13:50:25.771   505  1902 D CompatibilityChangeReporter: Compat change id reported: 194480991; UID 10141; state: ENABLED
+05-27 13:50:25.768   800   864 D StylusManager: Stylus InputDevice changed: 8 virtio_input_multi_touch_5
+05-27 13:50:25.773   505  1902 D CompatibilityChangeReporter: Compat change id reported: 184838306; UID 10141; state: DISABLED
+05-27 13:50:25.773   505  1902 D CompatibilityChangeReporter: Compat change id reported: 185004937; UID 10141; state: DISABLED
+05-27 13:50:25.773   505   533 W PackageManager: Failed registering loading progress callback. Package is fully loaded.
+05-27 13:50:25.773   505   533 W VoiceInteractionManager: no available voice recognition services found for user 0
+05-27 13:50:25.774   505  1902 D CompatibilityChangeReporter: Compat change id reported: 197654537; UID 10141; state: ENABLED
+05-27 13:50:25.774   505  1902 V SplashScreenExceptionList: SplashScreen checking exception for package cz.netbite.sshpal (target sdk:34) -> false
+05-27 13:50:25.774   505  1902 D CompatibilityChangeReporter: Compat change id reported: 205907456; UID 10141; state: ENABLED
+05-27 13:50:25.775   505  1902 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=cz.netbite.sshpal/.MainActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+05-27 13:50:25.776   505   527 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10141; state: DISABLED
+05-27 13:50:25.776   505   535 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10141; state: ENABLED
+05-27 13:50:25.777   505   533 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+05-27 13:50:25.779   505   533 W VoiceInteractionManager: no available voice recognition services found for user 0
+05-27 13:50:25.786   505   583 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10141; state: ENABLED
+05-27 13:50:25.789   326   326 D Zygote  : Forked child process 2327
+05-27 13:50:25.790   800   830 V WindowManagerShell: Transition requested: android.os.BinderProxy@82d6300 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=cz.netbite.sshpal/.MainActivity } baseActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} topActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} origActivity=null realActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} numActivities=1 lastActiveTime=34762 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@17d5739} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{207b17e cz.netbite.sshpal.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+05-27 13:50:25.791   505   535 I ActivityManager: Start proc 2327:cz.netbite.sshpal/u0a141 for next-top-activity {cz.netbite.sshpal/cz.netbite.sshpal.MainActivity}
+05-27 13:50:25.793   800   864 D StylusManager: Stylus InputDevice changed: 6 virtio_input_multi_touch_3
+05-27 13:50:25.793   800   864 D StylusManager: Stylus InputDevice changed: 5 virtio_input_multi_touch_2
+05-27 13:50:25.794   800   864 D StylusManager: Stylus InputDevice changed: 14 virtio_input_multi_touch_11
+05-27 13:50:25.799   800   845 D SplashScreenView: Build android.window.SplashScreenView{a48b50a V.E...... ......ID 0,0-0,0}
+05-27 13:50:25.799   800   845 D SplashScreenView: Icon: view: android.widget.ImageView{7da517b V.ED..... ......I. 0,0-0,0 #10204f0 android:id/splashscreen_icon_view} drawable: com.android.wm.shell.startingsurface.SplashscreenIconDrawableFactory$ImmobileIconDrawable@cea5b98 size: 160
+05-27 13:50:25.799   800   845 D SplashScreenView: Branding: view: android.view.View{7417ff1 G.ED..... ......I. 0,0-0,0 #10204ef android:id/splashscreen_branding_view} drawable: null size w: 0 h: 0
+05-27 13:50:25.799   505   516 I system_server: Background concurrent copying GC freed 407159(19MB) AllocSpace objects, 24(528KB) LOS objects, 49% free, 17MB/34MB, paused 1.419ms,205us total 151.872ms
+05-27 13:50:25.802   505   526 I DropBoxManagerService: add tag=system_server_strictmode isTagEnabled=true flags=0x2
+05-27 13:50:25.808   389   389 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+05-27 13:50:25.813   505  2055 D CoreBackPreview: Window{cf0b150 u0 Splash Screen cz.netbite.sshpal}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@53dc35a, mPriority=0, mIsAnimationCallback=false}
+05-27 13:50:26.125   800   830 W Looper  : Slow delivery took 127ms wmshell.main h=android.os.Handler c=com.android.wm.shell.pip.phone.PipController$$ExternalSyntheticLambda1@96b74f3 m=0
+05-27 13:50:26.128   800   830 W Looper  : Drained
+05-27 13:50:26.132   505   505 W Looper  : Slow delivery took 265ms main h=android.app.PropertyInvalidatedCache$AutoCorker$1 c=null m=0
+05-27 13:50:26.132   505   505 W Looper  : Drained
+05-27 13:50:26.133  2327  2327 I .netbite.sshpal: Late-enabling -Xcheck:jni
+05-27 13:50:26.147  2327  2327 I .netbite.sshpal: Using CollectorTypeCC GC.
+05-27 13:50:26.147  2327  2327 W .netbite.sshpal: Unexpected CPU variant for x86: x86_64.
+05-27 13:50:26.147  2327  2327 W .netbite.sshpal: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+05-27 13:50:26.147  1708  1708 D CompatibilityChangeReporter: Compat change id reported: 253665015; UID 10062; state: ENABLED
+05-27 13:50:26.148  1708  1708 D CompatibilityChangeReporter: Compat change id reported: 194532703; UID 10062; state: ENABLED
+05-27 13:50:26.148   505  2055 D CompatibilityChangeReporter: Compat change id reported: 253665015; UID 10062; state: ENABLED
+05-27 13:50:26.148   505  2055 D CompatibilityChangeReporter: Compat change id reported: 194532703; UID 10062; state: ENABLED
+05-27 13:50:26.149   505  2055 D CompatibilityChangeReporter: Compat change id reported: 261072174; UID 1000; state: ENABLED
+05-27 13:50:26.150  1046  1524 D EGL_emulation: app_time_stats: avg=279.62ms min=17.33ms max=968.66ms count=4
+05-27 13:50:26.151   399   412 I adbd    : jdwp connection from 2327
+05-27 13:50:26.153   800   830 V WindowManagerShell: onTransitionReady android.os.BinderProxy@82d6300: {id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@a3671e5} m=OPEN f=NONE leash=Surface(name=Task=8)/@0x4874bae sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@c0074ba} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xd3e6d4f sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 13:50:26.153   800   830 V WindowManagerShell: Playing animation for (#6)android.os.BinderProxy@82d6300@0
+05-27 13:50:26.153   800   830 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@97728cd
+05-27 13:50:26.153   800   830 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@1b90582
+05-27 13:50:26.153   800   830 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@12493
+05-27 13:50:26.153   800   830 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@6538cd0
+05-27 13:50:26.153   800   830 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+05-27 13:50:26.153   800   830 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@f5a84c9
+05-27 13:50:26.153   800   830 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@a75f7ce
+05-27 13:50:26.153   800   830 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@d0f76ef
+05-27 13:50:26.153   800   830 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@a3671e5} m=OPEN f=NONE leash=Surface(name=Task=8)/@0x4874bae sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@c0074ba} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xd3e6d4f sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 13:50:26.154   800   830 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@1aca5fc, appThread = android.app.IApplicationThread$Stub$Proxy@dfda485, debugName = QuickstepLaunchHome }}
+05-27 13:50:26.154   800   830 V WindowManagerShell:  Delegate animation for #6 to null
+05-27 13:50:26.154   800   830 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@fdc2da
+05-27 13:50:26.154   800   830 V WindowManagerShell: start default transition animation, info = {id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@a3671e5} m=OPEN f=NONE leash=Surface(name=Task=8)/@0x4874bae sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@c0074ba} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xd3e6d4f sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 13:50:26.154   800   830 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@7f7dac8 animAttr=0x13 type=OPEN isEntrance=false
+05-27 13:50:26.154   800   830 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@413db74 animAttr=0x12 type=OPEN isEntrance=true
+05-27 13:50:26.154   800   830 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@fdc2da
+05-27 13:50:26.156   505   524 V WindowManager: Sent Transition #6 createdAt=05-27 13:50:25.771 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=cz.netbite.sshpal/.MainActivity } baseActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} topActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} origActivity=null realActivity=ComponentInfo{cz.netbite.sshpal/cz.netbite.sshpal.MainActivity} numActivities=1 lastActiveTime=34762 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{ccc342d Task{88821b5 #8 type=standard A=10141:cz.netbite.sshpal}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{2a61d62 cz.netbite.sshpal.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+05-27 13:50:26.156   505   524 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+05-27 13:50:26.157   505   524 V WindowManager:     info={id=6 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{ccc342d Task{88821b5 #8 type=standard A=10141:cz.netbite.sshpal}}} m=OPEN f=NONE leash=Surface(name=Task=8)/@0x1bdb70a sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0},{WCT{RemoteToken{97a8ef3 Task{8883af3 #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xa732321 sb=Rect(0, 0 - 320, 640) eb=Rect(0, 0 - 320, 640) d=0}]}
+05-27 13:50:26.157   800   839 W Looper  : Drained
+05-27 13:50:26.174   389   400 D PermissionCache: checking android.permission.READ_FRAME_BUFFER for uid=1000 => granted (38 us)
+05-27 13:50:26.179   800   830 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#6)android.os.BinderProxy@82d6300@0
+05-27 13:50:26.248   133   133 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+05-27 13:50:26.248   505   780 I Gralloc4: mapper 4.x is not supported
+--------- beginning of kernel
+05-27 13:50:12.852     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+05-27 13:50:26.351   800   868 D EGL_emulation: app_time_stats: avg=3020.00ms min=3020.00ms max=3020.00ms count=1
+05-27 13:50:26.352   800   800 D ControlsListingControllerImpl: ServiceConfig reloaded, count: 0
+05-27 13:50:26.353   800   800 D ControlsListingControllerImpl: ServiceConfig reloaded, count: 0
+05-27 13:50:26.362   505   874 W ActivityManager: Slow operation: 189ms so far, now at attachApplicationLocked: immediately before bindApplication
+05-27 13:50:26.363   505   874 W ActivityManager: Slow operation: 190ms so far, now at attachApplicationLocked: immediately after bindApplication
+05-27 13:50:26.363   505   874 W ActivityManager: Slow operation: 190ms so far, now at attachApplicationLocked: after updateLruProcessLocked
+05-27 13:50:26.365   505   524 V WindowManager: Finish Transition #6: created at 05-27 13:50:25.771 collect-started=0.048ms request-sent=4.261ms started=19.546ms ready=380.396ms sent=381.246ms finished=594.321ms
+05-27 13:50:26.368   505  1670 W system_server: Long monitor contention with owner binder:505_A (1192) at android.window.TaskSnapshot com.android.server.wm.ActivityTaskManagerService.takeTaskSnapshot(int, boolean)(ActivityTaskManagerService.java:3820) waiters=3 in int com.android.server.wm.ActivityTaskManagerService.getLastResumedActivityUserId() for 128ms
+05-27 13:50:26.372   800   830 V WindowManagerShell: Track 0 became idle
+05-27 13:50:26.372   800   830 V WindowManagerShell: All active transition animations finished
+05-27 13:50:26.372   800   830 W Looper  : Slow dispatch took 192ms wmshell.main h=android.os.Handler c=com.android.wm.shell.transition.DefaultTransitionHandler$$ExternalSyntheticLambda7@e3b483f m=0
+05-27 13:50:26.396  2327  2327 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10141; state: ENABLED
+05-27 13:50:26.396  2327  2327 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 10141; state: ENABLED
+05-27 13:50:26.399   505  1670 D CompatibilityChangeReporter: Compat change id reported: 170503758; UID 10141; state: ENABLED
+05-27 13:50:26.401  2327  2327 W ziparchive: Unable to open '/data/app/~~zcqt4JSx8koTH9meX0lvAA==/cz.netbite.sshpal-7ugYDvjlyS771hiAFjB2jA==/base.dm': No such file or directory
+05-27 13:50:26.401  2327  2327 W ziparchive: Unable to open '/data/app/~~zcqt4JSx8koTH9meX0lvAA==/cz.netbite.sshpal-7ugYDvjlyS771hiAFjB2jA==/base.dm': No such file or directory
+05-27 13:50:26.554  2327  2327 D nativeloader: Configuring clns-6 for other apk /data/app/~~zcqt4JSx8koTH9meX0lvAA==/cz.netbite.sshpal-7ugYDvjlyS771hiAFjB2jA==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~zcqt4JSx8koTH9meX0lvAA==/cz.netbite.sshpal-7ugYDvjlyS771hiAFjB2jA==/lib/x86_64:/data/app/~~zcqt4JSx8koTH9meX0lvAA==/cz.netbite.sshpal-7ugYDvjlyS771hiAFjB2jA==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/cz.netbite.sshpal
+05-27 13:50:26.560  2327  2327 V GraphicsEnvironment: Currently set values for:
+05-27 13:50:26.560  2327  2327 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+05-27 13:50:26.561  2327  2327 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+05-27 13:50:26.561  2327  2327 V GraphicsEnvironment: ANGLE GameManagerService for cz.netbite.sshpal: false
+05-27 13:50:26.561  2327  2327 V GraphicsEnvironment: cz.netbite.sshpal is not listed in per-application setting
+05-27 13:50:26.561  2327  2327 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+05-27 13:50:26.905  2226  2226 I AidlLazyServiceRegistrar: Process has 1 (of 1 available) client(s) in use after notification android.hardware.drm.IDrmFactory/clearkey has clients: 1
+05-27 13:50:13.512     0     0 I servicemanager: Notifying android.hardware.drm.IDrmFactory/clearkey they do (previously: don't) have clients when service is guaranteed to be in use
+05-27 13:50:13.514     0     0 I servicemanager: Notifying android.hardware.drm.IDrmFactory/clearkey they don't (previously: do) have clients when we now have no record of a client
+05-27 13:50:26.908  2226  2226 I AidlLazyServiceRegistrar: Process has 0 (of 1 available) client(s) in use after notification android.hardware.drm.IDrmFactory/clearkey has clients: 0
+05-27 13:50:26.908  2226  2226 I AidlLazyServiceRegistrar: Trying to shut down the service. No clients in use for any service in process.
+05-27 13:50:26.910  2226  2226 I AidlLazyServiceRegistrar: Unregistered all clients and exiting
+05-27 13:50:13.516     0     0 I servicemanager: Unregistering android.hardware.drm.IDrmFactory/clearkey
+05-27 13:50:13.517     0     0 I BpBinder: onLastStrongRef automatically unlinking death recipients:
+05-27 13:50:13.519     0     0 I init    : Service 'vendor.drm-clearkey-service' (pid 2226) exited with status 0 oneshot service took 3.875000 seconds in background
+05-27 13:50:13.521     0     0 I init    : Sending signal 9 to service 'vendor.drm-clearkey-service' (pid 2226) process group...
+05-27 13:50:13.522     0     0 I libprocessgroup: Successfully killed process cgroup uid 1013 pid 2226 in 0ms
+05-27 13:50:26.952   978   978 D AvrcpBrowsablePlayerConnector: Received a message: msg.what=2
+05-27 13:50:26.952   978   978 V AvrcpBrowsablePlayerConnector: Timed out waiting for players
+05-27 13:50:26.952   978   978 I AvrcpBrowsablePlayerConnector: Successfully connected to 0 browsable players.
+05-27 13:50:26.952   978   978 I MediaPlayerList: init: Browsable Player list size is 0
+05-27 13:50:27.309   955  1204 D DhcpClient: Received packet: 02:15:b2:00:00:00 OFFER, ip /10.0.2.16, mask /255.255.255.0, DNS servers: /10.0.2.3 , gateways [/10.0.2.2], lease time 86400, domain null
+05-27 13:50:27.309   955  1204 D DhcpClient: Received packet: 02:15:b2:00:00:00 ACK: your new IP /10.0.2.16, netmask /255.255.255.0, gateways [/10.0.2.2] DNS servers: /10.0.2.3 , lease time 86400
+05-27 13:50:27.523   505  1670 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10141. pid: 2327
+05-27 13:50:27.531  2327  2358 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+05-27 13:50:27.532  2327  2358 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+05-27 13:50:27.534  2327  2358 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+05-27 13:50:27.534   505   590 D ActivityManager: freezing 1474 com.android.music
+05-27 13:50:27.566  2327  2327 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 10141; state: DISABLED
+05-27 13:50:27.567  2327  2327 W OpenGLRenderer: Unknown dataspace 0
+05-27 13:50:27.570  2327  2327 I Choreographer: Skipped 59 frames!  The application may be doing too much work on its main thread.
+05-27 13:50:27.677   505  1670 D AutofillManagerServiceImpl: Reset component for user 0:null
+05-27 13:50:27.678   505   525 D AutofillUI: destroySaveUiUiThread(): already destroyed
+05-27 13:50:27.740   505  1670 D CoreBackPreview: Window{9ca7a37 u0 cz.netbite.sshpal/cz.netbite.sshpal.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@b28792f, mPriority=0, mIsAnimationCallback=false}
+05-27 13:50:27.843  2327  2327 W .netbite.sshpal: Method boolean androidx.compose.runtime.snapshots.SnapshotStateList.conditionalUpdate(boolean, kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+05-27 13:50:27.843  2327  2327 W .netbite.sshpal: Common causes for lock verification issues are non-optimized dex code
+05-27 13:50:27.843  2327  2327 W .netbite.sshpal: and incorrect proguard optimizations.
+05-27 13:50:27.843  2327  2327 W .netbite.sshpal: Method boolean androidx.compose.runtime.snapshots.SnapshotStateList.conditionalUpdate$default(androidx.compose.runtime.snapshots.SnapshotStateList, boolean, kotlin.jvm.functions.Function1, int, java.lang.Object) failed lock verification and will run slower.
+05-27 13:50:27.843  2327  2327 W .netbite.sshpal: Method java.lang.Object androidx.compose.runtime.snapshots.SnapshotStateList.mutate(kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+05-27 13:50:27.843  2327  2327 W .netbite.sshpal: Method void androidx.compose.runtime.snapshots.SnapshotStateList.update(boolean, kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+05-27 13:50:27.843  2327  2327 W .netbite.sshpal: Method void androidx.compose.runtime.snapshots.SnapshotStateList.update$default(androidx.compose.runtime.snapshots.SnapshotStateList, boolean, kotlin.jvm.functions.Function1, int, java.lang.Object) failed lock verification and will run slower.
+05-27 13:50:27.868   389   400 W ServiceManagerCppClient: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=10141 pid=0
+05-27 13:50:27.868   389   400 D PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=10141 => denied (204 us)
+05-27 13:50:27.868   389   599 W ServiceManagerCppClient: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=10141 pid=2327
+05-27 13:50:27.868   389   599 D PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=10141 => denied (75 us)
+05-27 13:50:27.868   389   599 W ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=10141 pid=2327
+05-27 13:50:27.868   389   599 D PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=10141 => denied (82 us)
+05-27 13:50:27.868   389   599 W ServiceManagerCppClient: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=10141 pid=2327
+05-27 13:50:27.868   389   599 D PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=10141 => denied (33 us)
+05-27 13:50:27.868   389   400 W ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=10141 pid=0
+05-27 13:50:27.868   389   400 D PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=10141 => denied (217 us)
+05-27 13:50:27.878  2327  2356 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+05-27 13:50:27.888   133   133 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+05-27 13:50:27.889  2327  2356 I Gralloc4: mapper 4.x is not supported
+05-27 13:50:14.494     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+05-27 13:50:28.146   505   590 D ActivityManager: freezing 1471 com.android.sdksetup
+05-27 13:50:28.299   505   874 W ServiceManagerCppClient: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=10141 pid=0
+05-27 13:50:28.299   505   874 D PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=10141 => denied (158 us)
+05-27 13:50:28.299   505   874 W ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=10141 pid=0
+05-27 13:50:28.299   505   874 D PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=10141 => denied (22 us)
+05-27 13:50:28.299   505   874 W ServiceManagerCppClient: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=10141 pid=0
+05-27 13:50:28.299   505   874 D PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=10141 => denied (13 us)
+05-27 13:50:28.301   505   524 W ziparchive: Unable to open '/data/app/~~zcqt4JSx8koTH9meX0lvAA==/cz.netbite.sshpal-7ugYDvjlyS771hiAFjB2jA==/base.dm': No such file or directory
+05-27 13:50:28.302   505   524 I ActivityTaskManager: Displayed cz.netbite.sshpal/.MainActivity for user 0: +2s532ms
+05-27 13:50:28.303  1468  1468 D CompatibilityChangeReporter: Compat change id reported: 150939131; UID 10074; state: ENABLED
+05-27 13:50:28.303  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.providers.media.documents/root
+05-27 13:50:28.307  2327  2327 I Choreographer: Skipped 41 frames!  The application may be doing too much work on its main thread.
+05-27 13:50:28.329   800   844 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@af59944
+05-27 13:50:28.329   505  1670 W InputManager-JNI: Input channel object 'cf0b150 Splash Screen cz.netbite.sshpal (client)' was disposed without first being removed with the input manager!
+05-27 13:50:28.331   505   874 D CoreBackPreview: Window{cf0b150 u0 Splash Screen cz.netbite.sshpal EXITING}: Setting back callback null
+05-27 13:50:28.366  1046  1090 I ImeTracker: com.android.launcher3:a7a6227e: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+05-27 13:50:28.368   505  1192 I ImeTracker: com.android.launcher3:a7a6227e: onCancelled at PHASE_SERVER_SHOULD_HIDE
+05-27 13:50:28.372   800   830 W Looper  : Slow delivery took 47ms wmshell.main h=android.os.Handler c=com.android.wm.shell.bubbles.BubbleController$BubblesImpl$$ExternalSyntheticLambda1@279cad1 m=0
+05-27 13:50:28.380   505  2055 D CompatibilityChangeReporter: Compat change id reported: 214016041; UID 10141; state: ENABLED
+05-27 13:50:28.380   505  2055 I ImeTracker: cz.netbite.sshpal:d8b4f982: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+05-27 13:50:28.380   800   830 W Looper  : Drained
+05-27 13:50:28.380   505  2055 I ImeTracker: cz.netbite.sshpal:d8b4f982: onCancelled at PHASE_SERVER_SHOULD_HIDE
+05-27 13:50:28.396  2327  2341 I OpenGLRenderer: Davey! duration=1733ms; Flags=1, FrameTimelineVsyncId=2816, IntendedVsync=35561760225, Vsync=36545093519, InputEventId=0, HandleInputStart=36557617676, AnimationStart=36557620791, PerformTraversalsStart=36557723253, DrawStart=36885420968, FrameDeadline=35578426891, FrameInterval=36557434874, FrameStartTime=16666666, SyncQueued=36898996645, SyncStart=36899158246, IssueDrawCommandsStart=36899457902, SwapBuffers=37148309843, FrameCompleted=37295218636, DequeueBufferDuration=3425, QueueBufferDuration=340577, GpuCompleted=37295218636, SwapBuffersCompleted=37280487670, DisplayPresentTime=0, CommandSubmissionCompleted=37148309843, 
+05-27 13:50:28.405   800   868 D EGL_emulation: app_time_stats: avg=1018.30ms min=4.40ms max=2032.21ms count=2
+05-27 13:50:28.778   505  1970 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+05-27 13:50:29.556  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 13:50:29.826  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 13:50:29.901  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 13:50:30.025  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 13:50:30.042  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 13:50:30.047  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.providers.media.documents/root
+05-27 13:50:30.056  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.externalstorage.documents
+05-27 13:50:30.484   505   590 D ActivityManager: freezing 1747 com.android.quicksearchbox
+05-27 13:50:30.935   785   785 I wpa_supplicant: wlan0: CTRL-EVENT-BEACON-LOSS 
+05-27 13:50:31.639   505   590 D ActivityManager: freezing 1275 com.android.cellbroadcastreceiver
+05-27 13:50:31.796   505   590 D ActivityManager: freezing 1479 com.android.printspooler
+05-27 13:50:31.813   388   394 W GpuWork : Failed to attach bpf program to power/gpu_work_period tracepoint [2(No such file or directory)]
+05-27 13:50:31.941   505   590 D ActivityManager: freezing 1369 com.android.carrierconfig
+05-27 13:50:32.915   800   800 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+05-27 13:50:32.960  2327  2405 D ProfileInstaller: Installing profile for cz.netbite.sshpal
+05-27 13:50:33.693   505   581 W OverlayManager: service 'idmap' died
+05-27 13:50:20.299     0     0 I init    : Sending signal 9 to service 'idmap2d' (pid 441) process group...
+05-27 13:50:20.306     0     0 I libprocessgroup: Successfully killed process cgroup uid 1000 pid 441 in 5ms
+05-27 13:50:20.307     0     0 I init    : Control message: Processed ctl.stop for 'idmap2d' from pid: 505 (system_server)
+05-27 13:50:20.309     0     0 I init    : Service 'idmap2d' (pid 441) received signal 9
+05-27 13:50:34.117   505   590 D ActivityManager: freezing 2080 com.android.carrierdefaultapp
+05-27 13:50:34.142   505   526 I DropBoxManagerService: add tag=system_app_strictmode isTagEnabled=true flags=0x2
+05-27 13:50:34.607  1468  1468 I ProvidersCache: Updating roots due to change on user 0at content://com.android.providers.media.documents/root
+05-27 13:50:35.038   800   800 D StatusBarIconController: ignoring old pipeline callbacks, because the new mobile icons are enabled
+05-27 13:50:35.556   505   590 D ActivityManager: freezing 1871 com.android.externalstorage
+05-27 13:50:35.748   505   783 D OomAdjuster: Not killing cached processes
+05-27 13:50:35.979  1006  1016 W ndroid.settings: Cleared Reference was only reachable from finalizer (only reported once)
+05-27 13:50:36.333  1402  1415 W putmethod.latin: Cleared Reference was only reachable from finalizer (only reported once)
+05-27 13:50:36.671   505  2051 D WifiNl80211Manager: Scan result ready event
+05-27 13:50:36.671   505  2051 D WifiNative: Scan result ready event
+05-27 13:50:36.841   505   768 I SdkSandboxManager: Reconciling sdk data package directories for 0
+05-27 13:50:37.515   157   921 I keystore2: system/security/keystore2/src/watchdog.rs:319 - Watchdog thread idle -> terminating. Have a great day.
+05-27 13:50:37.868  1671  1732 D StrictMode: StrictMode policy violation: android.os.strictmode.SqliteObjectLeakedViolation: Finalizing a Cursor that has not been deactivated or closed. database = /data/user/0/com.android.providers.contacts/databases/contacts2.db, table = raw_contacts, query = SELECT contacts_view._id AS _id, contacts_view.display_name AS display_name, contacts_view.photo_thumb_uri AS photo_thumb_uri, data1 AS number, data2 AS type, data3 AS label, contacts_view.lookup AS lookup FROM raw_contacts JOIN view_contacts as contacts_view ON (contacts_view._id = raw_contacts.contact_id) JOIN (SELECT data_id,normalized_number FROM phone_lookup WHERE (phone_lookup.min_match = '7654321')) AS lookup ON lookup.data_id=data._id JOIN data ON data.raw_contact_id=raw_contacts._id WHERE (PHONE_NUMBERS_EQUAL(data.data1, '+15551234567', 0, 7)) ORDER BY  length(lookup.normalized_number) DESC
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.os.StrictMode.onSqliteObjectLeaked(StrictMode.java:2222)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.sqlite.SQLiteCursor.finalize(SQLiteCursor.java:282)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Daemons$FinalizerDaemon.doFinalize(Daemons.java:339)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Daemons$FinalizerDaemon.processReference(Daemons.java:324)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Daemons$FinalizerDaemon.runInternal(Daemons.java:300)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Daemons$Daemon.run(Daemons.java:145)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Thread.run(Thread.java:1012)
+05-27 13:50:37.868  1671  1732 D StrictMode: StrictMode policy violation: android.os.strictmode.LeakedClosableViolation: A resource was acquired at attached stack trace but never released. See java.io.Closeable for information on avoiding resource leaks.
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.os.StrictMode$AndroidCloseGuardReporter.report(StrictMode.java:1994)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at dalvik.system.CloseGuard.warnIfOpen(CloseGuard.java:336)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.AbstractCursor.finalize(AbstractCursor.java:531)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.sqlite.SQLiteCursor.finalize(SQLiteCursor.java:291)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Daemons$FinalizerDaemon.doFinalize(Daemons.java:339)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Daemons$FinalizerDaemon.processReference(Daemons.java:324)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Daemons$FinalizerDaemon.runInternal(Daemons.java:300)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Daemons$Daemon.run(Daemons.java:145)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at java.lang.Thread.run(Thread.java:1012)
+05-27 13:50:37.868  1671  1732 D StrictMode: Caused by: java.lang.Throwable: Explicit termination method 'AbstractCursor.close' not called
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at dalvik.system.CloseGuard.openWithCallSite(CloseGuard.java:288)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at dalvik.system.CloseGuard.open(CloseGuard.java:257)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.AbstractCursor.<init>(AbstractCursor.java:227)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.AbstractWindowedCursor.<init>(AbstractWindowedCursor.java:39)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.sqlite.SQLiteCursor.<init>(SQLiteCursor.java:98)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.sqlite.SQLiteDirectCursorDriver.query(SQLiteDirectCursorDriver.java:52)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.sqlite.SQLiteDatabase.rawQueryWithFactory(SQLiteDatabase.java:1714)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.database.sqlite.SQLiteQueryBuilder.query(SQLiteQueryBuilder.java:592)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.doQuery(ContactsProvider2.java:7543)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.queryLocal(ContactsProvider2.java:7249)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.queryCorpLookupIfNecessary(ContactsProvider2.java:7728)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.queryLookupEnterprise(ContactsProvider2.java:7867)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.queryPhoneLookupEnterprise(ContactsProvider2.java:7838)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.queryLocal(ContactsProvider2.java:7172)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.queryDirectoryIfNecessary(ContactsProvider2.java:5883)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.queryInternal(ContactsProvider2.java:5728)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at com.android.providers.contacts.ContactsProvider2.query(ContactsProvider2.java:5673)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.content.ContentProvider.query(ContentProvider.java:1692)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.content.ContentProvider$Transport.query(ContentProvider.java:292)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.content.ContentProviderNative.onTransact(ContentProviderNative.java:107)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.os.Binder.execTransactInternal(Binder.java:1344)
+05-27 13:50:37.868  1671  1732 D StrictMode: 	at android.os.Binder.execTransact(Binder.java:1275)
