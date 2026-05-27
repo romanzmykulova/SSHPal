@@ -197,6 +197,19 @@ class ClaudeViewModel(
         }
     }
 
+    /**
+     * Abort the in-flight `/remote-control` handshake. Cancels the running
+     * coroutine, kills the SSH process (and the not-yet-finished `claude`
+     * invocation), and drops back to Idle so the user can tap Start again.
+     * Safe to call from any state — no-op if no handshake is running.
+     */
+    fun cancelHandshake() {
+        remoteControlJob?.cancel()
+        remoteControlJob = null
+        closeProcess()
+        _state.value = ClaudePaneState.Idle
+    }
+
     override fun onCleared() {
         closeProcess()
         super.onCleared()

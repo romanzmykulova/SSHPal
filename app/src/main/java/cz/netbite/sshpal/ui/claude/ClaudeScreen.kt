@@ -30,7 +30,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -85,11 +84,13 @@ fun ClaudeScreen(viewModel: ClaudeViewModel) {
         ClaudePaneState.Idle -> ConnectingView(
             log = "",
             onRetry = viewModel::startRemoteControl,
+            onCancel = viewModel::cancelHandshake,
             kicking = false,
         )
         is ClaudePaneState.Connecting -> ConnectingView(
             log = s.log,
             onRetry = viewModel::startRemoteControl,
+            onCancel = viewModel::cancelHandshake,
             kicking = true,
         )
         is ClaudePaneState.Loaded -> LoadedView(url = s.url, onReset = viewModel::reset)
@@ -103,14 +104,21 @@ fun ClaudeScreen(viewModel: ClaudeViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ConnectingView(log: String, onRetry: () -> Unit, kicking: Boolean) {
+private fun ConnectingView(
+    log: String,
+    onRetry: () -> Unit,
+    onCancel: () -> Unit,
+    kicking: Boolean,
+) {
     Scaffold(
         contentWindowInsets = WindowInsets(0),
         topBar = {
             TopAppBar(
                 title = { Text(if (kicking) "Starting Claude remote-control…" else "Claude") },
                 actions = {
-                    if (!kicking) {
+                    if (kicking) {
+                        OutlinedButton(onClick = onCancel) { Text("Cancel") }
+                    } else {
                         OutlinedButton(onClick = onRetry) { Text("Start") }
                     }
                 },
@@ -319,9 +327,7 @@ private fun LoadedView(url: String, onReset: () -> Unit) {
                     IconButton(onClick = { webView.reload() }) {
                         Icon(Icons.Default.Refresh, contentDescription = "Reload")
                     }
-                    IconButton(onClick = onReset) {
-                        Icon(Icons.Default.RestartAlt, contentDescription = "Re-run remote-control")
-                    }
+                    TextButton(onClick = onReset) { Text("Restart") }
                 },
             )
         },
