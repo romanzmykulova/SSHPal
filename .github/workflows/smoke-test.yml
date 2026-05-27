@@ -79,6 +79,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
+            exec > >(tee /tmp/smoke-script.log) 2>&1
             set +e
             adb wait-for-device
             adb shell input keyevent 82 || true
@@ -127,7 +128,15 @@ jobs:
             echo "--- ps / pidof diagnostic ---"
             adb shell ps -A 2>/dev/null | grep -i sshpal || echo "(no sshpal in ps)"
             adb shell pidof cz.netbite.sshpal 2>/dev/null || echo "(pidof empty — not authoritative on emulator)"
-            exit $CRASHED
+
+            echo ""
+            echo "=== Final result: CRASHED=$CRASHED ==="
+            if [ "$CRASHED" -ne 0 ]; then
+              echo "Smoke test FAILED"
+              exit 1
+            fi
+            echo "Smoke test PASSED"
+            exit 0
 
       - name: Upload full logcat
         if: always()
@@ -144,8 +153,9 @@ jobs:
         if: failure()
         run: |
           mkdir -p ci-logs
-          cp /tmp/logcat-full.txt ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}.log || true
-          if [ -f ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}.log ]; then
+          cp /tmp/logcat-full.txt ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}.log 2>/dev/null || true
+          cp /tmp/smoke-script.log ci-logs/smoke-${{ github.run_id }}-api${{ matrix.api-level }}-script.log 2>/dev/null || true
+          if ls ci-logs/smoke-${{ github.run_id }}-* >/dev/null 2>&1; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git fetch origin main
