@@ -9,7 +9,11 @@ import cz.netbite.sshpal.ssh.SessionRegistry
 import cz.netbite.sshpal.ssh.SshConnector
 import net.i2p.crypto.eddsa.EdDSASecurityProvider
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import java.io.File
 import java.security.Security
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class SshPalApp : Application() {
 
@@ -24,11 +28,38 @@ class SshPalApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        installCrashLogger()
         registerSecurityProviders()
         val db = AppDatabase.get(this)
         repository = WorkspaceRepository(db.workspaceDao(), db.claudeSessionDao(), KeyVault(this))
         sshConnector = SshConnector()
         sessions = SessionRegistry()
+    }
+
+    /**
+     * Write any uncaught exception to `filesDir/crash.log` before the
+     * default handler kills the process. Pull off-device with:
+     *   adb shell run-as cz.netbite.sshpal cat files/crash.log
+     * The file is truncated on each crash so we always have the latest.
+     */
+    private fun installCrashLogger() {
+        val default = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, ex ->
+            runCatching {
+                val ts = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US).format(Date())
+                val device = "${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL} " +
+                    "(API ${android.os.Build.VERSION.SDK_INT})"
+                val body = buildString {
+                    append("=== SSHPal crash $ts ===\n")
+                    append("device: $device\n")
+                    append("thread: ${thread.name}\n\n")
+                    append(Log.getStackTraceString(ex))
+                }
+                File(filesDir, "crash.log").writeText(body)
+                Log.e(TAG, "Uncaught exception written to ${filesDir}/crash.log", ex)
+            }
+            default?.uncaughtException(thread, ex)
+        }
     }
 
     /**
