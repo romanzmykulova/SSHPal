@@ -453,10 +453,18 @@ class ClaudeViewModel(
     }
 
     companion object {
-        // Strips standard ANSI CSI escapes (color codes, cursor moves) plus
-        // common OSC sequences. Permissive — we only care that URLs aren't
-        // chopped up by stray escape bytes.
-        private val ANSI_REGEX = Regex("\\[[0-9;?]*[a-zA-Z]|\\][^]*")
+        // Strips standard ANSI CSI escapes (ESC `[` ... letter — color codes,
+        // cursor moves) plus OSC sequences (ESC `]` ... BEL). The control bytes
+        // are spelled out as Kotlin unicode escapes (\u001B = ESC, \u0007 = BEL)
+        // so they're visible in source. The previous spelling embedded literal
+        // ESC/BEL bytes in the string literal; one copy-paste later they were
+        // silently stripped, producing a malformed `[^]*` that Java's regex
+        // compiler rejects at <clinit> time. The class then fails to load and
+        // ViewModelProvider.Factory.create() throws ExceptionInInitializerError
+        // before the UI even finishes its first composition.
+        private val ANSI_REGEX = Regex(
+            "\u001B\\[[0-9;?]*[a-zA-Z]|\u001B\\][^\u0007]*\u0007",
+        )
         private val URL_REGEX = Regex("https?://[^\\s]+")
 
         fun stripAnsi(s: String): String = ANSI_REGEX.replace(s, "")
